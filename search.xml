@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>mockjs的简单使用</title>
+    <url>/2020/06/19/mockjs%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h3 id="简单讲解："><a href="#简单讲解：" class="headerlink" title="简单讲解："></a>简单讲解：</h3><p>mockjs可以生成随机数据，实现拦截ajax请求。可在后台还未提供接口的情况下采用随机数据进行项目开发，从而缩短项目开发周期；其随机的数据类型包含<strong>文本、数字、布尔值、日期、邮箱、链接、图片、颜色等，也支持扩展更多数据类型、自定义函数以及正则。</strong></p>
+<h3 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install mockjs --save-dev</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cnpm install mockjs --save-dev</span><br></pre></td></tr></table></figure>
+
+<h3 id="语法规范："><a href="#语法规范：" class="headerlink" title="语法规范："></a>语法规范：</h3><p>请移步其官方文档 <a href="https://github.com/nuysoft/Mock/wiki/Syntax-Specification" target="_blank" rel="noopener">MockJs语法规范</a></p>
+<h3 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h3><p>1、首先是确认mock.js数据文件的位置，这里我放置于和main.js文件的同级目录内:<br><img src="/2020/06/19/mockjs%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/1.png" alt="mock.js文件位置"></p>
+<p>2、在mock.js文件中写入以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const Mock &#x3D; require(&#39;mockjs&#39;);</span><br><span class="line">&#x2F;&#x2F;拦截ajax请求</span><br><span class="line">Mock.mock(&#39;http:&#x2F;&#x2F;baidu.com&#39;,&#123;</span><br><span class="line">    &#39;list|1-10&#39;:[&#123;</span><br><span class="line">        &#39;username&#39;:&#39;@cname&#39;</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Mock.mock的第一个参数为请求地址，表示要拦截向此链接获取数据的ajax请求。</p>
+<p>3、在main.js内引入mock.js文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import mock from &#39;@&#x2F;mock&#x2F;mock&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>4、最后试着请求 <a href="http://baidu.com" target="_blank" rel="noopener">http://baidu.com</a> (这里以axios为例)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">axios(&#123;</span><br><span class="line">    url: http:&#x2F;&#x2F;baidu.com</span><br><span class="line">  &#125;).then(res &#x3D;&gt; &#123;</span><br><span class="line">    console.log(res.data);</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<p>在浏览器中可以看到其定义的相关数据：<br><img src="/2020/06/19/mockjs%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/2.png" alt="&#39;list&#39;的相关数据"></p>
+<p>如果在main.js文件中去除mock.js文件的引入，那么axios就会直接去请求 <a href="http://baidu.com" target="_blank" rel="noopener">http://baidu.com</a> ，浏览器中也会直接报错：<br><img src="/2020/06/19/mockjs%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/3.png" alt="跨域报错"></p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>mockjs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用webpack-dev-server实现项目热更新</title>
+    <url>/2020/06/19/%E4%BD%BF%E7%94%A8webpack-dev-server%E5%AE%9E%E7%8E%B0%E9%A1%B9%E7%9B%AE%E7%83%AD%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<p><strong style="color:red;">本教程默认你已经安装node环境以及会使用webpack基本配置</strong></p>
+<h3 id="场景："><a href="#场景：" class="headerlink" title="场景："></a>场景：</h3><p>当不使用框架进行项目开发，且项目为多个HTML页面时（单个HTML页面也适用），为了方便进行项目逻辑修改且保存后，能实时在浏览器中展示（热更新）。</p>
+<h3 id="安装插件："><a href="#安装插件：" class="headerlink" title="安装插件："></a>安装插件：</h3><p>安装的插件版本如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;html-webpack-plugin&quot;: &quot;^4.3.0&quot;,</span><br><span class="line">&quot;webpack&quot;: &quot;^4.43.0&quot;,</span><br><span class="line">&quot;webpack-cli&quot;: &quot;^3.3.11&quot;,</span><br><span class="line">&quot;webpack-dev-server&quot;: &quot;^3.11.0&quot;</span><br></pre></td></tr></table></figure>
+<p>npm安装的代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install html-webpack-plugin@4.3.0 webpack@4.43.0 webpack-cli@3.3.11 webpack-dev-server@3.11.0 --save-dev</span><br></pre></td></tr></table></figure>
+<p>如果失败，请试试用cnpm安装。</p>
+<h3 id="项目结构："><a href="#项目结构：" class="headerlink" title="项目结构："></a>项目结构：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">index.html  </span><br><span class="line">package-lock.json  </span><br><span class="line">package.json</span><br><span class="line">webpack.config.js   &#x2F;&#x2F;主要webpack配置文件</span><br><span class="line">node_module         &#x2F;&#x2F;安装了的插件文件夹</span><br><span class="line">static              &#x2F;&#x2F;资源文件夹</span><br><span class="line">    └─js</span><br><span class="line">     └─index.js</span><br></pre></td></tr></table></figure>
+
+<h3 id="webpack配置："><a href="#webpack配置：" class="headerlink" title="webpack配置："></a>webpack配置：</h3><p>在项目中的webpack.config.js文件中，需要声明项目的配置，这里就可以配置webpack-dev-server。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const htmlWebpackPlugin &#x3D; require(&#39;html-webpack-plugin&#39;),    &#x2F;&#x2F;html配置插件</span><br><span class="line">    webpack &#x3D; require(&#39;webpack&#39;),</span><br><span class="line">    isDev &#x3D; process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#39;development&#39;    &#x2F;&#x2F;用于判断当前项目开发环境</span><br><span class="line">const config &#x3D; &#123;</span><br><span class="line">    target: &#39;web&#39;,</span><br><span class="line">    entry: &#123;    &#x2F;&#x2F;js文件入口配置</span><br><span class="line">        index: &#39;.&#x2F;static&#x2F;js&#x2F;index&#39;</span><br><span class="line">    &#125;,</span><br><span class="line">    output: &#123;   &#x2F;&#x2F;打包文件生成配置</span><br><span class="line">        path: __dirname + &#39;&#x2F;dist&#x2F;&#39;,</span><br><span class="line">        filename: &#39;js&#x2F;[name]-[hash:7].js&#39;</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [  &#x2F;&#x2F;插件配置</span><br><span class="line">        new webpack.HotModuleReplacementPlugin(),</span><br><span class="line">        new htmlWebpackPlugin(&#123;    &#x2F;&#x2F;有多少个html页面，就需要初始化多少个实例</span><br><span class="line">            filebname: &#39;[name].html&#39;,</span><br><span class="line">            template: &#39;index.html&#39;,</span><br><span class="line">            inject: &#39;body&#39;</span><br><span class="line">        &#125;)</span><br><span class="line">    ],</span><br><span class="line">    mode: &#39;development&#39;    &#x2F;&#x2F;当前项目环境声明</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (isDev) &#123;    &#x2F;&#x2F;项目启动时，会根据当前项目环境来判断是否启动webpack-dev-server</span><br><span class="line">    &#x2F;&#x2F; 在config上加一个devServer配置</span><br><span class="line">    config.devServer &#x3D; &#123;</span><br><span class="line">        &#x2F;&#x2F; 启动的服务端口</span><br><span class="line">        port: 8000,</span><br><span class="line">        &#x2F;&#x2F; 通过localhost或IP进行访问</span><br><span class="line">        host: &#39;localhost&#39;,</span><br><span class="line">        &#x2F;&#x2F; 若编译过程中有错误，显示到网页上,便于定位错误</span><br><span class="line">        overlay: &#123;</span><br><span class="line">            errors: true,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#x2F;&#x2F;热加载</span><br><span class="line">        hot: true,</span><br><span class="line">        &#x2F;&#x2F;自动打开浏览器预览</span><br><span class="line">        open:true</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; config</span><br></pre></td></tr></table></figure>
+<p>在项目中的package.json文件中，可以声明启动项目的命令行，需要配置在scripts属性上：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;build&quot;: &quot;cross-env NODE_ENV&#x3D;production webpack --mode&#x3D;production --config webpack.config.js&quot;,  &#x2F;&#x2F;改变项目环境为生产环境，webpack打包命令</span><br><span class="line">    &quot;dev&quot;: &quot;cross-env NODE_ENV&#x3D;development webpack-dev-server --mode&#x3D;development --config webpack.config.js&quot;   &#x2F;&#x2F;改变项目环境为开发环境，webpack-dev-server启动命令</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="启动："><a href="#启动：" class="headerlink" title="启动："></a>启动：</h3><p>最后在cmd进入项目根目录，输入以下代码即可：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+<p>然后改动相关的js文件，浏览器会自动刷新页面展示最新的修改结果。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>webpack</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>webpack中ejs语法无效的原因</title>
     <url>/2020/06/02/webpack%E4%B8%ADejs%E8%AF%AD%E6%B3%95%E6%97%A0%E6%95%88%E7%9A%84%E5%8E%9F%E5%9B%A0/</url>
     <content><![CDATA[<p>某次想在webpack的项目中使用ejs语法来在html页面中嵌套某些字段，但是发现其语法无效，最后打包出来的html页面中显示的是代码而不是想要的数据，在查询相关问题后，发现是html-webpack-plugin会与去全局配置的html-loader发生冲突。<br>如果是以下定义：</p>
@@ -243,28 +298,6 @@ lowercase：定义仅有小写字母</code></pre><h5 id="2、选中高亮"><a hr
       </tags>
   </entry>
   <entry>
-    <title>项目中使用微信扫码登录获取token和用户信息</title>
-    <url>/2019/12/24/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/</url>
-    <content><![CDATA[<p>公司有一个项目是关于后台管理相关设备数据的，其中的登录不是以往的账号密码登录获取用户相关信息，而是采用微信扫码登录，然后再获取用户相关信息，这样做的考虑是：本地用户信息过期了，不用回到登录页面重新登录，只需扫描页面中弹出的二维码即可继续使用管理后台。</p>
-<p>先简单介绍下wxLogin.js的使用方法:<br><img src="/img/wxLogin--getUserInfo/about.jpg" alt="image text"></p>
-<p>本次项目是下载到本地引入使用，查看源码中后，可知二维码是嵌套在一个iframe中的<br><img src="/img/wxLogin--getUserInfo/wxLogin.jpg" alt="Image text"></p>
-<p>效果可以像网页登录的效果一样</p>
-<p><img src="/img/wxLogin--getUserInfo/wx.jpg" alt="image text"></p>
-<p>在项目中，是用两个页面来作为重定向路径，一个login页面是用户第一次进入管理后台时，所展示的，并且也只展示这一次，因为后面用户信息超时而需要重新扫码时，所重定向的页面就为code页面。</p>
-<p>login页面很简单，就是获取后台相关信息，然后展示二维码给用户扫描，用户也就可以操作管理后台了；当用户信息过期后，会新建一个id为newCode的元素，展示效果以及具体配置如下：</p>
-<h6 id="效果："><a href="#效果：" class="headerlink" title="效果："></a>效果：</h6><p><img src="/img/wxLogin--getUserInfo/login.jpg" alt="image text"></p>
-<h6 id="具体配置："><a href="#具体配置：" class="headerlink" title="具体配置："></a>具体配置：</h6><p><img src="/img/wxLogin--getUserInfo/prompt.jpg" alt="image text"></p>
-<p>参数在官方文档有记载，链接：<a href="https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html</a><br><img src="/img/wxLogin--getUserInfo/documentation.jpg" alt="image text"></p>
-<p>newCode元素内部就为了展示二维码，用户扫描登录后，就进入到code页面(是在iframe层中显示code页面)，而code页面中是使用了 self.location.href != top.location.href 是否不相等的方法来跳出iframe层，并且将newCode元素去除，这样就可以使浏览器更新了用户信息，也避免了iframe层中打开页面的情况。</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>微信</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>css-sticky</title>
     <url>/2019/12/24/css%E5%AE%9A%E4%BD%8D%E4%B9%8Bsticky/</url>
     <content><![CDATA[<h4 id="原文链接：http-www-ruanyifeng-com-blog-2019-11-css-position-html"><a href="#原文链接：http-www-ruanyifeng-com-blog-2019-11-css-position-html" class="headerlink" title="原文链接：http://www.ruanyifeng.com/blog/2019/11/css-position.html"></a>原文链接：<a href="http://www.ruanyifeng.com/blog/2019/11/css-position.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/11/css-position.html</a></h4><p>sticky会产生动态效果，很像relative和fixed的结合：一些时候是relative定位（定位基点是自身默认位置），另一些时候自动变成fixed定位（定位基点是视口）。</p>
@@ -299,6 +332,28 @@ lowercase：定义仅有小写字母</code></pre><h5 id="2、选中高亮"><a hr
       </categories>
       <tags>
         <tag>css</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>项目中使用微信扫码登录获取token和用户信息</title>
+    <url>/2019/12/24/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/</url>
+    <content><![CDATA[<p>公司有一个项目是关于后台管理相关设备数据的，其中的登录不是以往的账号密码登录获取用户相关信息，而是采用微信扫码登录，然后再获取用户相关信息，这样做的考虑是：本地用户信息过期了，不用回到登录页面重新登录，只需扫描页面中弹出的二维码即可继续使用管理后台。</p>
+<p>先简单介绍下wxLogin.js的使用方法:<br><img src="/img/wxLogin--getUserInfo/about.jpg" alt="image text"></p>
+<p>本次项目是下载到本地引入使用，查看源码中后，可知二维码是嵌套在一个iframe中的<br><img src="/img/wxLogin--getUserInfo/wxLogin.jpg" alt="Image text"></p>
+<p>效果可以像网页登录的效果一样</p>
+<p><img src="/img/wxLogin--getUserInfo/wx.jpg" alt="image text"></p>
+<p>在项目中，是用两个页面来作为重定向路径，一个login页面是用户第一次进入管理后台时，所展示的，并且也只展示这一次，因为后面用户信息超时而需要重新扫码时，所重定向的页面就为code页面。</p>
+<p>login页面很简单，就是获取后台相关信息，然后展示二维码给用户扫描，用户也就可以操作管理后台了；当用户信息过期后，会新建一个id为newCode的元素，展示效果以及具体配置如下：</p>
+<h6 id="效果："><a href="#效果：" class="headerlink" title="效果："></a>效果：</h6><p><img src="/img/wxLogin--getUserInfo/login.jpg" alt="image text"></p>
+<h6 id="具体配置："><a href="#具体配置：" class="headerlink" title="具体配置："></a>具体配置：</h6><p><img src="/img/wxLogin--getUserInfo/prompt.jpg" alt="image text"></p>
+<p>参数在官方文档有记载，链接：<a href="https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html</a><br><img src="/img/wxLogin--getUserInfo/documentation.jpg" alt="image text"></p>
+<p>newCode元素内部就为了展示二维码，用户扫描登录后，就进入到code页面(是在iframe层中显示code页面)，而code页面中是使用了 self.location.href != top.location.href 是否不相等的方法来跳出iframe层，并且将newCode元素去除，这样就可以使浏览器更新了用户信息，也避免了iframe层中打开页面的情况。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>微信</tag>
       </tags>
   </entry>
   <entry>
