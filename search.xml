@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>fixed和transform之间的问题</title>
+    <url>/2020/07/02/fixed%E5%92%8Ctransform%E4%B9%8B%E9%97%B4%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>一开始，当父元素没设置animation时且position为默认值（static），当点击子元素（图片加描述），然后给子元素设置position:fixed;这样，子元素就可以冲破父元素的束缚，呈现占满全屏的效果：</p>
+<p><img src="/2020/07/02/fixed%E5%92%8Ctransform%E4%B9%8B%E9%97%B4%E7%9A%84%E9%97%AE%E9%A2%98/1.jpg" alt="Text Img"></p>
+<p><img src="/2020/07/02/fixed%E5%92%8Ctransform%E4%B9%8B%E9%97%B4%E7%9A%84%E9%97%AE%E9%A2%98/2.jpg" alt="Text Img"></p>
+<p>但是，如果父元素设置了animation效果（也就是要让父元素里的子元素往上循环滚动），那么效果就变了：</p>
+<p><img src="/2020/07/02/fixed%E5%92%8Ctransform%E4%B9%8B%E9%97%B4%E7%9A%84%E9%97%AE%E9%A2%98/3.jpg" alt="Text Img"></p>
+<p>原本占满屏幕展示大图的子元素，现在只能在根据父元素来拉伸高宽了。<br>具体原因需参考张鑫旭的文章：<br><a href="https://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/" target="_blank" rel="noopener">https://www.zhangxinxu.com/wordpress/2015/05/css3-transform-affect/</a></p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>css</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vscode中setting.json设置preitter规范不生效</title>
     <url>/2020/07/02/vscode%E4%B8%ADsetting-json%E8%AE%BE%E7%BD%AEpreitter%E8%A7%84%E8%8C%83%E4%B8%8D%E7%94%9F%E6%95%88/</url>
     <content><![CDATA[<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><p>Vue-cli（全局安装）：3.11.0 <br><br>Eslint（npm下载）：5.16.0 <br><br>Preitter（vscode插件）：5.1.2</p>
@@ -17,7 +34,8 @@
         <category>前端</category>
       </categories>
       <tags>
-        <tag>vue, preitter</tag>
+        <tag>vue</tag>
+        <tag>preitter</tag>
       </tags>
   </entry>
   <entry>
@@ -41,7 +59,8 @@
         <category>前端</category>
       </categories>
       <tags>
-        <tag>vue, eslint</tag>
+        <tag>vue</tag>
+        <tag>eslint</tag>
       </tags>
   </entry>
   <entry>
