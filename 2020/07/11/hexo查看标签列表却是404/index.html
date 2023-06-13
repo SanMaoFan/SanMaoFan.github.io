@@ -122,13 +122,13 @@
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
 <meta property="og:description" content="场景最开始在使用hexo创建博客时，将文章规划到了Vue（v字母大写）标签下，后来再次创建文章时，写的是vue（v小写）标签，后来将博客部署到GitHub时，出现两个vue标签（v有大小写区分），但是有一个vue的标签点击后没有出现相应的标签相关文章列表，而是GitHub提示的404页面。 解决方案修改hexo目录下的 .deploy_git &gt; .git &gt; config 文件，将">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/hexo%E6%9F%A5%E7%9C%8B%E6%A0%87%E7%AD%BE%E5%88%97%E8%A1%A8%E5%8D%B4%E6%98%AF404/1.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/hexo%E6%9F%A5%E7%9C%8B%E6%A0%87%E7%AD%BE%E5%88%97%E8%A1%A8%E5%8D%B4%E6%98%AF404/1.png">
 <meta property="article:published_time" content="2020-07-11T06:45:35.000Z">
-<meta property="article:modified_time" content="2022-07-01T07:04:04.448Z">
+<meta property="article:modified_time" content="2023-06-05T14:02:37.600Z">
 <meta property="article:author" content="SanMaoFan">
 <meta property="article:tag" content="hexo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://san-mao-fan.gitee.io/hexo%E6%9F%A5%E7%9C%8B%E6%A0%87%E7%AD%BE%E5%88%97%E8%A1%A8%E5%8D%B4%E6%98%AF404/1.png">
+<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/hexo%E6%9F%A5%E7%9C%8B%E6%A0%87%E7%AD%BE%E5%88%97%E8%A1%A8%E5%8D%B4%E6%98%AF404/1.png">
 
 
 
@@ -390,7 +390,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2022-07-01 15:04:04" itemprop="dateModified" datetime="2022-07-01T15:04:04+08:00">2022-07-01</time>
+                <time title="修改时间：2023-06-05 22:02:37" itemprop="dateModified" datetime="2023-06-05T22:02:37+08:00">2023-06-05</time>
               
             
           </span>
@@ -442,8 +442,8 @@
 
       
         <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>最开始在使用hexo创建博客时，将文章规划到了Vue（v字母大写）标签下，后来再次创建文章时，写的是vue（v小写）标签，后来将博客部署到GitHub时，出现两个vue标签（v有大小写区分），但是有一个vue的标签点击后没有出现相应的标签相关文章列表，而是GitHub提示的404页面。</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>修改hexo目录下的 <code>.deploy_git &gt; .git &gt; config</code> 文件，将 <code>ignorecase=true</code> 改为 <code>ignorecase=false</code>。</p>
-<p><img src="/./hexo%E6%9F%A5%E7%9C%8B%E6%A0%87%E7%AD%BE%E5%88%97%E8%A1%A8%E5%8D%B4%E6%98%AF404/1.png" alt="Text Image"></p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>修改hexo目录下的 <code>.deploy_git &gt; .git &gt; config</code> 文件，将 <code>ignorecase=true``` 改为 ```ignorecase=false</code>。</p>
+<p><img src="/./images/hexo%E6%9F%A5%E7%9C%8B%E6%A0%87%E7%AD%BE%E5%88%97%E8%A1%A8%E5%8D%B4%E6%98%AF404/1.png" alt="Text Image"></p>
 <p>然后将线上（GitHub）的 <code>.deploy_git</code> 文件夹删除，并将本地的 <code>.deploy_git</code> 文件夹上传到线上(操作是在.deploy_git文件夹上右键打开git命令行窗口)。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rm -rf *</span><br><span class="line">git commit -m &#x27;clean all file&#x27;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
 
@@ -580,7 +580,7 @@
                 
                 
                 <div class="site-state-item site-state-categories">
-                  
+                  <a href="/categories/index.html">
                     
                     
                       
@@ -589,7 +589,7 @@
                     
                     <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">分类</span>
-                  
+                  </a>
                 </div>
               
 
@@ -597,7 +597,7 @@
                 
                 
                 <div class="site-state-item site-state-tags">
-                  
+                  <a href="/tags/index.html">
                     
                     
                       
@@ -650,7 +650,7 @@
                     
                     <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">标签</span>
-                  
+                  </a>
                 </div>
               
             </nav>

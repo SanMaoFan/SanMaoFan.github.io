@@ -115,18 +115,30 @@
 
 
 
-  <meta name="description" content="场景在日常开发中，项目需要使用各式各样的插件来辅助工作，一般是从 npm 上下载即可，但如果是公司内部需要在特定场景使用自己研发的工具，并且只供内部下载使用，那么便需要从零开发称手的插件 准备开发插件的工具这里挑选 rollup 工具（rollup 中文网），而放置插件的仓库则是使用 nexus。 rollup 是一款 ES module 的打包器，可以将项目中的细小模块打包成整块的代码，使得代码">
+  <meta name="description" content="参考视频以及文章：  小满埋点SDK从0开发并且发布npm 「前端工程化」之 Rollup 上手与基本原理 前端 - npm 的配置文件 .npmrc  场景在日常开发中，项目需要使用各式各样的插件来辅助工作，一般是从 npm 上下载即可，但如果是公司内部需要在特定场景使用自己研发的工具，并且只供内部下载使用，那么便需要从零开发称手的插件 准备开发插件的工具这里挑选 rollup 工具（rollu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 rollup 开发插件并上传到 nexus 私服">
 <meta property="og:url" content="http://san-mao-fan.gitee.io/2023/06/03/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/index.html">
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
-<meta property="og:description" content="场景在日常开发中，项目需要使用各式各样的插件来辅助工作，一般是从 npm 上下载即可，但如果是公司内部需要在特定场景使用自己研发的工具，并且只供内部下载使用，那么便需要从零开发称手的插件 准备开发插件的工具这里挑选 rollup 工具（rollup 中文网），而放置插件的仓库则是使用 nexus。 rollup 是一款 ES module 的打包器，可以将项目中的细小模块打包成整块的代码，使得代码">
+<meta property="og:description" content="参考视频以及文章：  小满埋点SDK从0开发并且发布npm 「前端工程化」之 Rollup 上手与基本原理 前端 - npm 的配置文件 .npmrc  场景在日常开发中，项目需要使用各式各样的插件来辅助工作，一般是从 npm 上下载即可，但如果是公司内部需要在特定场景使用自己研发的工具，并且只供内部下载使用，那么便需要从零开发称手的插件 准备开发插件的工具这里挑选 rollup 工具（rollu">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/001.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/002.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/003.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/004.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/007.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/008.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/009.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/006.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/005.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/010.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/011.png">
 <meta property="article:published_time" content="2023-06-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-03T12:32:05.177Z">
+<meta property="article:modified_time" content="2023-06-12T15:50:47.081Z">
 <meta property="article:author" content="SanMaoFan">
 <meta property="article:tag" content="rollup">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/001.jpg">
 
 
 
@@ -371,12 +383,24 @@
                 
               
 
-              <time title="创建时间：2023-06-03 00:00:00 / 修改时间：20:32:05" itemprop="dateCreated datePublished" datetime="2023-06-03T00:00:00+08:00">2023-06-03</time>
+              <time title="创建时间：2023-06-03 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-03T00:00:00+08:00">2023-06-03</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2023-06-12 23:50:47" itemprop="dateModified" datetime="2023-06-12T23:50:47+08:00">2023-06-12</time>
               
             
           </span>
@@ -427,10 +451,116 @@
       
 
       
-        <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>在日常开发中，项目需要使用各式各样的插件来辅助工作，一般是从 npm 上下载即可，但如果是公司内部需要在特定场景使用自己研发的工具，并且只供内部下载使用，那么便需要从零开发称手的插件</p>
+        <p>参考视频以及文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Fa411T7uY?p=1&vd_source=a4fd270dc286fce4c6b62f03ed3a035d">小满埋点SDK从0开发并且发布npm</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1w84y1z77V?p=4&vd_source=a4fd270dc286fce4c6b62f03ed3a035d">「前端工程化」之 Rollup 上手与基本原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/kelly0721/article/details/121908256">前端 - npm 的配置文件 .npmrc</a></li>
+</ul>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>在日常开发中，项目需要使用各式各样的插件来辅助工作，一般是从 npm 上下载即可，但如果是公司内部需要在特定场景使用自己研发的工具，并且只供内部下载使用，那么便需要从零开发称手的插件</p>
 <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>开发插件的工具这里挑选 rollup 工具（<a target="_blank" rel="noopener" href="https://www.rollupjs.com/">rollup 中文网</a>），而放置插件的仓库则是使用 nexus。</p>
-<p>rollup 是一款 ES module 的打包器，可以将项目中的细小模块打包成整块的代码，使得代码可以更好的运行在浏览器环境或者是 nodejs 环境，虽然 rollup 与 webpack 非常类似，但 rollup 要小巧的多，因为 rollup 仅仅是一款 ESM 的打包器，没有其他额外的功能，例如 rollup 不支持类似 HMR（热更新）这种高级特性</p>
-<p>rollup 可以安装至全局(<code>npm install --global rollup</code>)，或者作为项目的开发依赖去安装(<code>npm install rollup --dev</code>)，本文以作为项目开发依赖的情况为例子</p>
+<h3 id="rollup-部分"><a href="#rollup-部分" class="headerlink" title="rollup 部分"></a>rollup 部分</h3><h4 id="rollup-介绍"><a href="#rollup-介绍" class="headerlink" title="rollup 介绍"></a>rollup 介绍</h4><p>rollup 是一款 ES module 的打包器，可以将项目中的细小模块打包成整块的代码，使得代码可以更好的运行在浏览器环境或者是 nodejs 环境，虽然 rollup 与 webpack 非常类似，但 rollup 要小巧的多，因为 rollup 仅仅是一款 ESM 的打包器，没有其他额外的功能，例如 rollup 不支持类似 HMR（热更新）这种高级特性</p>
+<p>rollup 可以安装至全局(<code>npm install rollup -g</code>)，或者作为项目的开发依赖去安装(<code>npm install rollup -D</code>)，本文以作为项目开发依赖的情况为例子，并默认使用 typescript 语法开发插件。</p>
+<h4 id="插件项目的目录结构"><a href="#插件项目的目录结构" class="headerlink" title="插件项目的目录结构"></a>插件项目的目录结构</h4><p>首先创建 rollup-test 文件夹，使用 cmd 进入到该目录中，输入 <code>npm init -y</code> 快捷生成 <code>package.json</code> 文件，再输入 <code>tsc --init</code> 生成 typescript 配置文件(使用 tsc 命令前需要全局安装 typescript：<code>npm i typescript -g</code>，如果不想全局安装，可以安装成项目依赖:<code>npm i typescript -D</code>，然后使用 <code>npx typescript --init</code> 命令一样可以生成 <code>tsconfig.json</code> 文件)</p>
+<p>最后是 <code>rollup.config.js</code> 配置文件，该文件需要创建在根目录下，该文件的作用和 webpack.config.js 作用一样，都是为控制项目打包；至此，rollup-test 项目的目录结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package.json</span><br><span class="line">rollup.config.js</span><br><span class="line">tsconfig.json</span><br><span class="line">src</span><br><span class="line"> └─index.ts</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装项目用到的插件插件"><a href="#安装项目用到的插件插件" class="headerlink" title="安装项目用到的插件插件"></a>安装项目用到的插件插件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 本次项目所使用 node 环境为 14.20.0，建议使用该版本或者更高版本的 nodejs</span><br><span class="line">// 为避免打包失败，建议以下版本的插件</span><br><span class="line">// 如果之前声明 tsconfig.json 文件时就已安装此依赖，可省略 typescript 插件的安装</span><br><span class="line">npm i typescript@4.7.4 -D</span><br><span class="line">npm i rollup@2.77.0 -D</span><br><span class="line">// rollup-plugin-dts 插件用于生成声明文件，可以给代码更友好的提示</span><br><span class="line">npm i rollup-plugin-dts@4.2.2 -D</span><br><span class="line">// rollup-plugin-typescript2 插件用于对 typescript 语法支持</span><br><span class="line">npm i rollup-plugin-typescript2@0.32.1 -D</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置-rollup-config-js-打包逻辑"><a href="#配置-rollup-config-js-打包逻辑" class="headerlink" title="配置 rollup.config.js 打包逻辑"></a>配置 rollup.config.js 打包逻辑</h4><p>接下来是 rollup.config.js 文件对于项目的配置内容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> path <span class="keyword">from</span> <span class="string">&#x27;path&#x27;</span></span><br><span class="line"><span class="keyword">import</span> ts <span class="keyword">from</span> <span class="string">&#x27;rollup-plugin-typescript2&#x27;</span></span><br><span class="line"><span class="keyword">import</span> dts <span class="keyword">from</span> <span class="string">&#x27;rollup-plugin-dts&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 项目打包的入口文件</span></span><br><span class="line">        <span class="attr">input</span>: <span class="string">&quot;./src/index.ts&quot;</span>,</span><br><span class="line">        <span class="comment">/* 项目打包后的出口文件（打包后生成的文件所要放置的路径），这里为数组形</span></span><br><span class="line"><span class="comment">         * 式，是因为可以打包生成用于不同环境的文件，要控制输出不同类型的文件，</span></span><br><span class="line"><span class="comment">         * 主要是 format 属性的配置，以下为各个 format 配置不同值所输出的类型</span></span><br><span class="line"><span class="comment">         * es =&gt; import export (ES MODULE)</span></span><br><span class="line"><span class="comment">         * cjs =&gt; require exports (Commonjs)</span></span><br><span class="line"><span class="comment">         * umd =&gt; AMD CMD global</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="attr">output</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attr">file</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;./dist/index.esm.js&#x27;</span>),</span><br><span class="line">                <span class="attr">format</span>: <span class="string">&quot;es&quot;</span></span><br><span class="line">            &#125;, &#123;</span><br><span class="line">                <span class="attr">file</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;./dist/index.cjs.js&#x27;</span>),</span><br><span class="line">                <span class="attr">format</span>: <span class="string">&quot;cjs&quot;</span></span><br><span class="line">            &#125;, &#123;</span><br><span class="line">                <span class="attr">file</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;./dist/index.js&#x27;</span>),</span><br><span class="line">                <span class="attr">format</span>: <span class="string">&quot;umd&quot;</span>,</span><br><span class="line">                <span class="attr">name</span>: <span class="string">&quot;tracker&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">        ],</span><br><span class="line">        <span class="comment">// 插件</span></span><br><span class="line">        <span class="attr">plugins</span>: [</span><br><span class="line">            <span class="title function_">ts</span>()</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 生命文件</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">input</span>: <span class="string">&quot;./src/index.ts&quot;</span>,</span><br><span class="line">        <span class="attr">output</span>: &#123;</span><br><span class="line">            <span class="attr">file</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;./dist/index.d.ts&#x27;</span>),</span><br><span class="line">            <span class="attr">format</span>: <span class="string">&quot;es&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">plugins</span>: [</span><br><span class="line">            <span class="title function_">dts</span>()</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>为了方便用命令启动 rollup 打包项目，所以在 package.js 文件中的 <code>script</code> 对象中，加入打包命令： <code>&quot;build&quot;: rollup -c</code></p>
+<h4 id="打包项目以及疑问"><a href="#打包项目以及疑问" class="headerlink" title="打包项目以及疑问"></a>打包项目以及疑问</h4><p>在 src 目录下的 index.ts 文件中输入以下内容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> a = <span class="number">1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a)</span><br></pre></td></tr></table></figure>
+
+<p>在命令行窗口中输入 <code>npx rollup -c</code> 便可启动打包，如果刚刚在 package.json 文件中配置了 <code>build</code> 命令，则可输入 <code>npm run build</code></p>
+<p>如果在打包过程中出现了以下错误：</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/001.jpg" alt="打包出错"></p>
+<p>则需要进入到根目录的 <code>tsconfig.json</code> 中，将 <code>module</code> 属性设置为 <code>ESNext</code>。然后再打包，就会成功生成所需文件。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/002.jpg" alt="打包生成的文件"></p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/003.jpg" alt="打包后生成的目录"></p>
+<h5 id="index-d-ts-文件没有内容"><a href="#index-d-ts-文件没有内容" class="headerlink" title="index.d.ts 文件没有内容"></a>index.d.ts 文件没有内容</h5><p>如果在 index.ts 文件中并没有使用 <code>export</code> 或者 <code>export default</code> 导出变量时，那么在打包过程中，会提示 index.d.ts 声明文件生成了一个空包，这时的 index.d.ts 文件是没有内容的。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/004.jpg" alt="生成空包"></p>
+<h5 id="项目引入插件后，ts-语法报错"><a href="#项目引入插件后，ts-语法报错" class="headerlink" title="项目引入插件后，ts 语法报错"></a>项目引入插件后，ts 语法报错</h5><p>如果插件中已经有生成声明文件 index.d.ts ，但是在项目中引入插件时，会提示 Could not find a declaration file for module ‘xxxx(你的插件名称)’，这时可以尝试在<span style="color:red">插件的 package.json 文件</span>中，和 main 属性同级写入 typings 属性，值写上你的 index.d.ts 文件相对于该 package.json 文件想对所在的位置，然后再看看效果，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> &quot;typings&quot;: &quot;dist/index.d.ts&quot;</span><br></pre></td></tr></table></figure>
+
+<p>如果还是错误，也可能是没有热更新，可以关闭整个项目后再打开看看</p>
+<h5 id="如何使用第三方插件"><a href="#如何使用第三方插件" class="headerlink" title="如何使用第三方插件"></a>如何使用第三方插件</h5><p>开发插件过程中，如果要使用第三方插件提供的方法，例如使用 lodash，而 rollup 默认只能按照文件路径的方式去加载本地的文件模块，而对于 node_module 文件夹下的第三方的模块，rollup 并不能像 webpack 一样直接通过模块的名称导入对应的模块，为了实现通过模块名称导入对应模块的效果，rollup 官方给出了 <code>rollup-plugin-node-resolve</code> 插件来实现，但是这里 rollup 是默认解决 ESM 第三方模块的，如果要引入按其他方式导出方法的模块，则需要使用其他插件来解决，例如第三方插件使用了 <code>CommonJS</code> 来导出方法，则安装 <code>rollup-plugin-commonjs</code> 来解决引入的问题。</p>
+<p>安装完 <code>rollup-plugin-node-resolve</code> 模块后，需要去 <code>rollup.config.js</code> 文件中引入这个插件，并使用在 <code>plugins</code> 属性中，例如：</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/007.jpg" alt="引入rollup-plugin-node-resolve插件"></p>
+<p>然后在 src&#x2F;index.ts 文件中使用以下代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> _ <span class="keyword">from</span> <span class="string">&#x27;lodash-es&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> a = <span class="number">1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(_.<span class="title function_">chunk</span>([<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>], <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<p>接着打包，如果提示了以下错误</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/008.jpg" alt="提示lodash-es错误"></p>
+<p>则安装 <code>@types/lodash-es</code> 插件，然后再次打包，打包完成后，使用 cmd 进入到 dist 目录，然后使用 <code>node index.js</code> 执行打包后的 index.js 文件，便可以看到使用 lodash 的方法成功了。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/009.jpg" alt="提示lodash-es错误"></p>
+<h3 id="nexus"><a href="#nexus" class="headerlink" title="nexus"></a>nexus</h3><p>nexus 是做为 Maven 的仓库管理器，它极大地简化了自己内部仓库的维护和外部仓库的访问。其仓库也可以放置前端需要使用到的 js 插件，关于部署以及配置可参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34923902/article/details/103290499">这篇文章</a></p>
+<h2 id="上传打包后的插件到私服"><a href="#上传打包后的插件到私服" class="headerlink" title="上传打包后的插件到私服"></a>上传打包后的插件到私服</h2><p>首先要进入到项目中 package.json 文件设置入口文件以及要上传的内容，在 <code>package.json</code> 文件中的 <code>main</code> 属性声明项目的入口文件，本项目中 <code>main</code> 属性的值为 <code>dist/index.ts</code>，因为要上传的是 dist 文件夹，所以主要入口便是根据 dist 开头，而要指定上传什么文件，则是在 <code>files</code> 属性中设置，这里设置为 <code>[&quot;dist&quot;]</code>，便可只上传 dist 文件夹上私服，除了这两个属相以外，还可以设置 <code>module</code> 以及 <code>browser</code> 属性，这两个属性，和 <code>main</code> 属性的作用相同，都是设置引入时所采用哪个文件，而 <code>main</code>、<code>module</code>、<code>browser</code> 这三个属性只要是为了在用户 import 私服的插件时，其查找规则会按 <code>browser+mjs</code> &gt; <code>module</code> &gt; <code>browser+cjs</code> &gt; <code>main</code> 的顺序来查找。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/006.jpg" alt="package.json中部分属性"></p>
+<p>在将 nexus 部署到本地服务器后，并创建对应仓库以便来存储插件，这里以假设插件要上传的仓库完整地址为：<code>http://abc.com/repository/npm-hosted/</code></p>
+<p>首先要登录私服地址，这里有两种方案：</p>
+<h3 id="一、修改默认源-不推荐"><a href="#一、修改默认源-不推荐" class="headerlink" title="一、修改默认源(不推荐)"></a>一、修改默认源(不推荐)</h3><p>首先需要将本地的 npm 镜像地址设置为仓库地址，在 cmd 控制台中输入命令行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config set registry http://abc.com/repository/npm-hosted/</span><br></pre></td></tr></table></figure>
+
+<p>要确认 npm 镜像是否被更改，cmd 中输入命令 <code>npm config list</code> 即可看到当前的镜像，例如：</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/005.png" alt="修改镜像后的内容"></p>
+<p>registry 属性如果和仓库地址一致便是修改成功。接下来便是用户登陆，在 cmd 中输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm adduser -registry http://abc.com/repository/npm-hosted/</span><br></pre></td></tr></table></figure>
+
+<p>便进入到了账号密码登陆操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm adduser -registry http://abc.com/repository/npm-hosted/</span><br><span class="line">Username: admin</span><br><span class="line">Password:   (密码是看不到的，输入完后按回车会进行下一行操作)</span><br><span class="line">Email: (this IS public) aaa@yeah.com(该账号的邮箱，在 nexus 用户信息中可以看到)</span><br><span class="line">Logged in as admin on http://abc.com/repository/npm-hosted/.</span><br></pre></td></tr></table></figure>
+
+<p><text style="color: red">注意，这里是直接采用修改默认源的方法，后续如果要下载私服意外的插件，还是需要切换回原来的 npm 源，不然下载不了 npm 插件</text></p>
+<h3 id="二、直接登录私服-推荐"><a href="#二、直接登录私服-推荐" class="headerlink" title="二、直接登录私服(推荐)"></a>二、直接登录私服(推荐)</h3><p>直接使用以下命令行登陆私服：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm login --registry=http://abc.com/repository/npm-hosted/</span><br></pre></td></tr></table></figure>
+
+<p>即可直接进入账号密码邮箱登录阶段，登录完成后，可在 .npmrc 文件中查看到登陆私服后的 token</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/010.png" alt=".npmrc 文件中登录私服后的token"></p>
+<p>而 .npmrc 文件所在的文件路径，可以通过在 cmd 中输入 <code>npm config list</code> 后看到</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/011.png" alt=".npmrc 文件所在路径"></p>
+<p>最后便是上传插件，这里有两种方式上传：</p>
+<h3 id="第一种"><a href="#第一种" class="headerlink" title="第一种"></a>第一种</h3><p>在 cmd 中输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm publish -registry http://abc.com/repository/npm-hosted/</span><br></pre></td></tr></table></figure>
+
+<p>如果上传成功，便可以看到类似以下的打印</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">rollup-test npm publish -registry http://abc.com/repository/npm-hosted/</span><br><span class="line">npm notice</span><br><span class="line">npm notice  rollup-test@1.0.0</span><br><span class="line">npm notice === Tarball Contents ===</span><br><span class="line">npm notice 348B package.json</span><br><span class="line">npm notice === Tarball Details ===</span><br><span class="line">npm notice name:          rollup-test                               </span><br><span class="line">npm notice version:       1.0.0                                   </span><br><span class="line">npm notice package size:  320 B                                   </span><br><span class="line">npm notice unpacked size: 348 B                                   </span><br><span class="line">npm notice shasum:        c897041e0aa1cbf68734be9e4058e39490de8eb3</span><br><span class="line">npm notice integrity:     sha512-Seb61XX1ronMM[...]ioQBdXs2fEW+Q==</span><br><span class="line">npm notice total files:   1                                       </span><br><span class="line">npm notice</span><br><span class="line">+ rollup-test@1.0.0</span><br><span class="line">➜  rollup-test</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="第二种"><a href="#第二种" class="headerlink" title="第二种"></a>第二种</h3><p>在 <code>package.json</code> 文件中的 <code>publishConfig</code> 属性设置上仓库地址：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;publishConfig&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;registry&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://abc.com/repository/npm-hosted/&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在 cmd 中输入 <code>npm publish</code> 即可</p>
+<h2 id="如何从私服下载插件"><a href="#如何从私服下载插件" class="headerlink" title="如何从私服下载插件"></a>如何从私服下载插件</h2><p>将插件上传到私服后，新项目中该如何下载使用呢？一般下载插件时，只需要在控制台输入 <code>npm i</code> 或者 <code>cnpm i</code> 便可以下载项目所需要的所有插件，但是这种下载是向特定的源（镜像）上请求的，例如：<span><a target="_blank" rel="noopener" href="https://npmmirror.com/mirrors">https://npmmirror.com/mirrors</a></span>，或是其他切换后的源，但是公司内部的插件是存在公司私服内的，那么如何在下载过程中，既能从第三方下载所需插件，又能下载私服的插件呢？</p>
+<h3 id="什么是-npmrc-文件？"><a href="#什么是-npmrc-文件？" class="headerlink" title="什么是 .npmrc 文件？"></a>什么是 .npmrc 文件？</h3><p>.npmrc，可以理解成npm running cnfiguration, 即npm运行时配置文件。简单点说， .npmrc 可以设置 package.json 中依赖包的安装来源，既从哪里下载依赖包。</p>
+<h4 id="多个-npmrc-文件时的优先级"><a href="#多个-npmrc-文件时的优先级" class="headerlink" title="多个 .npmrc 文件时的优先级"></a>多个 .npmrc 文件时的优先级</h4><p>如果电脑中有多个 .npmrc 文件，当我们安装插件时，npm 按照如下顺序读取这些配置文件：</p>
+<ul>
+<li>项目配置文件: &#x2F;project&#x2F;.npmrc</li>
+<li>用户配置文件：~&#x2F;.npmrc</li>
+<li>全局配置文件：$PREFIX&#x2F;etc&#x2F;npmrc</li>
+<li>npm 内置配置文件 &#x2F;path&#x2F;to&#x2F;npm&#x2F;npmrc</li>
+</ul>
+<p>以下为不同情况获取不同 .npmrc 文件的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 获取 .npmrc 用户配置文件路径</span><br><span class="line">npm config get userconfig</span><br><span class="line"></span><br><span class="line">// 如果想恢复默认配置，只需要将用户配置文件~/.npmrc删除即可；</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 获取 .npmrc 全局配置文件路径 $PREFIX</span><br><span class="line">npm config get prefix</span><br><span class="line"></span><br><span class="line">// 如果你不曾配置过全局文件，该文件不存在。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 获取 npmrc 在npm的路径</span><br><span class="line">which npm</span><br><span class="line"></span><br><span class="line">// 与npm同级别, 使用which npm获取 npm的路径</span><br></pre></td></tr></table></figure>
+
+
+<p>这里推荐直接在项目下创建 .npmrc 的方法，简单又方便，创建好 .npmrc 文件后，需要先设置插件下载时的默认请求镜像，这里以淘宝镜像为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p>接着便是设置私服插件的镜像，如果插件名称为: rollup-test，那么可以在 .npmrc 文件中加上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rollup-test:registry = http://abc.com/repository/npm-hosted/</span><br></pre></td></tr></table></figure>
+
+<p>设置好后，插件名称如果以 rollup-test 开头，则向 <span><a target="_blank" rel="noopener" href="http://abc.com/repository/npm-hosted/">http://abc.com/repository/npm-hosted/</a></span> 镜像下载插件，有了这种设定，以后可以统一设置私服插件的前缀名称，例如 @tool&#x2F;rollup-test 或者 @tool&#x2F;date-plugin，然后在 .npmrc 文件内设置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@tool:registry = http://abc.com/repository/npm-hosted/</span><br></pre></td></tr></table></figure>
+
+<p>这样设置后便可管理不同名称的插件或者是不同私服的下载地址。</p>
+<p>如果项目是使用 yarn 来安装插件的，那么也是可以读取 .npmrc 文件的，也可以创建一个 .yarnrc 来替代 .npmrc 文件，内容格式有点变化，需要写为以下格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">registry &quot;https://registry.npm.taobao.org&quot;</span><br><span class="line">&quot;@tool:registry&quot; &quot;http://abc.com/repository/npm-hosted/&quot;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -556,7 +686,7 @@
                 
                 
                 <div class="site-state-item site-state-categories">
-                  
+                  <a href="/categories/index.html">
                     
                     
                       
@@ -565,7 +695,7 @@
                     
                     <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">分类</span>
-                  
+                  </a>
                 </div>
               
 
@@ -573,7 +703,7 @@
                 
                 
                 <div class="site-state-item site-state-tags">
-                  
+                  <a href="/tags/index.html">
                     
                     
                       
@@ -626,7 +756,7 @@
                     
                     <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">标签</span>
-                  
+                  </a>
                 </div>
               
             </nav>
@@ -660,7 +790,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">准备</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rollup-%E9%83%A8%E5%88%86"><span class="nav-number">2.1.</span> <span class="nav-text">rollup 部分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rollup-%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.1.1.</span> <span class="nav-text">rollup 介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.2.</span> <span class="nav-text">插件项目的目录结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%A1%B9%E7%9B%AE%E7%94%A8%E5%88%B0%E7%9A%84%E6%8F%92%E4%BB%B6%E6%8F%92%E4%BB%B6"><span class="nav-number">2.1.3.</span> <span class="nav-text">安装项目用到的插件插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-rollup-config-js-%E6%89%93%E5%8C%85%E9%80%BB%E8%BE%91"><span class="nav-number">2.1.4.</span> <span class="nav-text">配置 rollup.config.js 打包逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%8C%85%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%8F%8A%E7%96%91%E9%97%AE"><span class="nav-number">2.1.5.</span> <span class="nav-text">打包项目以及疑问</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#index-d-ts-%E6%96%87%E4%BB%B6%E6%B2%A1%E6%9C%89%E5%86%85%E5%AE%B9"><span class="nav-number">2.1.5.1.</span> <span class="nav-text">index.d.ts 文件没有内容</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%BC%95%E5%85%A5%E6%8F%92%E4%BB%B6%E5%90%8E%EF%BC%8Cts-%E8%AF%AD%E6%B3%95%E6%8A%A5%E9%94%99"><span class="nav-number">2.1.5.2.</span> <span class="nav-text">项目引入插件后，ts 语法报错</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8F%92%E4%BB%B6"><span class="nav-number">2.1.5.3.</span> <span class="nav-text">如何使用第三方插件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nexus"><span class="nav-number">2.2.</span> <span class="nav-text">nexus</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E6%89%93%E5%8C%85%E5%90%8E%E7%9A%84%E6%8F%92%E4%BB%B6%E5%88%B0%E7%A7%81%E6%9C%8D"><span class="nav-number">3.</span> <span class="nav-text">上传打包后的插件到私服</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E6%BA%90-%E4%B8%8D%E6%8E%A8%E8%8D%90"><span class="nav-number">3.1.</span> <span class="nav-text">一、修改默认源(不推荐)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%9B%B4%E6%8E%A5%E7%99%BB%E5%BD%95%E7%A7%81%E6%9C%8D-%E6%8E%A8%E8%8D%90"><span class="nav-number">3.2.</span> <span class="nav-text">二、直接登录私服(推荐)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D"><span class="nav-number">3.3.</span> <span class="nav-text">第一种</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D"><span class="nav-number">3.4.</span> <span class="nav-text">第二种</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BB%8E%E7%A7%81%E6%9C%8D%E4%B8%8B%E8%BD%BD%E6%8F%92%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">如何从私服下载插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-npmrc-%E6%96%87%E4%BB%B6%EF%BC%9F"><span class="nav-number">4.1.</span> <span class="nav-text">什么是 .npmrc 文件？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA-npmrc-%E6%96%87%E4%BB%B6%E6%97%B6%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">4.1.1.</span> <span class="nav-text">多个 .npmrc 文件时的优先级</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

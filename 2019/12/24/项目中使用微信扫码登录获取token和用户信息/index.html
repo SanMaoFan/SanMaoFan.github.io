@@ -122,18 +122,18 @@
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
 <meta property="og:description" content="场景公司有一个项目是关于后台管理相关设备数据的，其中的登录不是以往的账号密码登录获取用户相关信息，而是采用微信扫码登录，然后再获取用户相关信息，这样做的考虑是：本地用户信息过期了，不用回到登录页面重新登录，只需扫描页面中弹出的二维码即可继续使用管理后台。 先简单介绍下wxLogin.js的使用方法:  本次项目是下载到本地引入使用，查看源码中后，可知二维码是嵌套在一个iframe中的  效果可以像">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/01.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/02.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/03.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/04.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/05.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/06.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/01.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/02.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/03.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/04.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/05.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/06.jpg">
 <meta property="article:published_time" content="2019-12-24T15:18:48.000Z">
-<meta property="article:modified_time" content="2022-07-05T15:14:10.119Z">
+<meta property="article:modified_time" content="2023-06-05T14:02:37.597Z">
 <meta property="article:author" content="SanMaoFan">
 <meta property="article:tag" content="微信">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://san-mao-fan.gitee.io/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/01.jpg">
+<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/01.jpg">
 
 
 
@@ -395,7 +395,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2022-07-05 23:14:10" itemprop="dateModified" datetime="2022-07-05T23:14:10+08:00">2022-07-05</time>
+                <time title="修改时间：2023-06-05 22:02:37" itemprop="dateModified" datetime="2023-06-05T22:02:37+08:00">2023-06-05</time>
               
             
           </span>
@@ -448,17 +448,17 @@
       
         <h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>公司有一个项目是关于后台管理相关设备数据的，其中的登录不是以往的账号密码登录获取用户相关信息，而是采用微信扫码登录，然后再获取用户相关信息，这样做的考虑是：本地用户信息过期了，不用回到登录页面重新登录，只需扫描页面中弹出的二维码即可继续使用管理后台。</p>
 <p>先简单介绍下wxLogin.js的使用方法:</p>
-<p><img src="/./%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/01.jpg" alt="image text"></p>
+<p><img src="/./images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/01.jpg" alt="image text"></p>
 <p>本次项目是下载到本地引入使用，查看源码中后，可知二维码是嵌套在一个iframe中的</p>
-<p><img src="/./%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/02.jpg" alt="Image text"></p>
+<p><img src="/./images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/02.jpg" alt="Image text"></p>
 <p>效果可以像网页登录的效果一样</p>
-<p><img src="/./%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/03.jpg" alt="image text"></p>
+<p><img src="/./images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/03.jpg" alt="image text"></p>
 <p>在项目中，是用两个页面来作为重定向路径，一个login页面是用户第一次进入管理后台时，所展示的，并且也只展示这一次，因为后面用户信息超时而需要重新扫码时，所重定向的页面就为code页面。</p>
 <p>login页面很简单，就是获取后台相关信息，然后展示二维码给用户扫描，用户也就可以操作管理后台了；当用户信息过期后，会新建一个id为newCode的元素，展示效果以及具体配置如下：</p>
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/./%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/04.jpg" alt="image text"></p>
-<h3 id="具体配置"><a href="#具体配置" class="headerlink" title="具体配置"></a>具体配置</h3><p><img src="/./%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/05.jpg" alt="image text"></p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/./images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/04.jpg" alt="image text"></p>
+<h3 id="具体配置"><a href="#具体配置" class="headerlink" title="具体配置"></a>具体配置</h3><p><img src="/./images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/05.jpg" alt="image text"></p>
 <p>参数在官方文档有记载，链接：<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html">https://developers.weixin.qq.com/doc/oplatform/Website_App/WeChat_Login/Wechat_Login.html</a></p>
-<p><img src="/./%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/06.jpg" alt="image text"></p>
+<p><img src="/./images/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96token%E5%92%8C%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF/06.jpg" alt="image text"></p>
 <p>newCode元素内部就为了展示二维码，用户扫描登录后，就进入到code页面(是在iframe层中显示code页面)，而code页面中是使用了 self.location.href !&#x3D; top.location.href 是否不相等的方法来跳出iframe层，并且将newCode元素去除，这样就可以使浏览器更新了用户信息，也避免了iframe层中打开页面的情况。</p>
 
       
@@ -589,7 +589,7 @@
                 
                 
                 <div class="site-state-item site-state-categories">
-                  
+                  <a href="/categories/index.html">
                     
                     
                       
@@ -598,7 +598,7 @@
                     
                     <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">分类</span>
-                  
+                  </a>
                 </div>
               
 
@@ -606,7 +606,7 @@
                 
                 
                 <div class="site-state-item site-state-tags">
-                  
+                  <a href="/tags/index.html">
                     
                     
                       
@@ -659,7 +659,7 @@
                     
                     <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">标签</span>
-                  
+                  </a>
                 </div>
               
             </nav>

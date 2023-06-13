@@ -122,13 +122,13 @@
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
 <meta property="og:description" content="JavaScript 中的原生函数在 JavaScript 中，“原生函数”是指源代码被编译为原生机器码的函数。例如 JavaScript 中标准内置对象的原生函数，诸如 eval()，parseInt() 等，又或者在浏览器 Web API 中找到 fetch()，localStorage.getItem() 等。 由于 JavaScript 的动态特性，开发者可以覆盖浏览器暴露出的原生函数。这">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/%E7%8C%B4%E5%AD%90%E8%A1%A5%E4%B8%81/001.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8C%B4%E5%AD%90%E8%A1%A5%E4%B8%81/001.jpg">
 <meta property="article:published_time" content="2023-05-14T07:22:50.000Z">
-<meta property="article:modified_time" content="2023-06-03T12:31:21.363Z">
+<meta property="article:modified_time" content="2023-06-05T14:02:37.591Z">
 <meta property="article:author" content="SanMaoFan">
 <meta property="article:tag" content="js">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://san-mao-fan.gitee.io/%E7%8C%B4%E5%AD%90%E8%A1%A5%E4%B8%81/001.jpg">
+<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/%E7%8C%B4%E5%AD%90%E8%A1%A5%E4%B8%81/001.jpg">
 
 
 
@@ -390,7 +390,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2023-06-03 20:31:21" itemprop="dateModified" datetime="2023-06-03T20:31:21+08:00">2023-06-03</time>
+                <time title="修改时间：2023-06-05 22:02:37" itemprop="dateModified" datetime="2023-06-05T22:02:37+08:00">2023-06-05</time>
               
             
           </span>
@@ -449,7 +449,7 @@
 <p>由于种种原因，有时需要鉴定给定函数是否为原生函数，即是否被打了猴子补丁。</p>
 <h2 id="toString-检测法"><a href="#toString-检测法" class="headerlink" title="toString() 检测法"></a>toString() 检测法</h2><p>检查一个函数是否“干净”（即没有猴子补丁）最常用的方法就是检查函数的 <code>toString()</code> 输出。</p>
 <p>以 fetch 方法为例，其原生函数的 <code>toString()</code> 会返回一行 <code>function fetch() &#123; [native code] &#125;</code></p>
-<p><img src="/./%E7%8C%B4%E5%AD%90%E8%A1%A5%E4%B8%81/001.jpg" alt="打印fetch的toString方法"></p>
+<p><img src="/./images/%E7%8C%B4%E5%AD%90%E8%A1%A5%E4%B8%81/001.jpg" alt="打印fetch的toString方法"></p>
 <p>依照运行 JavaScript 引擎的不同，输出结果会有略有不同。但在大多数浏览器内，还是可以很安全的家丁返回的字符串会包含 “[native code]”。</p>
 <p>打过猴子补丁的原生函数，它的 <code>toString()</code> 将不会返回包含 <code>[native code]</code> 的字符串，而是返回字符串化的函数体。所以，要得知函数是否为原生，可以通过检测其 toString() 方法来辨别，其检测方式如下：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isNativeFunction</span>(<span class="params">f</span>)&#123;</span><br><span class="line">  <span class="keyword">return</span> f.<span class="title function_">toString</span>().<span class="title function_">includes</span>(<span class="string">&quot;[native code]&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">isNativeFunction</span>(<span class="variable language_">window</span>.<span class="property">fetch</span>); <span class="comment">// → true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对 fetch API 打猴子补丁</span></span><br><span class="line">(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; <span class="attr">fetch</span>: originalFetch &#125; = <span class="variable language_">window</span>;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="property">fetch</span> = <span class="keyword">function</span> <span class="title function_">fetch</span>(<span class="params">...args</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Fetch call intercepted:&quot;</span>, ...args);</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">originalFetch</span>(...args);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">window</span>.<span class="property">fetch</span>.<span class="title function_">toString</span>(); <span class="comment">// → &quot;function fetch(...args) &#123;\n console.log(&quot;Fetch...</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">isNativeFunction</span>(<span class="variable language_">window</span>.<span class="property">fetch</span>); <span class="comment">// → false</span></span><br></pre></td></tr></table></figure>
@@ -623,7 +623,7 @@
                 
                 
                 <div class="site-state-item site-state-categories">
-                  
+                  <a href="/categories/index.html">
                     
                     
                       
@@ -632,7 +632,7 @@
                     
                     <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">分类</span>
-                  
+                  </a>
                 </div>
               
 
@@ -640,7 +640,7 @@
                 
                 
                 <div class="site-state-item site-state-tags">
-                  
+                  <a href="/tags/index.html">
                     
                     
                       
@@ -693,7 +693,7 @@
                     
                     <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">标签</span>
-                  
+                  </a>
                 </div>
               
             </nav>
