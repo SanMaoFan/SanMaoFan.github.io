@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="参考文章：  https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;9532b0a1722b  本地创建数据库在本地数据库中创建测试用的数据 koa_sql: 1CREATE DATABASE koa_sql;  进入该新数据库后，创建一个测试用的表： 1234CREATE TABLE IF NOT EXISTS user (  name VARCHAR(20) NOT NULL,  phone c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker 部署 koa + mysql 后台">
+<meta property="og:url" content="http://san-mao-fan.gitee.io/2023/08/10/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/index.html">
+<meta property="og:site_name" content="SanMaoFan&#39;s Blog">
+<meta property="og:description" content="参考文章：  https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;9532b0a1722b  本地创建数据库在本地数据库中创建测试用的数据 koa_sql: 1CREATE DATABASE koa_sql;  进入该新数据库后，创建一个测试用的表： 1234CREATE TABLE IF NOT EXISTS user (  name VARCHAR(20) NOT NULL,  phone c">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/01.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/02.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/03.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/04.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/05.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/06.jpg">
+<meta property="article:published_time" content="2023-08-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-21T06:32:03.618Z">
+<meta property="article:author" content="SanMaoFan">
+<meta property="article:tag" content="koa">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/01.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://san-mao-fan.gitee.io/2023/08/10/docker部署koa+mysql后台/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>docker 部署 koa + mysql 后台 | SanMaoFan's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SanMaoFan's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2023/08/10/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanMaoFan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/huaji.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SanMaoFan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">docker 部署 koa + mysql 后台
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2023-08-10 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-10T00:00:00+08:00">2023-08-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2023-08-21 14:32:03" itemprop="dateModified" datetime="2023-08-21T14:32:03+08:00">2023-08-21</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%90%8E%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">后端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9532b0a1722b">https://www.jianshu.com/p/9532b0a1722b</a></li>
+</ul>
+<h2 id="本地创建数据库"><a href="#本地创建数据库" class="headerlink" title="本地创建数据库"></a>本地创建数据库</h2><p>在本地数据库中创建测试用的数据 koa_sql:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DATABASE koa_sql;</span><br></pre></td></tr></table></figure>
+
+<p>进入该新数据库后，创建一个测试用的表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="keyword">user</span> (</span><br><span class="line">  name <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  phone <span class="type">char</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br><span class="line">)ENGINE<span class="operator">=</span>InnoDB <span class="keyword">DEFAULT</span> CHARSET<span class="operator">=</span>utf8;</span><br></pre></td></tr></table></figure>
+
+<p>接着创建一条数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">user</span></span><br><span class="line">(name, phone)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">(<span class="string">&#x27;daodao&#x27;</span>, <span class="number">13392301567</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="搭建后端系统"><a href="#搭建后端系统" class="headerlink" title="搭建后端系统"></a>搭建后端系统</h2><p>这里以 koa + mysql 搭建简单的后端项目，方便部署到线上后可以访问接口进行测试。这里需要先安装相关插件和环境，涉及的插件和环境版本如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 环境</span></span><br><span class="line"><span class="attr">nodejs</span>: <span class="number">15.14</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 插件</span></span><br><span class="line"><span class="attr">koa</span>: <span class="number">2.13</span><span class="number">.4</span></span><br><span class="line"><span class="attr">mysql2</span>: <span class="number">2.3</span><span class="number">.3</span></span><br></pre></td></tr></table></figure>
+
+<p>为方便展示项目内容，这里将项目所有功能都写在项目入口文件 index.js 内，实际项目中应该根据功能分配不同的文件夹结构</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实例化 koa</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Koa</span> = <span class="keyword">new</span> (<span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>))()</span><br><span class="line"><span class="comment">// mysql 插件</span></span><br><span class="line"><span class="keyword">const</span> sql = <span class="built_in">require</span>(<span class="string">&#x27;mysql2&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建链接池</span></span><br><span class="line"><span class="keyword">const</span> connections = sql.<span class="title function_">createPool</span>(&#123;</span><br><span class="line">    <span class="comment">// 以下为要连接的 mysql 配置，依据具体情况设置</span></span><br><span class="line">    <span class="attr">host</span>: <span class="string">&#x27;localhost&#x27;</span>,</span><br><span class="line">    <span class="attr">port</span>: <span class="number">3306</span>,</span><br><span class="line">    <span class="attr">database</span>: <span class="string">&#x27;koa_sql&#x27;</span>,</span><br><span class="line">    <span class="attr">user</span>: <span class="string">&#x27;root&#x27;</span>,</span><br><span class="line">    <span class="attr">password</span>: <span class="string">&#x27;daodao&#x27;</span>,</span><br><span class="line">    <span class="attr">connectionLimit</span>: <span class="number">5</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听请求</span></span><br><span class="line"><span class="title class_">Koa</span>.<span class="title function_">use</span>(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; url, method &#125; = ctx.<span class="property">request</span></span><br><span class="line">    <span class="keyword">if</span> (url === <span class="string">&#x27;/test&#x27;</span> &amp;&amp; method === <span class="string">&#x27;POST&#x27;</span>) &#123;</span><br><span class="line">        <span class="comment">// 进行数据库查询</span></span><br><span class="line">        <span class="keyword">await</span> connections.<span class="title function_">promise</span>().<span class="title function_">execute</span>(<span class="string">&#x27;SELECT * FROM user&#x27;</span>).<span class="title function_">then</span>(<span class="function">(<span class="params">[results]</span>) =&gt;</span> &#123;</span><br><span class="line">            ctx.<span class="property">body</span> = &#123;</span><br><span class="line">                <span class="attr">message</span>: <span class="string">&#x27;请求 test 接口，请求方式为 post&#x27;</span>,</span><br><span class="line">                <span class="attr">data</span>: results</span><br><span class="line">            &#125;</span><br><span class="line">            ctx.<span class="property">status</span> = <span class="number">200</span></span><br><span class="line">        &#125;).<span class="title function_">catch</span>(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span><br><span class="line">            ctx.<span class="property">body</span> = &#123;</span><br><span class="line">                <span class="attr">message</span>: <span class="string">&quot;数据库错误&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">            ctx.<span class="property">status</span> = <span class="number">200</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ctx.<span class="property">body</span> = &#123;</span><br><span class="line">            <span class="attr">message</span>: <span class="string">&#x27;请求其他接口，请求方式没有设定&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        ctx.<span class="property">status</span> = <span class="number">200</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置项目占用的端口号并启动项目</span></span><br><span class="line"><span class="title class_">Koa</span>.<span class="title function_">listen</span>(<span class="number">8844</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;koa 启动&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在项目中的 package.json 文件中设置启动启动项目的命令:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;project&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;description&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="string">&quot;main&quot;</span>: <span class="string">&quot;index.js&quot;</span>,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="comment">// 下面的 start 属性表示启动项目的命令</span></span><br><span class="line">    <span class="string">&quot;start&quot;</span>: <span class="string">&quot;node index.js&quot;</span>,</span><br><span class="line">    <span class="string">&quot;test&quot;</span>: <span class="string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;keywords&quot;</span>: [],</span><br><span class="line">  <span class="string">&quot;author&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="string">&quot;license&quot;</span>: <span class="string">&quot;ISC&quot;</span>,</span><br><span class="line">  <span class="string">&quot;devDependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;koa&quot;</span>: <span class="string">&quot;^2.13.4&quot;</span>,</span><br><span class="line">    <span class="string">&quot;mysql2&quot;</span>: <span class="string">&quot;^2.3.3&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在控制台中输入 <code>npm run start</code> 命令即可启动项目，使用 postman 或者其他接口请求测试工具来请求 <code>/test</code> 接口，使用 post 方式 请求 &#x2F;test 接口时，会返回数据库中 user 表的数据：</p>
+<p><img src="/./images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/01.jpg" alt="请求/test接口"></p>
+<h2 id="关于-Dockerfile"><a href="#关于-Dockerfile" class="headerlink" title="关于 Dockerfile"></a>关于 Dockerfile</h2><p>Dockerfile 文件用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明，相关讲解需查看教程 <a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-dockerfile.html">Docker Dockerfile | 菜鸟教程</a></p>
+<p>在项目根目录下创建 Dockerfile 文件：</p>
+<p><img src="/./images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/02.jpg" alt="Dockerfile 文件"></p>
+<p>并在此文件中写入以下内容：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#后端koa项目的镜像制作</span><br><span class="line"></span><br><span class="line"># 使用 <span class="title class_">Node</span>.<span class="property">js</span> 官方提供的 alpine 镜像作为基础镜像，这里选用 <span class="number">15</span> 版本</span><br><span class="line"><span class="variable constant_">FROM</span> <span class="attr">node</span>:<span class="number">15</span>-alpine</span><br><span class="line"></span><br><span class="line"># 创建工作目录，<span class="variable constant_">WORKDIR</span> 指令用于设置 <span class="title class_">Dockerfile</span> 中的 <span class="variable constant_">RUN</span>、<span class="variable constant_">CMD</span> 和 <span class="variable constant_">ENTRYPOINT</span> 指令执行命令的工作目录</span><br><span class="line"><span class="variable constant_">RUN</span> rm -rf /yunBackend &amp;&amp; mkdir /yunBackend</span><br><span class="line"><span class="variable constant_">WORKDIR</span> /yunBackend</span><br><span class="line"></span><br><span class="line"># 将后端项目相关的文件都复制到 container（运行此镜像的容器）文件系统的 /yunBackend 文件夹下</span><br><span class="line"><span class="variable constant_">COPY</span> . /yunBackend</span><br><span class="line"></span><br><span class="line"># 设置 npm 源并安装项目依赖包</span><br><span class="line"><span class="variable constant_">RUN</span> npm set registry <span class="attr">https</span>:<span class="comment">//registry.npmjs.org/ &amp;&amp; npm install</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 容器对外暴露的端口号（当前项目启动端口为<span class="number">8844</span>，具体根据项目定）</span><br><span class="line"><span class="variable constant_">EXPOSE</span> <span class="number">8844</span></span><br><span class="line"></span><br><span class="line"># 容器启动时执行的命令，类似 npm run start</span><br><span class="line"><span class="variable constant_">CMD</span> [<span class="string">&quot;npm&quot;</span>, <span class="string">&quot;start&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>至此，本地工作已完成，接下来需要将项目上传服务器并安装环境和制作镜像。</p>
+<h2 id="服务器使用-docker-安装-mysql-并创建数据库"><a href="#服务器使用-docker-安装-mysql-并创建数据库" class="headerlink" title="服务器使用 docker 安装 mysql 并创建数据库"></a>服务器使用 docker 安装 mysql 并创建数据库</h2><p>首先，需要在服务器上安装 mysql，这里使用 docker 来安装，使用 docker 来拉取已有的镜像，这里使用 mysql 5.7 版本为例子，拉取 mysql 后，启动该容器并进入容器，以下为在服务器控制台中依次输入命令的顺序：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 拉取镜像</span></span><br><span class="line">docker pull <span class="attr">mysql</span>:<span class="number">5.7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动容器</span></span><br><span class="line"><span class="comment">// 这里设置了 mysql 的密码为 daodao</span></span><br><span class="line">docker run -d --name mysql -p <span class="number">3306</span>:<span class="number">3306</span> -e <span class="variable constant_">MYSQL_ROOT_PASSWORD</span>=daodao <span class="attr">mysql</span>:<span class="number">5.7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 进入容器</span></span><br><span class="line">docker exec -it mysql bash</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在启动容器后，可以先使用 <code>docker ps -a</code> 命令查看容器是否已经启动，如果有关于 mysql 的容器，并状态不为 Exited，则表示容器启动成功</p>
+<p><img src="/./images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/03.jpg" alt="容器是否启动"></p>
+<p>在进入容器后，再输入 <code>mysql -u root -p</code> 便可进入 mysql 登录的操作，输入登录密码后便进入到了 mysql，接下来按照在本地 mysql 创建数据库、表、表数据的做法来创建数据。</p>
+<h2 id="制作项目镜像并启动容器"><a href="#制作项目镜像并启动容器" class="headerlink" title="制作项目镜像并启动容器"></a>制作项目镜像并启动容器</h2><p><strong style="color: red">注意！上传项目前，最好将 mysql 配置中的 host 属性设置为线上服务器的 ip</strong></p>
+<p><strong style="color: red">注意！上传项目前，最好将 mysql 配置中的 host 属性设置为线上服务器的 ip</strong></p>
+<p><strong style="color: red">注意！上传项目前，最好将 mysql 配置中的 host 属性设置为线上服务器的 ip</strong></p>
+<p>将后端项目上传至服务器（不必上传 node_module 文件夹），例如上传到一个叫 backend 的文件夹，然后进入到 backend 文件夹内，在控制台输入 <code>docker build -t yun-work-backend:v1 .</code> 命令，项目便会进行初始化并将项目制作成镜像。</p>
+<p>在制作完镜像后，并可以启动容器，输入命令 <code>docker run -d --name yunbackend -p 8888:8844 yun-work-backend:v1</code> 便可以启动容器，这里将项目的服务挂载在 8888 端口，后续在请求时，需要请求此端口才会有数据，使用 <code>docker ps -a</code> 命令便可以查看该容器是否已启动</p>
+<p><img src="/./images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/04.jpg" alt="后端项目是否已启动"></p>
+<p>如果该容器状态为 <code>Exited</code>，那么可以通过 <code>docker logs yunbackend</code> 来查看该容器的打印日志，如果一切正常，那么使用 <code>docker logs</code> 命令可以看到控制台输入了项目启动后的日志</p>
+<p><img src="/./images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/05.jpg" alt="koa 启动"></p>
+<p>最后，使用接口测试工具来向线上请求接口，记得将端口号改为 docker 放出的端口号</p>
+<p><img src="/./images/docker%E9%83%A8%E7%BD%B2koa+mysql%E5%90%8E%E5%8F%B0/06.jpg" alt="请求线上接口"></p>
+<p>如果请求失败，应查看后端项目容器 <code>yunbackend</code> 里打印的日志，如果提示没连接上数据库或者连接失败，那么使用命令 <code>docker exec -it mysql bash</code> 进入容器，登录 mysql 查看是否正常；需要注意的是，所有涉及端口的步骤，都需要让服务器开发其端口！例如3306、8888</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/koa/" rel="tag"># koa</a>
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/06/03/%E4%BD%BF%E7%94%A8rollup%E5%BC%80%E5%8F%91%E6%8F%92%E4%BB%B6%E5%B9%B6%E4%B8%8A%E4%BC%A0%E5%88%B0nexus%E7%A7%81%E6%9C%8D/" rel="next" title="使用 rollup 开发插件并上传到 nexus 私服">
+                <i class="fa fa-chevron-left"></i> 使用 rollup 开发插件并上传到 nexus 私服
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/08/20/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2ssl%E8%AF%81%E4%B9%A6/" rel="prev" title="服务器使用nginx部署ssl证书">
+                服务器使用nginx部署ssl证书 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/img/huaji.gif"
+                alt="SanMaoFan" />
+            
+              <p class="site-author-name" itemprop="name">SanMaoFan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">51</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">本地创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E5%90%8E%E7%AB%AF%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.</span> <span class="nav-text">搭建后端系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-Dockerfile"><span class="nav-number">3.</span> <span class="nav-text">关于 Dockerfile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8-docker-%E5%AE%89%E8%A3%85-mysql-%E5%B9%B6%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">服务器使用 docker 安装 mysql 并创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E9%A1%B9%E7%9B%AE%E9%95%9C%E5%83%8F%E5%B9%B6%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">制作项目镜像并启动容器</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanMaoFan</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
