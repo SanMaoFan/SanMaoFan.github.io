@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="参考文章：  如何优雅的控制网页请求的优先级? 链接类型：preload 如何控制Web资源加载的优先级？  浏览器解析资源的优先级当浏览器开始解析网页，并开始下载图片、script 代码以及 css 样式等资源时，浏览器会为每个资源分配一个代表资源下载优先级的 fetch priority 标志。资源下载的顺序取决于这个优先级标志，这个标志的计算逻辑会受很多因素的影响：  script、css、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="控制网页请求的优先级">
+<meta property="og:url" content="http://san-mao-fan.gitee.io/2023/11/22/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/index.html">
+<meta property="og:site_name" content="SanMaoFan&#39;s Blog">
+<meta property="og:description" content="参考文章：  如何优雅的控制网页请求的优先级? 链接类型：preload 如何控制Web资源加载的优先级？  浏览器解析资源的优先级当浏览器开始解析网页，并开始下载图片、script 代码以及 css 样式等资源时，浏览器会为每个资源分配一个代表资源下载优先级的 fetch priority 标志。资源下载的顺序取决于这个优先级标志，这个标志的计算逻辑会受很多因素的影响：  script、css、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/001.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/002.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/003.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/004.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/005.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/006.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/007.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/008.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/009.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/010.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/011.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/012.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/013.png">
+<meta property="article:published_time" content="2023-11-22T09:25:26.000Z">
+<meta property="article:modified_time" content="2023-11-23T09:33:51.312Z">
+<meta property="article:author" content="SanMaoFan">
+<meta property="article:tag" content="http">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/001.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://san-mao-fan.gitee.io/2023/11/22/控制网页请求的优先级/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>控制网页请求的优先级 | SanMaoFan's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SanMaoFan's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2023/11/22/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanMaoFan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/huaji.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SanMaoFan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">控制网页请求的优先级
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2023-11-22 17:25:26" itemprop="dateCreated datePublished" datetime="2023-11-22T17:25:26+08:00">2023-11-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2023-11-23 17:33:51" itemprop="dateModified" datetime="2023-11-23T17:33:51+08:00">2023-11-23</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/W-lX-dNIMGPaWHCmNfmDkg">如何优雅的控制网页请求的优先级?</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Attributes/rel/preload">链接类型：preload</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzk0MDMwMzQyOA==&mid=2247490994&idx=1&sn=cc964d58400999c43235f76b10c1fb57&chksm=c2e2e899f595618fd3775f4634b4638870c199b065b77f89666d1f713f35186bc3097e7548ce&token=1323561669&lang=zh_CN&scene=21#wechat_redirect">如何控制Web资源加载的优先级？</a></li>
+</ul>
+<h2 id="浏览器解析资源的优先级"><a href="#浏览器解析资源的优先级" class="headerlink" title="浏览器解析资源的优先级"></a>浏览器解析资源的优先级</h2><p>当浏览器开始解析网页，并开始下载图片、script 代码以及 css 样式等资源时，浏览器会为每个资源分配一个代表资源下载优先级的 fetch priority 标志。资源下载的顺序取决于这个优先级标志，这个标志的计算逻辑会受很多因素的影响：</p>
+<ul>
+<li>script、css、font、image 等不同的资源类型会有不同的优先级。</li>
+<li>在 html 文档中引用资源的位置或顺序也会影响资源的优先级（例如在 viewport 中的图片资源可能具有高优先级，而在 link 标签中加载的、阻塞渲染的 css 则拥有更高的优先级）。</li>
+<li>有 preload 标志的资源有助于浏览器更快地发现资源并进行请求，也就是 preload 属性会提高资源请求优先级。</li>
+<li>script 标签的 async、defer 属性会影响优先级。</li>
+</ul>
+<p>在 chrome 浏览器中，可以通过 DevTools 中的 Network 选项卡下查看资源请求的优先级。</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/001.png" alt="网络请求时关于资源请求的优先级"></p>
+<p>如果没有看到该列数据，可以在 Network 选项卡中点击右键，在 Header Options 项中选择要展示的数据列。</p>
+<h2 id="关于-preload"><a href="#关于-preload" class="headerlink" title="关于 preload"></a>关于 preload</h2><p>在 html 中使用  <code>&lt;link rel=&quot;preload&quot; ... /&gt;</code> 来设定某些静态资源是否需要预先加载，以便它们在稍后渲染页面时立即可用。浏览器的预加载扫描器已经非常擅长此类做法，预加载通常最适合用于后来发现的资源———任何未由 html 直接加载的资源，例如通过内联样式属性加载的背景图像。但它对于浏览器可能没有按照你想要的优先顺序排列的任何其他内容也很有用。</p>
+<p>例如：默认情况下， Chrome 会加载具有非常高优先级的字体，但如果某个用户的网络连接速度比较慢，它会使用后备字体并降低优先级。</p>
+<p>例如通过 css @font-face 规则加载的字体：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@font-face</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&quot;Inter Variable&quot;</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&quot;./font.woff2&quot;</span>) <span class="built_in">format</span>(<span class="string">&quot;woff2&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加载时，由于网速比较慢，这个字体的下载优先级最低，尽管它对于页面的视觉体验非常重要。</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/002.jpg" alt="字体在网络速度慢时的请求优先级"></p>
+<p>但是可以通过预加载这个资源来覆盖浏览器的决定：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;preload&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/font.woff2&quot;</span> <span class="attr">as</span>=<span class="string">&quot;font&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后便可以在浏览器中看到字体的请求优先级提高了。</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/003.jpg" alt="字体请求优先级提高了"></p>
+<p>在上面的 link 标签配置中，有一个 as 属性的配置，该属性表示要请求的资源类型，具体的类型可从 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Attributes/rel/preload">链接类型：preload</a> 链接中查找。</p>
+<p>除了使用 preload，还可以在 link 标签上使用 fetch priority 在一次预加载多个资源时发出更精确的优先级信号。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;preload&quot;</span> <span class="attr">href</span>=<span class="string">&quot;./font-1.woff2&quot;</span> <span class="attr">as</span>=<span class="string">&quot;font&quot;</span> <span class="attr">fetchpriority</span>=<span class="string">&quot;low&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;preload&quot;</span> <span class="attr">href</span>=<span class="string">&quot;./font-2.woff2&quot;</span> <span class="attr">as</span>=<span class="string">&quot;font&quot;</span> <span class="attr">fetchpriority</span>=<span class="string">&quot;high&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>浏览器便会根据指令自动判断：</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/004.jpg" alt="浏览器判断加载优先级"></p>
+<h2 id="fetch-请求的优先级"><a href="#fetch-请求的优先级" class="headerlink" title="fetch 请求的优先级"></a>fetch 请求的优先级</h2><p>fetch 具有 XMLHttpRequest 所缺乏的一些功能，例如在发出请求上控制优先级信号的能力。</p>
+<p>当带宽有限并且同时存在多个请求时，浏览器会做出自己的优先级决定。如果同时发送两个请求（一个日志上报、一个重要的支付请求），这两个请求几乎会同时进入排队：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">fetch</span>(<span class="string">&quot;http://localhost:8000/pay&quot;</span>, &#123;</span><br><span class="line"> <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line"> <span class="attr">body</span>: paymentBody,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">&quot;http://localhost:8000/log&quot;</span>, &#123;</span><br><span class="line"> <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line"> <span class="attr">body</span>: loggingBody,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>浏览器默认会赋予它们默认的高优先级。</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/005.jpg" alt="浏览器默认分配请求高优先级"></p>
+<p>而 fetch 可以在请求上配置优先级。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">fetch</span>(<span class="string">&quot;http://localhost:8000/pay&quot;</span>, &#123;</span><br><span class="line"> <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line"> <span class="attr">body</span>: paymentBody,</span><br><span class="line"> <span class="attr">priority</span>: <span class="string">&quot;high&quot;</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">&quot;http://localhost:8000/log&quot;</span>, &#123;</span><br><span class="line"> <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span><br><span class="line"> <span class="attr">body</span>: loggingBody,</span><br><span class="line"> <span class="attr">priority</span>: <span class="string">&quot;low&quot;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>接下来浏览器便会有不同的判定。</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/006.jpg" alt="浏览器不同的判定"></p>
+<h2 id="img-资源的优先级"><a href="#img-资源的优先级" class="headerlink" title="img 资源的优先级"></a>img 资源的优先级</h2><p>在默认情况下，无需做任何特殊的事情，浏览器会自动确定页面上最重要的图像，比如在页面上展示三个垂直排列的图片，并且距离非常远。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./cat-1.jpeg&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;height: 1700px&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./cat-2.jpeg&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;height: 1700px&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./cat-3.jpeg&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>刚开始下载时，所有图片的优先级都是 “Low”。</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/007.png" alt="所有图片都是Low优先级"></p>
+<p>但之后首屏的图片变成了 “High”。</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/008.png" alt="首屏图片变为了High优先级"></p>
+<p>浏览器会自己判断哪个资源更重要，但前后会花一秒时间判断。如果给第一张图片设置上 fetchpriority 属性，那么浏览器便不会花额外的时间来预测：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./cat-1.jpeg&quot;</span> <span class="attr">fetchpriority</span>=<span class="string">&quot;high&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上设置便会将 cat-1.jpeg 图片设置为最高优先级加载。虽然浏览器可以辨别出资源的重要性，但如果有更清晰的指令，浏览器的反应时间会更快。所以，如果项目中知道哪张图片很重要，那么应该明确标注请求优先级。</p>
+<p>以上功能与图片的懒加载机制非常匹配，当前得到了很好的支持。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./cat-1.jpeg&quot;</span> <span class="attr">fetchpriority</span>=<span class="string">&quot;high&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;height: 1700px&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./cat-2.jpeg&quot;</span> <span class="attr">loading</span>=<span class="string">&quot;lazy&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;height: 1700px&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./cat-3.jpeg&quot;</span> <span class="attr">loading</span>=<span class="string">&quot;lazy&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>有了这个功能，浏览器能精确地知道如何（以及是否）加载图片，而且只在适当的时候加载。在上面的列子中，浏览器设置不会在首屏就请求屏幕外的图片，而是当它们出现在视图窗口时才会去请求。</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/009.jpg" alt="不在视图窗口内的图片不会加载"></p>
+<h2 id="script-脚本的优先级"><a href="#script-脚本的优先级" class="headerlink" title="script 脚本的优先级"></a>script 脚本的优先级</h2><p>页面上任何带有 src 属性的普通 script 标签都拥有比较高的优先级，但有一个要注意的点：它们会阻止页面其余部分的解析，直到加载并执行完成为止。</p>
+<p>因此，在某些情况下会使用到 async 属性，它会在后台以低优先级请求脚本，并在脚本请求完成后立即执行。例如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/script-async.js&quot;</span> <span class="attr">async</span> <span class="attr">onload</span>=<span class="string">&quot;console.log(&#x27;async&#x27;)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/script-sync.js&quot;</span> <span class="attr">onload</span>=<span class="string">&quot;console.log(&#x27;sync&#x27;)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;inline&quot;</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当设置 async 属性后，脚本会降低优先级：</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/010.jpg" alt="async 使得脚本降低了优先级"></p>
+<p>在控制台中能确认异步脚本加载后的解析和执行顺序：</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/011.png" alt="异步脚本加载后的解析和执行"></p>
+<p>但如果既希望脚本异步下载，又希望脚本拥有 “High” 的优先级又该如何处理呢？</p>
+<p>一个可能的场景是将一个小型 SPA 嵌入到一个落地页的主要内容中。为了保持页面的 Core Web Vitals，特别是 LCP（最大内容绘制时间）和 FID（首次输入延迟），你需要将该脚本设置为高优先级（毕竟，它负责构建和驱动你的应用程序）。但与此同时，你不希望它阻碍页面的其余部分进行解析。</p>
+<p>这个时候，fetchpriority 又起到了关键作用。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/script-async.js&quot;</span> <span class="attr">async</span> <span class="attr">onload</span>=<span class="string">&quot;console.log(&#x27;async&#x27;)&quot;</span> <span class="attr">fetchpriority</span>=<span class="string">&quot;high&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/script-sync.js&quot;</span> <span class="attr">onload</span>=<span class="string">&quot;console.log(&#x27;sync&#x27;)&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;inline&quot;</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，它以更高的优先级下载，同时仍然不会阻止页面的其余部分：</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/012.jpg" alt="配置fetchpriority之后的脚本优先级"></p>
+<p>优先级越高，异步脚本加载的越快，在这种情况下，异步脚本甚至可能在同步和内联脚本之前加载。</p>
+<p><img src="/./images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/013.png" alt="更高优先级的脚本加载越快"></p>
+<p>同样的思路，fetchpriority 也可以用来延迟脚本加载。</p>
+<blockquote>
+<p>当项目中预先知道脚本的优先级，并且浏览器可能也没有足够的信息来自行确定时，可以将 fetch priority 添加到脚本上。它对于还想以非阻塞、异步方式加载的脚本的优先级特别有帮助</p>
+</blockquote>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>当然，fetchpriority 也不能过度使用，因为加多了等于什么都没加，甚至会导致网页性能下降。有明确知道哪些资源的优先级，对于网页的加载体验还是有很大帮助的。</p>
+<p>但当前 fetchpriority 还是实验性产物，期待后续能有更好的发展，具体可前往  <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7">&lt;script&gt;：脚本元素</a>  链接查看浏览器的兼容情况。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/http/" rel="tag"># http</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/10/14/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/" rel="next" title="脚本加载失败如何重新加载">
+                <i class="fa fa-chevron-left"></i> 脚本加载失败如何重新加载
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/img/huaji.gif"
+                alt="SanMaoFan" />
+            
+              <p class="site-author-name" itemprop="name">SanMaoFan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">54</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A7%A3%E6%9E%90%E8%B5%84%E6%BA%90%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">1.</span> <span class="nav-text">浏览器解析资源的优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-preload"><span class="nav-number">2.</span> <span class="nav-text">关于 preload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fetch-%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">3.</span> <span class="nav-text">fetch 请求的优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#img-%E8%B5%84%E6%BA%90%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">4.</span> <span class="nav-text">img 资源的优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#script-%E8%84%9A%E6%9C%AC%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">5.</span> <span class="nav-text">script 脚本的优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanMaoFan</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
