@@ -115,25 +115,27 @@
 
 
 
-  <meta name="description" content="介绍单冒号(:)用于CSS3伪类，双冒号(::)用于CSS3伪元素。 伪元素由双冒号和伪元素名称组成。双冒号是在当前规范中引入的，用于区分伪类和伪元素。不过浏览器需要同时支持旧的已经存在的伪类写法，比如:first-line、:first-letter、:before、:after等，而新的在CSS3中引入的伪元素则不允许再支持旧的单冒号的写法。 :before 和 ::before是等价的，但是">
+  <meta name="description" content="参考文章：  wangeditor 富文本编辑器 自定义图片上传 wangEdiotr富文本编辑器，编辑富文本，重新打开组件报错Error in callback for watcher “value“: “Error: Cannot find a descenda  场景项目当前使用 vue@2.7.14 + vite@4.1.4 + ant-design-vue@1.7.8 开发，而在早期，项">
 <meta property="og:type" content="article">
-<meta property="og:title" content="双冒号before和单冒号before的区别">
-<meta property="og:url" content="http://san-mao-fan.gitee.io/2020/01/06/%E5%8F%8C%E5%86%92%E5%8F%B7before%E5%92%8C%E5%8D%95%E5%86%92%E5%8F%B7before%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:title" content="vue2 项目使用 wangeditor 富文本编辑器，并配置自定义上传图片功能">
+<meta property="og:url" content="http://san-mao-fan.gitee.io/2024/01/31/vue2%20%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8%20wangeditor%20%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8%EF%BC%8C%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%8A%9F%E8%83%BD/index.html">
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
-<meta property="og:description" content="介绍单冒号(:)用于CSS3伪类，双冒号(::)用于CSS3伪元素。 伪元素由双冒号和伪元素名称组成。双冒号是在当前规范中引入的，用于区分伪类和伪元素。不过浏览器需要同时支持旧的已经存在的伪类写法，比如:first-line、:first-letter、:before、:after等，而新的在CSS3中引入的伪元素则不允许再支持旧的单冒号的写法。 :before 和 ::before是等价的，但是">
+<meta property="og:description" content="参考文章：  wangeditor 富文本编辑器 自定义图片上传 wangEdiotr富文本编辑器，编辑富文本，重新打开组件报错Error in callback for watcher “value“: “Error: Cannot find a descenda  场景项目当前使用 vue@2.7.14 + vite@4.1.4 + ant-design-vue@1.7.8 开发，而在早期，项">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-01-06T07:18:05.000Z">
-<meta property="article:modified_time" content="2022-07-01T06:53:09.252Z">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue2%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8wangeditor%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8%EF%BC%8C%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%8A%9F%E8%83%BD/01.jpg">
+<meta property="article:published_time" content="2024-01-31T12:04:31.000Z">
+<meta property="article:modified_time" content="2024-01-31T12:05:16.536Z">
 <meta property="article:author" content="SanMaoFan">
-<meta property="article:tag" content="css">
+<meta property="article:tag" content="vue">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/vue2%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8wangeditor%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8%EF%BC%8C%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%8A%9F%E8%83%BD/01.jpg">
 
 
 
 
 
 
-  <link rel="canonical" href="http://san-mao-fan.gitee.io/2020/01/06/双冒号before和单冒号before的区别/"/>
+  <link rel="canonical" href="http://san-mao-fan.gitee.io/2024/01/31/vue2 项目使用 wangeditor 富文本编辑器，并配置自定义上传图片功能/"/>
 
 
 
@@ -143,7 +145,7 @@
   };
 </script>
 
-  <title>双冒号before和单冒号before的区别 | SanMaoFan's Blog</title>
+  <title>vue2 项目使用 wangeditor 富文本编辑器，并配置自定义上传图片功能 | SanMaoFan's Blog</title>
   
 
 
@@ -329,7 +331,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2020/01/06/%E5%8F%8C%E5%86%92%E5%8F%B7before%E5%92%8C%E5%8D%95%E5%86%92%E5%8F%B7before%E7%9A%84%E5%8C%BA%E5%88%AB/">
+    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2024/01/31/vue2%20%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8%20wangeditor%20%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8%EF%BC%8C%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%8A%9F%E8%83%BD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SanMaoFan">
@@ -346,7 +348,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">双冒号before和单冒号before的区别
+          <h1 class="post-title" itemprop="name headline">vue2 项目使用 wangeditor 富文本编辑器，并配置自定义上传图片功能
               
             
           </h1>
@@ -371,24 +373,12 @@
                 
               
 
-              <time title="创建时间：2020-01-06 15:18:05" itemprop="dateCreated datePublished" datetime="2020-01-06T15:18:05+08:00">2020-01-06</time>
+              <time title="创建时间：2024-01-31 20:04:31 / 修改时间：20:05:16" itemprop="dateCreated datePublished" datetime="2024-01-31T20:04:31+08:00">2024-01-31</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2022-07-01 14:53:09" itemprop="dateModified" datetime="2022-07-01T14:53:09+08:00">2022-07-01</time>
               
             
           </span>
@@ -439,11 +429,21 @@
       
 
       
-        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>单冒号(:)用于CSS3伪类，双冒号(::)用于CSS3伪元素。</p>
-<p>伪元素由双冒号和伪元素名称组成。双冒号是在当前规范中引入的，用于区分伪类和伪元素。不过浏览器需要同时支持旧的已经存在的伪类写法，比如:first-line、:first-letter、:before、:after等，而新的在CSS3中引入的伪元素则不允许再支持旧的单冒号的写法。</p>
-<p>:before 和 ::before是等价的，但是 :before是属于css2的写法，::before是css3的写法，并且 :before的兼容性更好，在h5开发中，推荐 ::before。</p>
-<p>伪类元素不会出现在dom中，所以不能通过js来操作，仅仅是在css渲染层加入。</p>
-<p>对于CSS2之前已有的伪元素，比如 :before，单冒号和双冒号的写法 ::before作用是一样的。所以，如果你的网站只需要兼容webkit、firefox、opera等浏览器，建议对于伪元素采用双冒号的写法，如果不得不兼容IE浏览器，还是用CSS2的单冒号写法比较安全。</p>
+        <p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/klggd555/article/details/131095468">wangeditor 富文本编辑器 自定义图片上传</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44173499/article/details/127766826">wangEdiotr富文本编辑器，编辑富文本，重新打开组件报错Error in callback for watcher “value“: “Error: Cannot find a descenda</a></li>
+</ul>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>项目当前使用 <code>vue@2.7.14</code> + <code>vite@4.1.4</code> + <code>ant-design-vue@1.7.8</code> 开发，而在早期，项目使用 webpack 打包，并集成 vue-quill-editor（外加 quill-image-resize-module、quill-image-drop-module 插件） 富文本插件开发，在本地开发以及打包项目时没有任何问题，而当打包工具切换为 vite 后，打包项目时，其 vue-quill-editor 插件会报一些错误，解决了一个错，又报了另一个错，无奈之下，将富文本插件替换成 wangeditor 工具。</p>
+<p>安装命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// vue2 组件</span><br><span class="line">pnpm install @wangeditor/editor -S</span><br><span class="line">pnpm install @wangeditor/editor-for-vue -S</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用插件"><a href="#使用插件" class="headerlink" title="使用插件"></a>使用插件</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 菜单 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Toolbar</span> <span class="attr">class</span>=<span class="string">&quot;toolbar&quot;</span> <span class="attr">mode</span>=<span class="string">&quot;default&quot;</span> <span class="attr">:editor</span>=<span class="string">&quot;editorEle&quot;</span> <span class="attr">:defaultConfig</span>=<span class="string">&quot;toolbarConfig&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 编辑区域 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Editor</span> <span class="attr">class</span>=<span class="string">&quot;editor&quot;</span> <span class="attr">mode</span>=<span class="string">&quot;default&quot;</span> <span class="attr">v-model</span>=<span class="string">&quot;content&quot;</span> <span class="attr">:defaultConfig</span>=<span class="string">&quot;editorConfig&quot;</span> @<span class="attr">onCreated</span>=<span class="string">&quot;handleCreated&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 引入样式</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="string">&#x27;@wangeditor/editor/dist/css/style.css&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 提示的组件</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; message <span class="keyword">as</span> <span class="title class_">Message</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;ant-design-vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 引用组件</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; <span class="title class_">Editor</span>, <span class="title class_">Toolbar</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@wangeditor/editor-for-vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">export</span> <span class="keyword">default</span>&#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">name</span>: <span class="string">&#x27;EditorComponent&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">components</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title class_">Editor</span>,</span></span><br><span class="line"><span class="language-javascript">    <span class="title class_">Toolbar</span></span></span><br><span class="line"><span class="language-javascript">  &#125;,</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">data</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 绑定的数据</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">content</span>: <span class="string">&#x27;&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 编辑器实例</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">editorEle</span>: <span class="literal">null</span>,</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 菜单配置</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">toolbarConfig</span>: &#123;&#125;,</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 编辑器配置</span></span></span><br><span class="line"><span class="language-javascript">      <span class="attr">editorConfig</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">MENU_CONF</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="attr">uploadImage</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">async</span> <span class="title function_">customUpload</span>(<span class="params">file, insertFn</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">              <span class="keyword">const</span> imgTypeArr = [<span class="string">&#x27;image/jpeg&#x27;</span>, <span class="string">&#x27;image/png&#x27;</span>]</span></span><br><span class="line"><span class="language-javascript">              <span class="keyword">if</span> (!imgTypeArr.<span class="title function_">includes</span>(file.<span class="property">type</span>)) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">return</span> <span class="title class_">Message</span>.<span class="title function_">error</span>(<span class="string">&#x27;只能上传 jpeg、png 类型的图片&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">              &#125;</span></span><br><span class="line"><span class="language-javascript">              <span class="keyword">if</span> (file.<span class="property">size</span> &gt; <span class="number">2</span> * <span class="number">1024</span> * <span class="number">1024</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">return</span> <span class="title class_">Message</span>.<span class="title function_">error</span>(<span class="string">&#x27;图片不能大于2M!&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">              &#125;</span></span><br><span class="line"><span class="language-javascript">              <span class="keyword">const</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>()</span></span><br><span class="line"><span class="language-javascript">              formData.<span class="title function_">append</span>(<span class="string">&#x27;file&#x27;</span>, file)</span></span><br><span class="line"><span class="language-javascript">              ;(<span class="keyword">async</span> () =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">await</span> <span class="title function_">axios</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">                  <span class="attr">url</span>: <span class="string">&#x27;图片上传的地址&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">                  <span class="attr">method</span>: <span class="string">&#x27;post&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">                  <span class="attr">data</span>: formData,</span></span><br><span class="line"><span class="language-javascript">                  <span class="attr">header</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;multipart/form-data&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                  &#125;</span></span><br><span class="line"><span class="language-javascript">                &#125;).<span class="title function_">then</span>(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">                  <span class="keyword">if</span> (res.<span class="property">data</span>.<span class="property">code</span> === <span class="number">1</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="comment">// 插入图片的函数，其中，url 表示图片 src (必须项), alt 表示图片描述文字(非必须), href 表示图片的链接(非必须)</span></span></span><br><span class="line"><span class="language-javascript">                    <span class="comment">// insertFn(url, alt, href)</span></span></span><br><span class="line"><span class="language-javascript">                    <span class="title function_">insertFn</span>(res.<span class="property">data</span>.<span class="property">data</span>, file.<span class="property">name</span>, res.<span class="property">data</span>.<span class="property">data</span>)</span></span><br><span class="line"><span class="language-javascript">                  &#125;</span></span><br><span class="line"><span class="language-javascript">                &#125;)</span></span><br><span class="line"><span class="language-javascript">              &#125;)()</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  &#125;,</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">methods</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">handleCreated</span>(<span class="params">editor</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 将编辑器实例存储在变量中</span></span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">this</span>.<span class="property">editorEle</span> = editor</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">scoped</span> <span class="attr">lang</span>=<span class="string">&quot;less&quot;</span>&gt;</span></span><br><span class="line">  .container &#123;</span><br><span class="line">    border: 1px solid #ccc;</span><br><span class="line">    .toolbar &#123;</span><br><span class="line">      style=&quot;border-bottom: 1px solid #ccc&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    .editor &#123;</span><br><span class="line">      height: 460px;</span><br><span class="line">      overflow-y: hidden;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>如果组件中使用了 keep-alive 缓存组件或者是重新进入编辑器页面，编辑器可能会提示: <strong style="color: red">Error in callback for watcher “value”: “Error: Cannot find a descendant at path …</strong></p>
+<p><img src="/./images/vue2%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8wangeditor%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8%EF%BC%8C%E5%B9%B6%E9%85%8D%E7%BD%AE%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%8A%9F%E8%83%BD/01.jpg" alt="wangEditor插件提示报错"></p>
+<p>那么可以在 beforeDestroy 或 deactivated 生命周期中配置销毁编辑器的逻辑</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">beforeDestroy</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 组件销毁时应将编辑器一同销毁</span></span><br><span class="line">  <span class="keyword">const</span> editor = editorRef.<span class="property">value</span></span><br><span class="line">  <span class="keyword">if</span> (editor == <span class="literal">null</span>) <span class="keyword">return</span></span><br><span class="line">  editor.<span class="title function_">destroy</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -464,7 +464,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/css/" rel="tag"># css</a>
+            <a href="/tags/vue/" rel="tag"># vue</a>
           
         </div>
       
@@ -477,8 +477,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/06/axios%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E6%97%B6%E6%8A%A5%E9%94%99/" rel="next" title="axios上传文件时报错">
-                <i class="fa fa-chevron-left"></i> axios上传文件时报错
+              <a href="/2024/01/30/%E4%B8%8D%E4%BD%BF%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E7%94%A8js%E5%AE%9E%E7%8E%B0%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9/" rel="next" title="不使用插件的情况下用js实现图片压缩">
+                <i class="fa fa-chevron-left"></i> 不使用插件的情况下用js实现图片压缩
               </a>
             
           </div>
@@ -486,10 +486,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/01/06/%E4%BD%BFhtml%E5%92%8Cbody%E7%9A%84%E6%BB%9A%E5%8A%A8%E6%9D%A1%E7%A6%81%E6%AD%A2%E4%B8%8E%E5%90%AF%E7%94%A8/" rel="prev" title="使html和body的滚动条禁止与启用">
-                使html和body的滚动条禁止与启用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -685,7 +681,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">使用插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">遇到的问题</span></a></li></ol></div>
             
 
           </div>
