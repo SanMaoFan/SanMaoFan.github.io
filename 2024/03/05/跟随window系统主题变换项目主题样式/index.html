@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="参考文章：  跟随系统的主题切换 prefers-color-scheme Window.matchMedia()  场景在 PC 端，为了提高用户体验，项目中一般会预制 白昼&#x2F;暗黑 主题供用户选择，可该主题方案是“固定”形式的，如果用户在系统中设置系统主题，那么项目的主题一直是项目中选定的主题，彼此之间没有什么联动，可以将项目主题与系统主题理解为两个瓶子里的水，一个瓶子里加入了什么颜料，都不会去">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟随window系统主题变换项目主题样式">
+<meta property="og:url" content="http://san-mao-fan.gitee.io/2024/03/05/%E8%B7%9F%E9%9A%8Fwindow%E7%B3%BB%E7%BB%9F%E4%B8%BB%E9%A2%98%E5%8F%98%E6%8D%A2%E9%A1%B9%E7%9B%AE%E4%B8%BB%E9%A2%98%E6%A0%B7%E5%BC%8F/index.html">
+<meta property="og:site_name" content="SanMaoFan&#39;s Blog">
+<meta property="og:description" content="参考文章：  跟随系统的主题切换 prefers-color-scheme Window.matchMedia()  场景在 PC 端，为了提高用户体验，项目中一般会预制 白昼&#x2F;暗黑 主题供用户选择，可该主题方案是“固定”形式的，如果用户在系统中设置系统主题，那么项目的主题一直是项目中选定的主题，彼此之间没有什么联动，可以将项目主题与系统主题理解为两个瓶子里的水，一个瓶子里加入了什么颜料，都不会去">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-03-05T03:32:31.000Z">
+<meta property="article:modified_time" content="2024-03-07T13:23:42.069Z">
+<meta property="article:author" content="SanMaoFan">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="http://san-mao-fan.gitee.io/2024/03/05/跟随window系统主题变换项目主题样式/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>跟随window系统主题变换项目主题样式 | SanMaoFan's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SanMaoFan's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2024/03/05/%E8%B7%9F%E9%9A%8Fwindow%E7%B3%BB%E7%BB%9F%E4%B8%BB%E9%A2%98%E5%8F%98%E6%8D%A2%E9%A1%B9%E7%9B%AE%E4%B8%BB%E9%A2%98%E6%A0%B7%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanMaoFan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/huaji.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SanMaoFan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">跟随window系统主题变换项目主题样式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2024-03-05 11:32:31" itemprop="dateCreated datePublished" datetime="2024-03-05T11:32:31+08:00">2024-03-05</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2024-03-07 21:23:42" itemprop="dateModified" datetime="2024-03-07T21:23:42+08:00">2024-03-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1TC411x79B/?spm_id_from=333.337.search-card.all.click&vd_source=a4fd270dc286fce4c6b62f03ed3a035d">跟随系统的主题切换</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/prefers-color-scheme">prefers-color-scheme</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/matchMedia">Window.matchMedia()</a></li>
+</ul>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>在 PC 端，为了提高用户体验，项目中一般会预制 <code>白昼/暗黑</code> 主题供用户选择，可该主题方案是“固定”形式的，如果用户在系统中设置系统主题，那么项目的主题一直是项目中选定的主题，彼此之间没有什么联动，可以将项目主题与系统主题理解为两个瓶子里的水，一个瓶子里加入了什么颜料，都不会去影响另一个瓶子里水的颜色。但为了更好的用户体验，所以加入随系统主题切换项目主题的功能也应该要考虑到；项目中可通过原生 css 自定义属性(变量)、sass&#x2F;less 等预处理器、动态加载link切换类名等方案来实现主题的切换，这里以原生 css 自定义属性的方案来实现此功能。</p>
+<h2 id="关于-prefers-color-scheme"><a href="#关于-prefers-color-scheme" class="headerlink" title="关于 prefers-color-scheme"></a>关于 prefers-color-scheme</h2><p>prefers-color-scheme 是 css 媒体特性，用于检测用户是否有将系统主题色设置为亮色或者暗色。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><ul>
+<li><code>no-preference</code>: 表示系统未得知用户在这方面的选项。在布尔值上下文中，其执行结果为 false。</li>
+<li><code>light</code>：表示用户已告知系统他们选择使用浅色主题的界面。</li>
+<li><code>dark</code>：表示用户已告知系统他们选择使用暗色主题的界面。</li>
+</ul>
+<blockquote>
+<p>备注： “未得知”、“已告知”等用语，英文原文如此。 “未得知”可理解为：浏览器的宿主系统不支持设置主题色，或者支持主题色并默认为&#x2F;被设为了未设置&#x2F;无偏好。 “已告知”为：浏览器的宿主系统支持设置主题色，且被设置为了亮色或者暗色。<br /><br>目前，若结果为 no-preference，无法通过此媒体特性获知宿主系统是否支持设置主题色，或者用户是否主动将其设置为无偏好。出于隐私保护等方面的考虑，用户或用户代理也可能在一些情况下在浏览器内部将其设置为 no-preference。</p>
+</blockquote>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>主题切换<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">    <span class="selector-pseudo">:root</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attr">--bg</span>: pink;</span></span><br><span class="line"><span class="language-css">      <span class="attr">--color</span>: green;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.theme</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">height</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">line-height</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">text-align</span>: center;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background-color</span>: <span class="built_in">var</span>(--bg);</span></span><br><span class="line"><span class="language-css">      <span class="attribute">color</span>: <span class="built_in">var</span>(--color);</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">    <span class="comment">/* 暗色 */</span></span></span><br><span class="line"><span class="language-css">    <span class="keyword">@media</span> (<span class="attribute">prefers-color-scheme</span>: dark) &#123;</span></span><br><span class="line"><span class="language-css">      <span class="selector-pseudo">:root</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attr">--bg</span>: black;</span></span><br><span class="line"><span class="language-css">        <span class="attr">--color</span>: pink;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">    <span class="comment">/* 明亮 */</span></span></span><br><span class="line"><span class="language-css">    <span class="keyword">@media</span> (<span class="attribute">prefers-color-scheme</span>: light) &#123;</span></span><br><span class="line"><span class="language-css">      <span class="selector-pseudo">:root</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attr">--bg</span>: <span class="built_in">rgb</span>(<span class="number">194</span>, <span class="number">212</span>, <span class="number">127</span>);</span></span><br><span class="line"><span class="language-css">        <span class="attr">--color</span>: <span class="built_in">rgb</span>(<span class="number">72</span>, <span class="number">40</span>, <span class="number">161</span>);</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">  </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;theme&quot;</span>&gt;</span></span><br><span class="line">    测试测试测试测试测试测试</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以上代码中，在 :root 伪类选择器中设置 –bg、–color 变量，当浏览器的宿主环境不支持设置主题时，默认采用未设置在媒体查询的 css 变量，而当浏览器宿主环境支持主题设置并切换时。刷新页面后，其 .theme 元素便会获取相应媒体查询中 css 变量并生效。</p>
+<p>虽然该方式使用简单，但是一旦变量增多，或者要修改主题的类名样式增多，那么要声明明亮、暗色主题的代码也就多了起来，最好的方案是在 html 根元素上设置一个 dateset 数据，当改变主题时，将对应数据设置上去并配置好基础的属性选择器样式，这样就方便的多。例如明亮主题就是用默认的主题，而暗色主题则是另外一套，这时就只有两套代码，不会出现上述代码上中既要声明 prefers-color-scheme: dark，又要声明 prefers-color-scheme: light 的媒体查询样式。但是去除了关于主题的媒体查询设置，又该如果得知当前系统主题使用了哪套主题呢？</p>
+<h2 id="关于-Window-matchMedia"><a href="#关于-Window-matchMedia" class="headerlink" title="关于 Window.matchMedia()"></a>关于 Window.matchMedia()</h2><p>Window.matchMedia() 用于得知指定的媒体查询字符串解析出的结果，此方法中会返回一个 matches 属性，此属性表示当前 Document 与媒体查询列表是否匹配（需要注意的是，这里更明确的说法是：当前 Document 是否适用于某种媒体查询，例如系统主题设置为暗色，而样式中并没有设置暗色的媒体查询，依旧会返回 true），返回结果为布尔值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果系统主题设置为了暗色主题，并没有设置相关媒体查询样式，也就是设置 @media (prefers-color-scheme: dark) 样式</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">matchMedia</span>(<span class="string">&#x27;(prefers-color-scheme: dark)&#x27;</span>).<span class="property">matches</span>)  <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>但这种方式只是在项目初始化时能获取到系统主题，当系统主题切换时，项目是没有监听到的，但不用担心，matchMedia 方法所返回的对象中，是可以采用监听方案的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> match = <span class="title function_">matchMedia</span>(<span class="string">&quot;(prefers-color-scheme: dark)&quot;</span>)</span><br><span class="line"><span class="comment">// 监听媒体查询的值的变化</span></span><br><span class="line">match.<span class="title function_">addEventListener</span>(<span class="string">&quot;change&quot;</span>, <span class="function">() =&gt;</span> &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>结合 matchMedia 的方案，便可以追踪当前系统的主题，再结合刚刚说的给 html 根元素设置 dataset 数据以控制样式代码量的考虑，便产生了以下例子(vue3代码)：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 监听电脑系统切换主题 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 切换主题 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">v-model</span>=<span class="string">&quot;theme&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;OS&quot;</span>&gt;</span>跟随系统<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;light&quot;</span>&gt;</span>亮色<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;dark&quot;</span>&gt;</span>暗色<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;text&quot;</span>&gt;</span>测试测试测试测试测试测试测试测试<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">lang</span>=<span class="string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">name</span>: <span class="string">&quot;ListenerSystemThemeIndex&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">lang</span>=<span class="string">&quot;ts&quot;</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; ref, watchEffect &#125; <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">type <span class="title class_">Theme</span> = <span class="string">&quot;dark&quot;</span> | <span class="string">&quot;light&quot;</span> | <span class="string">&quot;OS&quot;</span>;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> <span class="variable constant_">LOCAL_KEY</span> = <span class="string">&quot;__theme__&quot;</span>;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 获取本地缓存的主题，如果没有则设置默认的明亮主题</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> theme = ref&lt;<span class="title class_">Theme</span>&gt;((<span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="variable constant_">LOCAL_KEY</span>) <span class="keyword">as</span> <span class="title class_">Theme</span>) || <span class="string">&quot;light&quot;</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 获取系统主题</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> match = <span class="title function_">matchMedia</span>(<span class="string">&quot;(prefers-color-scheme: dark)&quot;</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 切换主题</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">function</span> <span class="title function_">followOS</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">dataset</span>.<span class="property">theme</span> = match.<span class="property">matches</span> ? <span class="string">&quot;dark&quot;</span> : <span class="string">&quot;light&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 组件初始化时会执行，并且当所监听中的所依赖的变量有改动时（此处主要是 theme.value 变量），便可以重新触发监听函数</span></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">watchEffect</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 将数据存在缓存中，方便下次项目初始化主题</span></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="variable constant_">LOCAL_KEY</span>, theme.<span class="property">value</span>);</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">if</span> (theme.<span class="property">value</span> === <span class="string">&quot;OS&quot;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">followOS</span>();</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 监听主题切换</span></span></span><br><span class="line"><span class="language-javascript">    match.<span class="title function_">addEventListener</span>(<span class="string">&quot;change&quot;</span>, followOS);</span></span><br><span class="line"><span class="language-javascript">  &#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">dataset</span>.<span class="property">theme</span> = theme.<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 移除主题的监听</span></span></span><br><span class="line"><span class="language-javascript">    match.<span class="title function_">removeEventListener</span>(<span class="string">&quot;change&quot;</span>, followOS);</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">&#125;);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">&quot;scss&quot;</span> <span class="attr">scoped</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css"><span class="selector-class">.container</span> &#123;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">height</span>: <span class="number">500px</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attribute">background-color</span>: <span class="built_in">var</span>(--bg1);</span></span><br><span class="line"><span class="language-css">  <span class="selector-class">.content</span> &#123;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">margin-top</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">height</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">background-color</span>: <span class="built_in">var</span>(--bg2);</span></span><br><span class="line"><span class="language-css">    <span class="attribute">box-sizing</span>: border-box;</span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.text</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">color</span>: <span class="built_in">var</span>(--text-color);</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">  &#125;</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css"><span class="comment">/* 主题样式设置 */</span></span></span><br><span class="line"><span class="language-css"><span class="comment">/* 暗色主题 */</span></span></span><br><span class="line"><span class="language-css"><span class="selector-tag">html</span><span class="selector-attr">[data-theme=<span class="string">&quot;dark&quot;</span>]</span> &#123;</span></span><br><span class="line"><span class="language-css">  <span class="attr">--text-color</span>: <span class="number">#fff</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attr">--bg1</span>: <span class="number">#102128</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attr">--bg2</span>: <span class="number">#2d5567</span>;</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css"><span class="comment">/* 默认亮色主题 */</span></span></span><br><span class="line"><span class="language-css"><span class="selector-pseudo">:root</span> &#123;</span></span><br><span class="line"><span class="language-css">  <span class="attr">--text-color</span>: <span class="number">#333</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attr">--bg1</span>: <span class="number">#c7ffdd</span>;</span></span><br><span class="line"><span class="language-css">  <span class="attr">--bg2</span>: <span class="number">#fbd988</span>;</span></span><br><span class="line"><span class="language-css">&#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/02/29/%E5%85%B3%E4%BA%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D%E6%96%B9%E6%B3%95structuredClone/" rel="next" title="关于深拷贝方法structuredClone">
+                <i class="fa fa-chevron-left"></i> 关于深拷贝方法structuredClone
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/img/huaji.gif"
+                alt="SanMaoFan" />
+            
+              <p class="site-author-name" itemprop="name">SanMaoFan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">60</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-prefers-color-scheme"><span class="nav-number">2.</span> <span class="nav-text">关于 prefers-color-scheme</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">2.2.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-Window-matchMedia"><span class="nav-number">3.</span> <span class="nav-text">关于 Window.matchMedia()</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanMaoFan</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
