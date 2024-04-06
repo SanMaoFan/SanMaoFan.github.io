@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="参考资源：  20块的NAS方案，玩客云刷casaos 补充教程 玩客云刷电视盒子+游戏机  场景在清明假期闲着无聊的时候，突然想着下部 4k 电影看看，在网上找资源时，看到资源是磁力链接，而本人电脑中只有迅雷，并且没有会员，于是抱着试试的心态打开迅雷并粘贴链接，一看下载速度，我的天，竟然高达 60 kb&#x2F;s，而这部电影足足有 36GB，这要下到猴年马月？我的小脑瓜子回头一想，哟吼，我还">
+<meta property="og:type" content="article">
+<meta property="og:title" content="玩客云刷机为CasaOS系统">
+<meta property="og:url" content="http://san-mao-fan.gitee.io/2024/04/06/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BAcasaos%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="SanMaoFan&#39;s Blog">
+<meta property="og:description" content="参考资源：  20块的NAS方案，玩客云刷casaos 补充教程 玩客云刷电视盒子+游戏机  场景在清明假期闲着无聊的时候，突然想着下部 4k 电影看看，在网上找资源时，看到资源是磁力链接，而本人电脑中只有迅雷，并且没有会员，于是抱着试试的心态打开迅雷并粘贴链接，一看下载速度，我的天，竟然高达 60 kb&#x2F;s，而这部电影足足有 36GB，这要下到猴年马月？我的小脑瓜子回头一想，哟吼，我还">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/01.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/02.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/03.jpg">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/04.webp">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/05.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/06.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/07.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/08.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/09.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/10.png">
+<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/11.png">
+<meta property="article:published_time" content="2024-04-06T05:13:36.000Z">
+<meta property="article:modified_time" content="2024-04-06T07:43:06.574Z">
+<meta property="article:author" content="SanMaoFan">
+<meta property="article:tag" content="刷机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/01.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://san-mao-fan.gitee.io/2024/04/06/玩客云刷机为casaos系统/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>玩客云刷机为CasaOS系统 | SanMaoFan's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SanMaoFan's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2024/04/06/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BAcasaos%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanMaoFan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/huaji.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SanMaoFan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">玩客云刷机为CasaOS系统
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2024-04-06 13:13:36 / 修改时间：15:43:06" itemprop="dateCreated datePublished" datetime="2024-04-06T13:13:36+08:00">2024-04-06</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E7%A1%AC%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">硬件</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>参考资源：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/list/watchlater?oid=1202625743&bvid=BV1yf421o7Wg&spm_id_from=333.1007.top_right_bar_window_view_later.content.click">20块的NAS方案，玩客云刷casaos 补充教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/451706565">玩客云刷电视盒子+游戏机</a></li>
+</ul>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>在清明假期闲着无聊的时候，突然想着下部 4k 电影看看，在网上找资源时，看到资源是磁力链接，而本人电脑中只有迅雷，并且没有会员，于是抱着试试的心态打开迅雷并粘贴链接，一看下载速度，我的天，竟然高达 60 kb&#x2F;s，而这部电影足足有 36GB，这要下到猴年马月？我的小脑瓜子回头一想，哟吼，我还有台玩客云呢！玩客云下载时也是使用了迅雷的资源，但是用玩客云下载会比不是会员的下载更快一些（可惜不是全速），于是我掏出了在箱子里被堆压的玩客云（阉割版，战损版），接上电源，网线与硬盘，平板打开玩客云 APP，玩客云，启动！APP 页面打开了登录页面，我输入账号密码后一直提示账号密码错误，难道是记错密码了？没事，还有短信登录，于是输入手机号，点击发送验证码，可页面竟然提示短信验证码错误。。。重复多次依旧是如此，难道我的 APP 版本过低？不对，去年年末才下的版本，不可能几个月后就无法使用；带着疑问，我前往搜索引擎查找答案，才发现现在官方已经停止服务了。。。</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/01.png" alt="官方公告停止服务"></p>
+<p>说好的永久会员呢？对得起我们吗？卧槽！</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/02.png" alt="日内瓦，退钱！"></p>
+<p>这么说，这个机器当前已经算是废品了，用都用不了，可惜咯；可这怎么会难道一个程序员呢？玩客云原系统不能用，但是换个系统，那又是好好的 NAS 啦，接着在互联网上转了一圈后，发现有一个系统能轻松刷机，那就是 CasaOS 系统，而要刷入 CasaOS 系统前，需要先将玩客云刷入环境。</p>
+<h2 id="刷入-armbian-系统"><a href="#刷入-armbian-系统" class="headerlink" title="刷入 armbian 系统"></a>刷入 armbian 系统</h2><p>1、刷机需要一个系统：armbian，系统可前往 <a target="_blank" rel="noopener" href="https://github.com/hzyitc/armbian-onecloud/releases">armbian 的 github 地址</a> 下载，我选用的是 Armbian-unofficial_24.5.0-trunk_Onecloud_bullseye_current_6.6.21_minimal.burn.img.xz 的资源，下载后解压出来备用。</p>
+<p>2、接着下载一个烧录工具，这里下载的是 Amlogic_USB_Burning_Tool 工具，版本为 v2.1.6.8，将其安装在电脑上后打开，选择文件》导入烧录包，这里的烧录包就是步骤1中下载好并解压后的系统。</p>
+<p>3、接着将玩客云拆卸并取出 PCB 板，找个金属镊子或者是导电的工具，因为刷机需要连接玩客云 PCB 上两个短接触点的位置，这样才能正常刷机，而玩客云 1.0 和其他版本的机器的 PCB 板上的短接触点的位置不相同，以下为 1.0 版本短接触点的位置：</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/03.jpg" alt="初代版本"></p>
+<p>而另一个版本的短接触点位置如下所示：</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/04.webp" alt="其他版本"></p>
+<p>4、使用一根公对公的 USB 线，一头插入电脑，一头插入 PCB 板的靠近 HDMI 口的 USB 口，如果电脑有 typec 口，也是可以使用 typec 对 USB 口来连接的。</p>
+<p>4、准备好后，先将电脑上的烧录工具将其选项设置好，并点击开始按钮</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/05.png" alt="烧录工具设置"></p>
+<p> 接着，将 PCB 板上的短接触点连接，最后启动玩客云的电源，然后看电脑上的烧录工具是否有进度条变动即可，例如：</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/06.png" alt="刷机进度条"></p>
+<p> 只要进度条有启动，这个时候就可以松开短接触点的连接了，不然可能造成烧录工具报错并重新开始烧录。<text style="color: red;">需要注意的是，在所有前置步骤准备好后才启动电源，不然可能失败，而所有工作准备完毕了，可是启动电源后，烧录工具没有任何变化，可能是短接触点接触不良，可以的话，可将其表面焊锡或是覆盖物刮掉一点后再进行连接；烧录过程中一直失败的话，不用担心，关闭电源，取消 USB 连接，再次重复以上步骤即可。</text>最后便可以等待系统的烧录完成。如果一直烧录不成功，可能内置的 emmc 有损坏，这个我无能为力。</p>
+<p> 5、系统烧录完成后，需要先点击烧录工具的停止按钮，再关闭烧录软件。</p>
+<h2 id="安装-CasaOS-系统"><a href="#安装-CasaOS-系统" class="headerlink" title="安装 CasaOS 系统"></a>安装 CasaOS 系统</h2><p> 在刷入 armbian 系统后，将 PCB 连接上网线，然后在电脑的浏览器进入 WIFI 的管理控制台，每个 WIFI 机器进入控制台的 IP 具体以个人为准，在进入 WIFI 控制台后，可以找到分配给玩客云的 IP，玩客云的主机名称一般显示为 <code>onecloud</code>，记录下这个主机对应的 IP，接着使用远程登录工具登录该 IP 即可，默认用户名为root，默认密码为1234，端口默认22；首次进入系统，会提示修改密码，输入好新密码后回车，会提示是否要创建新的用户，当前使用 root 账户即可，所以 ctrl + c 退出创建新用户步骤。</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/07.png" alt="修改密码和创建新用户"></p>
+<p>基本设置完毕后，需要输入 <code>date -R</code> 命令来查看当前时区时间是否正确，如果时区不对，则使用 <code>cp /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime</code> 命令来修改时区时间，注意，<code>cp</code> 后是一个空格，而 <code>/etc/localtime</code> 的前面是两个空格，输入错命令会提示这个：</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/08.png" alt="输入错命令的提示"></p>
+<p>设置后如果没有错误，则再次输入 <code>date -R</code> 查看设置的时间时区是否正确。</p>
+<p>接着是添加系统的软件源，这可以提高安装的成功率，输入 <code>nano /etc/apt/sources.list</code>，进入编辑后，将所有代码的开头加上 # 符号，也就是注释该代码，已有 # 的代码不动，接着把光标移动到最下面的空白处，将以下代码粘贴进去：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">deb https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free</span></span><br><span class="line"><span class="meta"># deb-src https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free</span></span></span><br><span class="line">deb https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free</span></span><br><span class="line"><span class="meta"># deb-src https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free</span></span></span><br><span class="line">deb https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free</span></span><br><span class="line"><span class="meta"># deb-src https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free</span></span></span><br><span class="line">deb https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free</span></span><br><span class="line"><span class="meta"># deb-src https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free</span></span></span><br></pre></td></tr></table></figure>
+
+<p>可以将以上代码中带了 # 符号的代码去除 # 符号，这样会有更多的备用软件源供使用，设置好后，按下 ctrl + x 来退出，这时编辑软件会提示是否保存内容，按下 y 键即可保存。</p>
+<p>接着是安装 CasaOS 系统，只需将以下代码输入终端并按下回车即可进入等待: <code>wget -qO- https://get.casaos.io | bash</code> 。</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/09.png" alt="开始安装CasaOS系统"></p>
+<p>等待的时间在十分钟左右，在安装完毕后，系统会给出登录的 IP 地址：</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/10.png" alt="完成安装"></p>
+<p>最后在浏览器中输入登录的 IP 地址，并创建新用户及其密码即可进入系统内部。</p>
+<p><img src="/images/%E7%8E%A9%E5%AE%A2%E4%BA%91%E5%88%B7%E6%9C%BA%E4%B8%BACasaOS%E7%B3%BB%E7%BB%9F/11.png" alt="进入系统"></p>
+<p>到此为止，一切就完成了，废品玩客云便又成了易用的 NAS 服务。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%88%B7%E6%9C%BA/" rel="tag"># 刷机</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/03/05/%E8%B7%9F%E9%9A%8Fwindow%E7%B3%BB%E7%BB%9F%E4%B8%BB%E9%A2%98%E5%8F%98%E6%8D%A2%E9%A1%B9%E7%9B%AE%E4%B8%BB%E9%A2%98%E6%A0%B7%E5%BC%8F/" rel="next" title="跟随window系统主题变换项目主题样式">
+                <i class="fa fa-chevron-left"></i> 跟随window系统主题变换项目主题样式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/img/huaji.gif"
+                alt="SanMaoFan" />
+            
+              <p class="site-author-name" itemprop="name">SanMaoFan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">61</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B7%E5%85%A5-armbian-%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.</span> <span class="nav-text">刷入 armbian 系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-CasaOS-%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">安装 CasaOS 系统</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanMaoFan</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
