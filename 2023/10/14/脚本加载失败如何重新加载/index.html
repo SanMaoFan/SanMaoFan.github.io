@@ -118,27 +118,27 @@
   <meta name="description" content="场景用户在打开网站时，可能某一个 js 脚本会请求失败，这个时候如果脚本资源在多个域名可以请求到的话，那么可以考虑切换域名来重新请求脚本，例如有些项目里使用了第三方库，其提供的 CDN 地址有多个，那么默认使用其中一个，脚本失败后则从其他 CDN 地址请求；以 jQuery 脚本为例，官方提供的 CDN地址为： http:&#x2F;&#x2F;code.jquery.com&#x2F;jquery-2.1.1.min.js，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="脚本加载失败如何重新加载">
-<meta property="og:url" content="http://san-mao-fan.gitee.io/2023/10/14/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/index.html">
+<meta property="og:url" content="https://sanmaofan.github.io/2023/10/14/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/index.html">
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
 <meta property="og:description" content="场景用户在打开网站时，可能某一个 js 脚本会请求失败，这个时候如果脚本资源在多个域名可以请求到的话，那么可以考虑切换域名来重新请求脚本，例如有些项目里使用了第三方库，其提供的 CDN 地址有多个，那么默认使用其中一个，脚本失败后则从其他 CDN 地址请求；以 jQuery 脚本为例，官方提供的 CDN地址为： http:&#x2F;&#x2F;code.jquery.com&#x2F;jquery-2.1.1.min.js，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/001.png">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/002.png">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/003.png">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/004.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/001.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/002.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/003.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/004.png">
 <meta property="article:published_time" content="2023-10-14T03:47:18.000Z">
 <meta property="article:modified_time" content="2023-10-18T12:27:36.000Z">
 <meta property="article:author" content="SanMaoFan">
 <meta property="article:tag" content="js">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/001.png">
+<meta name="twitter:image" content="https://sanmaofan.github.io/images/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/001.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://san-mao-fan.gitee.io/2023/10/14/脚本加载失败如何重新加载/"/>
+  <link rel="canonical" href="https://sanmaofan.github.io/2023/10/14/脚本加载失败如何重新加载/"/>
 
 
 
@@ -334,7 +334,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2023/10/14/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/">
+    <link itemprop="mainEntityOfPage" href="https://sanmaofan.github.io/2023/10/14/%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E5%A6%82%E4%BD%95%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SanMaoFan">

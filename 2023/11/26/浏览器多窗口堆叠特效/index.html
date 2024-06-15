@@ -118,27 +118,27 @@
   <meta name="description" content="参考文章：  浏览器多窗口堆叠特效  最近被一段酷炫的量子纠缠效果刷屏了  虽然球体在不同浏览器窗口中，但彼此之间有联动效果。 本文不实现同样的粒子纠缠效果，只提供在多个窗口堆叠的情况下，依旧可以有内容联动的方案，此处的内容以图片举例。 代码实现要实现的效果本文要实现的效果是：在多个浏览器窗口堆叠的情况下，可以实现一张图片的完整拼接  这里先定义好基础的样式： 123456789101112131">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浏览器多窗口堆叠特效">
-<meta property="og:url" content="http://san-mao-fan.gitee.io/2023/11/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/index.html">
+<meta property="og:url" content="https://sanmaofan.github.io/2023/11/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/index.html">
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
 <meta property="og:description" content="参考文章：  浏览器多窗口堆叠特效  最近被一段酷炫的量子纠缠效果刷屏了  虽然球体在不同浏览器窗口中，但彼此之间有联动效果。 本文不实现同样的粒子纠缠效果，只提供在多个窗口堆叠的情况下，依旧可以有内容联动的方案，此处的内容以图片举例。 代码实现要实现的效果本文要实现的效果是：在多个浏览器窗口堆叠的情况下，可以实现一张图片的完整拼接  这里先定义好基础的样式： 123456789101112131">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/001.gif">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/002.png">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/003.png">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/004.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/001.gif">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/002.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/003.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/004.png">
 <meta property="article:published_time" content="2023-11-26T06:38:03.000Z">
 <meta property="article:modified_time" content="2023-11-26T10:45:16.424Z">
 <meta property="article:author" content="SanMaoFan">
 <meta property="article:tag" content="js">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/001.gif">
+<meta name="twitter:image" content="https://sanmaofan.github.io/images/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/001.gif">
 
 
 
 
 
 
-  <link rel="canonical" href="http://san-mao-fan.gitee.io/2023/11/26/浏览器多窗口堆叠特效/"/>
+  <link rel="canonical" href="https://sanmaofan.github.io/2023/11/26/浏览器多窗口堆叠特效/"/>
 
 
 
@@ -334,7 +334,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2023/11/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/">
+    <link itemprop="mainEntityOfPage" href="https://sanmaofan.github.io/2023/11/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E7%AA%97%E5%8F%A3%E5%A0%86%E5%8F%A0%E7%89%B9%E6%95%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SanMaoFan">

@@ -118,36 +118,36 @@
   <meta name="description" content="参考文章：  如何优雅的控制网页请求的优先级? 链接类型：preload 如何控制Web资源加载的优先级？  浏览器解析资源的优先级当浏览器开始解析网页，并开始下载图片、script 代码以及 css 样式等资源时，浏览器会为每个资源分配一个代表资源下载优先级的 fetch priority 标志。资源下载的顺序取决于这个优先级标志，这个标志的计算逻辑会受很多因素的影响：  script、css、">
 <meta property="og:type" content="article">
 <meta property="og:title" content="控制网页请求的优先级">
-<meta property="og:url" content="http://san-mao-fan.gitee.io/2023/11/22/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/index.html">
+<meta property="og:url" content="https://sanmaofan.github.io/2023/11/22/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/index.html">
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
 <meta property="og:description" content="参考文章：  如何优雅的控制网页请求的优先级? 链接类型：preload 如何控制Web资源加载的优先级？  浏览器解析资源的优先级当浏览器开始解析网页，并开始下载图片、script 代码以及 css 样式等资源时，浏览器会为每个资源分配一个代表资源下载优先级的 fetch priority 标志。资源下载的顺序取决于这个优先级标志，这个标志的计算逻辑会受很多因素的影响：  script、css、">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/001.png">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/002.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/003.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/004.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/005.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/006.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/007.png">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/008.png">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/009.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/010.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/011.png">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/012.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/013.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/001.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/002.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/003.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/004.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/005.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/006.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/007.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/008.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/009.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/010.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/011.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/012.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/013.png">
 <meta property="article:published_time" content="2023-11-22T09:25:26.000Z">
 <meta property="article:modified_time" content="2023-11-23T09:33:51.312Z">
 <meta property="article:author" content="SanMaoFan">
 <meta property="article:tag" content="http">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/001.png">
+<meta name="twitter:image" content="https://sanmaofan.github.io/images/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/001.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://san-mao-fan.gitee.io/2023/11/22/控制网页请求的优先级/"/>
+  <link rel="canonical" href="https://sanmaofan.github.io/2023/11/22/控制网页请求的优先级/"/>
 
 
 
@@ -343,7 +343,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2023/11/22/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/">
+    <link itemprop="mainEntityOfPage" href="https://sanmaofan.github.io/2023/11/22/%E6%8E%A7%E5%88%B6%E7%BD%91%E9%A1%B5%E8%AF%B7%E6%B1%82%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SanMaoFan">

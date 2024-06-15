@@ -118,7 +118,7 @@
   <meta name="description" content="场景在 vue3 项目中，在 vue 的全局上挂载了全局方法(使用 app.config.globalProperties 挂载方法)，在组件中，使用 getCurrentInstance 获取实例，然后在组件内的 onBeforeRouteLeave 路由守卫上，执行挂载在实例上的方法，类似代码如下： 1234&#x2F;&#x2F; utils.js 定义方法export const addNum &#x3D; (num)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue3中使用onBeforeRouteLeave调用getCurrentInstance相关实例会不离开页面和调用多次逻辑的问题">
-<meta property="og:url" content="http://san-mao-fan.gitee.io/2022/11/20/vue3%E4%B8%AD%E4%BD%BF%E7%94%A8onBeforeRouteLeave%E8%B0%83%E7%94%A8getCurrentInstance%E7%9B%B8%E5%85%B3%E5%AE%9E%E4%BE%8B%E4%BC%9A%E4%B8%8D%E7%A6%BB%E5%BC%80%E9%A1%B5%E9%9D%A2%E5%92%8C%E8%B0%83%E7%94%A8%E5%A4%9A%E6%AC%A1%E9%80%BB%E8%BE%91%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:url" content="https://sanmaofan.github.io/2022/11/20/vue3%E4%B8%AD%E4%BD%BF%E7%94%A8onBeforeRouteLeave%E8%B0%83%E7%94%A8getCurrentInstance%E7%9B%B8%E5%85%B3%E5%AE%9E%E4%BE%8B%E4%BC%9A%E4%B8%8D%E7%A6%BB%E5%BC%80%E9%A1%B5%E9%9D%A2%E5%92%8C%E8%B0%83%E7%94%A8%E5%A4%9A%E6%AC%A1%E9%80%BB%E8%BE%91%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
 <meta property="og:description" content="场景在 vue3 项目中，在 vue 的全局上挂载了全局方法(使用 app.config.globalProperties 挂载方法)，在组件中，使用 getCurrentInstance 获取实例，然后在组件内的 onBeforeRouteLeave 路由守卫上，执行挂载在实例上的方法，类似代码如下： 1234&#x2F;&#x2F; utils.js 定义方法export const addNum &#x3D; (num)">
 <meta property="og:locale" content="zh_CN">
@@ -133,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="http://san-mao-fan.gitee.io/2022/11/20/vue3中使用onBeforeRouteLeave调用getCurrentInstance相关实例会不离开页面和调用多次逻辑的问题/"/>
+  <link rel="canonical" href="https://sanmaofan.github.io/2022/11/20/vue3中使用onBeforeRouteLeave调用getCurrentInstance相关实例会不离开页面和调用多次逻辑的问题/"/>
 
 
 
@@ -329,7 +329,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2022/11/20/vue3%E4%B8%AD%E4%BD%BF%E7%94%A8onBeforeRouteLeave%E8%B0%83%E7%94%A8getCurrentInstance%E7%9B%B8%E5%85%B3%E5%AE%9E%E4%BE%8B%E4%BC%9A%E4%B8%8D%E7%A6%BB%E5%BC%80%E9%A1%B5%E9%9D%A2%E5%92%8C%E8%B0%83%E7%94%A8%E5%A4%9A%E6%AC%A1%E9%80%BB%E8%BE%91%E7%9A%84%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="https://sanmaofan.github.io/2022/11/20/vue3%E4%B8%AD%E4%BD%BF%E7%94%A8onBeforeRouteLeave%E8%B0%83%E7%94%A8getCurrentInstance%E7%9B%B8%E5%85%B3%E5%AE%9E%E4%BE%8B%E4%BC%9A%E4%B8%8D%E7%A6%BB%E5%BC%80%E9%A1%B5%E9%9D%A2%E5%92%8C%E8%B0%83%E7%94%A8%E5%A4%9A%E6%AC%A1%E9%80%BB%E8%BE%91%E7%9A%84%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SanMaoFan">

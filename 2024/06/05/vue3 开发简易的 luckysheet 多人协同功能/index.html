@@ -118,22 +118,22 @@
   <meta name="description" content="参考：  luckysheet官网 luckeysheet+nodejs+vue3,开发多人协同的在线表格  场景公司有项目需要开发一个多人协同编辑 Excel 的功能，在互联网上当前看的比较推荐的是 luckysheet 工具，本文章通过简易的例子完成可以多人编辑样式、单元格值的功能。 vue 项目引入 luckySheet 样式与 js 文件首先在项目中下载 luckysheet 的工具包：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vue3 开发简易的 luckysheet 多人协同功能">
-<meta property="og:url" content="http://san-mao-fan.gitee.io/2024/06/05/vue3%20%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84%20luckysheet%20%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/index.html">
+<meta property="og:url" content="https://sanmaofan.github.io/2024/06/05/vue3%20%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84%20luckysheet%20%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/index.html">
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
 <meta property="og:description" content="参考：  luckysheet官网 luckeysheet+nodejs+vue3,开发多人协同的在线表格  场景公司有项目需要开发一个多人协同编辑 Excel 的功能，在互联网上当前看的比较推荐的是 luckysheet 工具，本文章通过简易的例子完成可以多人编辑样式、单元格值的功能。 vue 项目引入 luckySheet 样式与 js 文件首先在项目中下载 luckysheet 的工具包：">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/01.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/02.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/03.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/04.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/05.png">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/06.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/07.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/08.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/09.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/10.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/11.jpg">
-<meta property="og:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/12.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/01.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/02.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/03.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/04.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/05.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/06.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/07.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/08.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/09.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/10.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/11.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/12.jpg">
 <meta property="article:published_time" content="2024-06-05T13:32:36.000Z">
 <meta property="article:modified_time" content="2024-06-13T15:40:26.815Z">
 <meta property="article:author" content="SanMaoFan">
@@ -142,14 +142,14 @@
 <meta property="article:tag" content="koa">
 <meta property="article:tag" content="node">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://san-mao-fan.gitee.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/01.jpg">
+<meta name="twitter:image" content="https://sanmaofan.github.io/images/vue3%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84luckysheet%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/01.jpg">
 
 
 
 
 
 
-  <link rel="canonical" href="http://san-mao-fan.gitee.io/2024/06/05/vue3 开发简易的 luckysheet 多人协同功能/"/>
+  <link rel="canonical" href="https://sanmaofan.github.io/2024/06/05/vue3 开发简易的 luckysheet 多人协同功能/"/>
 
 
 
@@ -345,7 +345,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://san-mao-fan.gitee.io/2024/06/05/vue3%20%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84%20luckysheet%20%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/">
+    <link itemprop="mainEntityOfPage" href="https://sanmaofan.github.io/2024/06/05/vue3%20%E5%BC%80%E5%8F%91%E7%AE%80%E6%98%93%E7%9A%84%20luckysheet%20%E5%A4%9A%E4%BA%BA%E5%8D%8F%E5%90%8C%E5%8A%9F%E8%83%BD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SanMaoFan">
