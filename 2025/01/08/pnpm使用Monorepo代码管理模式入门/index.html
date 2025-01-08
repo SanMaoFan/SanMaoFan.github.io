@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="介绍在传统开发中，如果一个项目组中要同时开发后台管理系统和前台展示系统，按照以往思路是使用两个代码仓库进行维护，分别存放后台管理系统和前台展示系统，但有时候可能同一个版本依赖或者公用组件、方法，在两个系统同时用到了，但却需要复制一份到另一个项目，如果其中一个项目公用方法改动，另一个项目也得跟着改，这从而造成了代码维护性差，维护困难的问题。 而这里介绍的 Monorepo 可以解决以上问题，还能带来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pnpm使用Monorepo代码管理模式入门">
+<meta property="og:url" content="https://sanmaofan.github.io/2025/01/08/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="SanMaoFan&#39;s Blog">
+<meta property="og:description" content="介绍在传统开发中，如果一个项目组中要同时开发后台管理系统和前台展示系统，按照以往思路是使用两个代码仓库进行维护，分别存放后台管理系统和前台展示系统，但有时候可能同一个版本依赖或者公用组件、方法，在两个系统同时用到了，但却需要复制一份到另一个项目，如果其中一个项目公用方法改动，另一个项目也得跟着改，这从而造成了代码维护性差，维护困难的问题。 而这里介绍的 Monorepo 可以解决以上问题，还能带来">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sanmaofan.github.io/images/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F/01.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F/02.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F/03.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F/04.jpg">
+<meta property="article:published_time" content="2025-01-08T15:10:31.000Z">
+<meta property="article:modified_time" content="2025-01-08T15:11:44.148Z">
+<meta property="article:author" content="SanMaoFan">
+<meta property="article:tag" content="pnpm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sanmaofan.github.io/images/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F/01.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://sanmaofan.github.io/2025/01/08/pnpm使用Monorepo代码管理模式入门/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>pnpm使用Monorepo代码管理模式入门 | SanMaoFan's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SanMaoFan's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sanmaofan.github.io/2025/01/08/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanMaoFan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/huaji.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SanMaoFan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">pnpm使用Monorepo代码管理模式入门
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2025-01-08 23:10:31 / 修改时间：23:11:44" itemprop="dateCreated datePublished" datetime="2025-01-08T23:10:31+08:00">2025-01-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在传统开发中，如果一个项目组中要同时开发后台管理系统和前台展示系统，按照以往思路是使用两个代码仓库进行维护，分别存放后台管理系统和前台展示系统，但有时候可能同一个版本依赖或者公用组件、方法，在两个系统同时用到了，但却需要复制一份到另一个项目，如果其中一个项目公用方法改动，另一个项目也得跟着改，这从而造成了代码维护性差，维护困难的问题。</p>
+<p>而这里介绍的 Monorepo 可以解决以上问题，还能带来其他便利，首先， Monorepo 是一种项目代码管理方式，指的是单个仓库管理多个项目，有助于简化代码共享、版本控制、构建和部署等方面的复杂性，并提供更好的可重用性和协作性。</p>
+<h2 id="关于-Monorepo-的演进"><a href="#关于-Monorepo-的演进" class="headerlink" title="关于 Monorepo 的演进"></a>关于 Monorepo 的演进</h2><p><strong>阶段一：单仓库巨石应用。</strong> 在一个 Git 仓库维护着项目代码，所有功能模块都集中在一个单一的应用中，它的优点在于简单易懂、部署方便，适用于初期小规模项目。随着迭代业务复杂度的提升，项目代码会变得越来越多，越来越复杂，其代码构建的效率也会降低，最后导致成了一个单体巨石引用，这种代码管理方式称为 Monolith；</p>
+<p><strong>阶段二：多仓库多模块应用。</strong> 再后来，将项目拆解成了多个业务模块，并在多个 Git 仓库管理，,模块实现了解耦，降低了巨石应用的复杂度，每个模块可以独立编码、测试、发版，这样实现了每个仓库独立管理代码和依赖，代码维护难度降低了，构建效率也得以提高，每个项目可以选择适合的工具和依赖版本，也容易对项目进行精细化的权限管理，但其在不同项目之间共享代码和资源较为困难，可能导致重复代码，跨项目的依赖管理复杂，需要额外的工具和配置，团队之间可能需要在多个仓库之间切换，可能降低工作效率，在介绍中的举的例子就像这种做法，这种代码管理方式称为 MultiRepo；</p>
+<p><strong>阶段三：单仓库多模块应用。</strong> 在考虑到 MultiRepo 管理方式中跨仓库代码难以共享，分散在单仓库的模块依赖管理复杂（底层模块升级，会牵动上层依赖变动，更新不及时可能造成开发阻塞）；为了方便多个项目使用共同资源，于是将多个项目集成到一个仓库下，共享工程配置，同时又快捷的共享模块代码，在这种模式下，所有项目共享版本控制历史，促进代码共享和集中管理，也简化了依赖管理，项目成员在同一个仓库中协作，代码审查、问题跟踪和变更管理也变得更加方便，这种代码管理方式称为 Monorepo；</p>
+<p>以下图片为 MultiRepo 与 Monorepo 方式的对比：</p>
+<p><img src="/./images/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F/01.png" alt="MultiRepo 与 Monorepo 方式的对比"></p>
+<p>以下图片为以上三种模式演进的对比：</p>
+<p><img src="/./images/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F/02.jpg" alt="MultiRepo 与 Monorepo 方式的对比"></p>
+<p>在以往的开发方式中，安装依赖包一般使用 npm、yarn、cnpm，但还有 pnpm，其为一个老牌的 node.js 包管理器，支持 npm 的所有功能，完全足以替代 npm。它采用全局存储，每个项目内部使用了硬连接，会比以往的包管理器省空间，安装速度也快。而最重要的是，pnpm 是支持 Monorepo 的，也就是说，全局安装了 pnpm 包管理器，也就可以直接在项目使用 Monorepo 代码管理方式了。</p>
+<h2 id="Monorepo-能解决的问题"><a href="#Monorepo-能解决的问题" class="headerlink" title="Monorepo 能解决的问题"></a>Monorepo 能解决的问题</h2><h3 id="幽灵依赖"><a href="#幽灵依赖" class="headerlink" title="幽灵依赖"></a>幽灵依赖</h3><p>在使用 npm&#x2F;yarn 安装依赖时，可能存在依赖提升，例如某个项目使用的依赖，明明没有在其 package.json 文件中声明，但却可以直接使用，这种现象便是“幽灵依赖”。</p>
+<p>举个例子：<strong>前端开发项目中引用了 A 库，A 库引用了 B 库，B 库引用了 C 库，由于 npm 的特性会将 B 和 C 进行扁平化处理，导致我们在项目制可以不安装 B 和 C 的情况下直接使用 B 和 C 库，也就是在项目中可以直接 <code>import bFn from &#39;B&#39;</code> 是允许的，但是在后续当 A 库更新以后不使用 B 库，那么我们开发的项目就会出现 B，C 库引用报错问题。</strong></p>
+<p>而 pnpm 采用了非扁平目录，在项目中是不能使用到其依赖包所依赖的包，避免了幽灵依赖问题。</p>
+<h3 id="依赖安装时间过长"><a href="#依赖安装时间过长" class="headerlink" title="依赖安装时间过长"></a>依赖安装时间过长</h3><p>在以往项目中，如果项目所需要的依赖过多，那么重新给项目 install 时，其时间可能耗时，况且当多个项目都安装依赖，其等待会更痛苦。而在 Monorepo 中，虽然每个项目都有自己的 package.json 依赖列表，但是在 pnpm 操作下，可以将相同版本的依赖提升到 Monorepo 的根目录下，减少冗余依赖的安装。并且 pnpm 实现全局缓存，硬连接包可以实现空间节省、安装快速</p>
+<h3 id="构建打包耗时长"><a href="#构建打包耗时长" class="headerlink" title="构建打包耗时长"></a>构建打包耗时长</h3><p>多个项目在构建任务存在依赖时，往往是串行构建或者全量构建，导致构建时间较长；而 Monorepo 采用增量构建，也可以将串行构建优化成并行构建。</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>起手一个项目根目录 monorepo-demo，然后 monorepo-demo 根目录下创建一个 packages（文件夹名称随意）目录，我平常将组件库、工具库、图标库、脚手架等基建形态类的项目放在 packages 文件夹中，再接着 monorepo-demo 根目录下创建 apps 目录，一般放业务系统常规相关的内容；这里初步将项目集中化并根据不同作用分离.</p>
+<p>接着，在 packages 目录下创建所需的目录，例如 cli 目录存放脚手架，ui 目录存放 UI 库，tools 目录作为工具库，echarts 目录存放图表</p>
+<p>然后，在 apps 目录下创建相关项目，例如 dashboard 目录存放可视化大屏项目，又或者在最开头举得例子里，要做后端管理系统和前台展示系统，那么就创建两个目录: backend、front，用于存放两个项目。</p>
+<p>大概目录如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">|——monorepo-demo</span><br><span class="line">        |——packages</span><br><span class="line">        |     |——cli</span><br><span class="line">        |     |——ui</span><br><span class="line">        |     |——tools</span><br><span class="line">        |——apps</span><br><span class="line">            |——front</span><br><span class="line">            |——backend</span><br></pre></td></tr></table></figure>
+
+<p>接着，在 monorepo-demo 根目录下创建 package.json，这里做一些基础配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// monorepo-demo 目录下的 package.json</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;monorepo-demo&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>而在子项目或者工具库目录中，也应该创建一个 package.json 文件，例如在 packages&#x2F;tools 目录中所对应的 package.json 内容为：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// packages/tools 目录下的 package.json</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@demo/tools&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>在需要作为用途的子项目目录下创建好对应的 package.json 文件后，项目该使用 Monorepo 来管理子包的，首先在 monorepo-demo 项目根目录下创建 <code>pnpm-workspace.yaml</code> 文件，接着在这个文件中定义哪些项目属于子包，这也是告知 Monorepo 在扫描时，需要扫描哪些包：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">packages:</span><br><span class="line">  - &quot;packages/*&quot;</span><br><span class="line">  - &quot;apps/*&quot;</span><br></pre></td></tr></table></figure>
+
+<p>如果根据上面的目录创建了五个子项目并写好了对应的 package.json 文件，那么在 monorepo-demo 项目根目录下执行命令行： <code>pnpm i</code>，就会在控制台看到整个项目域下有 6 个作用包。</p>
+<p><img src="/./images/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F/03.jpg" alt="pnpm i 后提示"></p>
+<p>同时，monorepo-demo 根目录下会新建一个 pnpm-lock.yaml ，打开后，可以看到类似下面的内容：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">lockfileVersion:</span> <span class="string">&#x27;6.0&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">settings:</span></span><br><span class="line">  <span class="attr">autoInstallPeers:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">excludeLinksFromLockfile:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="attr">importers:</span></span><br><span class="line"></span><br><span class="line">  <span class="string">.:</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="attr">apps/backend:</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="attr">apps/front:</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="attr">packages/cli:</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="attr">packages/tools:</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="attr">packages/ui:</span> &#123;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>数一数 importers 下确实会有 6 个。</p>
+<p>那么在项目中如何使用其他子包的项目呢？例如在 apps&#x2F;front 项目需要使用 packages&#x2F;tools 暴露的方法，这里先将 packages&#x2F;tools 项目的 package.json 文件改动配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// packages/tools 下的 package.json 文件</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@demo/tools&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;module&quot;</span><span class="punctuation">,</span> <span class="comment">// 需要设置为 module，否则会报错</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./index.js&quot;</span><span class="punctuation">,</span> <span class="comment">// 指定入口</span></span><br><span class="line"></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 packages&#x2F;tools 目录下创建一个 index.js 文件，并指定要暴露的方法，例如暴露 packages&#x2F;tools 项目中关于 common 文件夹所提供的方法，首先目录结构为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// packages/tools 的目录结构</span><br><span class="line">|——packages</span><br><span class="line">      |——tools</span><br><span class="line">           |——packages.json</span><br><span class="line">           |——index.js // 入口文件</span><br><span class="line">           |——common // 目录</span><br><span class="line">                |——test.js // 方法所在的文件</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// test.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">getNum</span> = (<span class="params">num</span>) =&gt; num * <span class="number">2</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js 入口文件暴露所有方法</span></span><br><span class="line"><span class="keyword">export</span> * <span class="keyword">from</span> <span class="string">&#x27;./common/test.js&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在 apps&#x2F;front 项目下的 package.json 文件中引入 packages&#x2F;tools 的包。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// apps/front 的 package.json 文件</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@demo/front&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./index.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;module&quot;</span><span class="punctuation">,</span> <span class="comment">// 需要设置为 module，否则会报错</span></span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;@demo/tools&quot;</span><span class="punctuation">:</span> <span class="string">&quot;workspace:*&quot;</span> <span class="comment">// 这里涉及版本号的问题，设置 workspace:* 是为了确定多版本的统一；设置后，会从你的当前工程目录下去创建一个软连接来引用 packages/tools 的包</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line">````</span><br><span class="line">接着，回到 monorepo-demo 根目录，输入 `pnpm i` 命令行安装依赖，在其  monorepo-demo 根目录和 apps/front 根目录下会出现 node_modules 依赖包，而展开 apps/front 中的 node_modules 包，会发现一个 @demo 的目录，其内部还会有一个 tools 的文件夹。</span><br><span class="line"></span><br><span class="line">然后在 apps/front 根目录下创建一个 index.js，然后写入以下内容：</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line"><span class="comment">// index.js</span></span><br><span class="line">import <span class="punctuation">&#123;</span> getNum <span class="punctuation">&#125;</span> from <span class="string">&quot;@demo/tools&quot;</span>;</span><br><span class="line"></span><br><span class="line">console.log(getNum(<span class="number">2</span>));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最后 cmd 进入 apps&#x2F;front 根目录下，输入命令行 <code>node index</code>，控制台便会输出 4，这一些步骤简单演示了子包如何引入其他子包。</p>
+<p>但这最后一步的执行 apps&#x2F;front 项目的脚本需要进入到 apps&#x2F;front 根目录下才能使用，如果每一个项目都需要进入到对应的项目根目录才能去执行脚本，这让项目运行步骤很繁琐。在 pnpm 中，提供了项目根目录执行子项目脚本的方案，还是以 monorepo-demo 为例子，首先在 apps&#x2F;front 根目录下的 package.json 加入以下脚本:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// apps/front 的 package.json 文件</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  ... <span class="comment">// 其他配置</span></span><br><span class="line">  <span class="comment">// 加入脚本</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node index&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在 monorepo-demo 根目录下的 package.json 文件加入脚本：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// monorepo-demo 的 package.json 文件</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  ... <span class="comment">// 其他配置</span></span><br><span class="line">  <span class="comment">// 加入脚本</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;dev:front&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npm run dev --prefix apps/front&quot;</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>最后进入 monorepo-demo 根目录，输入 <code>pnpm dev:front</code> 或者 <code>npm run dev:front</code> 命令皆可实现 apps&#x2F;front 脚本的运行。</p>
+<p><img src="/./images/pnpm%E4%BD%BF%E7%94%A8Monorepo%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F/04.jpg" alt="脚本运行"></p>
+<p>至此，pnpm 使用 Monorepo 的代码管理模式入门到此为止，还有更加强大的功能后续再深入。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/pnpm/" rel="tag"># pnpm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/11/02/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%89%8B%E6%9C%BA%E5%8F%B7%E5%BF%AB%E6%8D%B7%E7%99%BB%E5%BD%95%E6%96%B9%E6%A1%88/" rel="next" title="小程序手机号快捷登录方案">
+                <i class="fa fa-chevron-left"></i> 小程序手机号快捷登录方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/img/huaji.gif"
+                alt="SanMaoFan" />
+            
+              <p class="site-author-name" itemprop="name">SanMaoFan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">65</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-Monorepo-%E7%9A%84%E6%BC%94%E8%BF%9B"><span class="nav-number">2.</span> <span class="nav-text">关于 Monorepo 的演进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Monorepo-%E8%83%BD%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">Monorepo 能解决的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%BD%E7%81%B5%E4%BE%9D%E8%B5%96"><span class="nav-number">3.1.</span> <span class="nav-text">幽灵依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85%E6%97%B6%E9%97%B4%E8%BF%87%E9%95%BF"><span class="nav-number">3.2.</span> <span class="nav-text">依赖安装时间过长</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%89%93%E5%8C%85%E8%80%97%E6%97%B6%E9%95%BF"><span class="nav-number">3.3.</span> <span class="nav-text">构建打包耗时长</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5"><span class="nav-number">4.</span> <span class="nav-text">实践</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2025</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanMaoFan</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
