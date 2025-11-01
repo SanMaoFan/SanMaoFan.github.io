@@ -115,20 +115,36 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="SanMaoFan&#39;s Blog">
-<meta property="og:url" content="https://sanmaofan.github.io/tags/IOT/index.html">
+  <meta name="description" content="准备环节首先需要在电脑安装 python 环境，前往 python 官网 下载 python 环境并进行安装，推荐下载版本在 3.9.0 或以上。 以下为本次使用到的 ESP32 开发板，要准备的资料是以该板子为基础而收集的。  接着要找到关于开发板的芯片驱动，其芯片驱动主要用于 USB 转串口通信，这个需要根据开发板的具体规格来查找对应驱动，不然就算安装好驱动，将板子连接到电脑 USB 口后，却">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Thonny给ESP32刷MicroPython环境">
+<meta property="og:url" content="https://sanmaofan.github.io/2025/11/01/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/index.html">
 <meta property="og:site_name" content="SanMaoFan&#39;s Blog">
+<meta property="og:description" content="准备环节首先需要在电脑安装 python 环境，前往 python 官网 下载 python 环境并进行安装，推荐下载版本在 3.9.0 或以上。 以下为本次使用到的 ESP32 开发板，要准备的资料是以该板子为基础而收集的。  接着要找到关于开发板的芯片驱动，其芯片驱动主要用于 USB 转串口通信，这个需要根据开发板的具体规格来查找对应驱动，不然就算安装好驱动，将板子连接到电脑 USB 口后，却">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/001.jpg">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/002.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/003.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/004.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/005.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/006.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/007.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/008.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/009.png">
+<meta property="article:published_time" content="2025-11-01T05:11:02.000Z">
+<meta property="article:modified_time" content="2025-11-01T06:30:30.749Z">
 <meta property="article:author" content="SanMaoFan">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="MicroPython">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/001.jpg">
 
 
 
 
 
 
-  <link rel="canonical" href="https://sanmaofan.github.io/tags/IOT/"/>
+  <link rel="canonical" href="https://sanmaofan.github.io/2025/11/01/使用Thonny给ESP32刷microPython环境/"/>
 
 
 
@@ -138,7 +154,7 @@
   };
 </script>
 
-  <title>标签: IOT | SanMaoFan's Blog</title>
+  <title>使用Thonny给ESP32刷MicroPython环境 | SanMaoFan's Blog</title>
   
 
 
@@ -187,7 +203,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -232,7 +248,7 @@
         
         
           
-          <li class="menu-item menu-item-tags menu-item-active">
+          <li class="menu-item menu-item-tags">
     <a href="/tags/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
   </li>
@@ -304,78 +320,216 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>IOT<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sanmaofan.github.io/2025/11/01/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanMaoFan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/huaji.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SanMaoFan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2025/10/29/MQTT%E5%85%A5%E9%97%A8/" itemprop="url">
-              
-                <span itemprop="name">MQTT 入门</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">使用Thonny给ESP32刷MicroPython环境
+              
+            
+          </h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2025-10-29T14:52:11+08:00"
-              content="2025-10-29" >
-          10-29
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
 
-    </header>
-  </article>
+            
+            
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2025-11-01 13:11:02 / 修改时间：14:30:30" itemprop="dateCreated datePublished" datetime="2025-11-01T13:11:02+08:00">2025-11-01</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/IOT/" itemprop="url" rel="index"><span itemprop="name">IOT</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="准备环节"><a href="#准备环节" class="headerlink" title="准备环节"></a>准备环节</h2><p>首先需要在电脑安装 python 环境，前往 <a target="_blank" rel="noopener" href="https://www.python.org/">python 官网</a> 下载 python 环境并进行安装，推荐下载版本在 3.9.0 或以上。</p>
+<p>以下为本次使用到的 ESP32 开发板，要准备的资料是以该板子为基础而收集的。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/001.jpg" alt="准备烧录的板子"></p>
+<p>接着要找到关于开发板的芯片驱动，其芯片驱动主要用于 USB 转串口通信，这个需要根据开发板的具体规格来查找对应驱动，不然就算安装好驱动，将板子连接到电脑 USB 口后，却无法找到开发板的串口；本人的板子所使用的是 CH340 驱动，这是 <a target="_blank" rel="noopener" href="https://www.wch.cn/downloads/CH341SER_EXE.html">CH340 下载地址</a></p>
+<p>然后是要开发的 IDE 工具，这里推荐开源并较简单使用的 Thonny 软件，推荐下载 <a target="_blank" rel="noopener" href="https://github.com/thonny/thonny/releases/tag/v4.0.2">Thonny 4.0.2 版本</a>，接着去往 MicroPython 官网下载所需要的 <a target="_blank" rel="noopener" href="https://micropython.org/download/?port=esp32">ESP32 固件</a>，具体下载什么固件，要根据自己购买的板子规格来确定，本人所使用的固件是 <a target="_blank" rel="noopener" href="https://micropython.org/download/ESP32_GENERIC/">ESP32 &#x2F; WROOM</a>，根据板子规格找到对应的 .bin 文件进行下载。</p>
+<p>最后需要找一根板子插口对应的电脑 USE 连接线，用于开发板与电脑的连接，接下来便可以开始烧录开发板的环境。</p>
+<h2 id="安装-CH340-驱动"><a href="#安装-CH340-驱动" class="headerlink" title="安装 CH340 驱动"></a>安装 CH340 驱动</h2><p>首先要做的是安装 CH340 驱动，其主要作用是当开发板连接上电脑 USB 接口后，能在设备管理器中看到开发板，打开下载好的 CH340 驱动程序，点击安装即可。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/002.png" alt="安装 CH340 驱动"></p>
+<p>安装完毕后，使用数据线连接上开发板与电脑，接着可在电脑中的设备管理器 &gt; 端口(COM 和 LPT) 中看到连接上的开发板。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/003.png" alt="连接的开发板"></p>
+<p>如果查看不到已连接的开发板，需要再次确认是否安装了正确的驱动。</p>
+<h2 id="使用-Thonny-烧录固件"><a href="#使用-Thonny-烧录固件" class="headerlink" title="使用 Thonny 烧录固件"></a>使用 Thonny 烧录固件</h2><p>打开 Thonny 软件，点击右下角的环境，并点击 <code>Configure interpreter...</code></p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/004.png" alt="点击 Thonny 软件右下角并配置环境"></p>
+<p>然后从上往下依次选择解释器、开发板的串口，最后点击 install or update MicroPython。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/005.png" alt="解释器配置界面"></p>
+<p>进入 install or update MicroPython 窗口中，从上往下依次选择开发板串口、要烧录的固件的存储位置，最后点击 install</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/006.png" alt="选择烧录固件"></p>
+<p>最后等待其固件烧录完成即可。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/007.png" alt="烧录固件完成"></p>
+<p>接着回到 Thonny 开始界面，右下角环境会自动切换到开发板的串口，并且控制台会进入刚刚烧录完的 MicroPython 环境。如果控制台未进入 MicroPython，那么是固件没有烧录成功，需要确认烧录的固件是否符合开发板硬件环境。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/008.png" alt="自动切换到烧录的环境"></p>
+<p>在控制台输入 help() 命令便可以进行交互。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7microPython%E7%8E%AF%E5%A2%83/009.png" alt="控制台交互"></p>
+<p>至此，ESP32 开发板烧录 MicroPython 环境便完成了。</p>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ESP32/" rel="tag"># ESP32</a>
+          
+            <a href="/tags/MicroPython/" rel="tag"># MicroPython</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/10/29/MQTT%E5%85%A5%E9%97%A8/" rel="next" title="MQTT 入门">
+                <i class="fa fa-chevron-left"></i> MQTT 入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -396,8 +550,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -416,7 +579,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-count">70</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -520,7 +683,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">35</span>
+                      
+                    
+                    <span class="site-state-item-count">36</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -546,6 +711,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E7%8E%AF%E8%8A%82"><span class="nav-number">1.</span> <span class="nav-text">准备环节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-CH340-%E9%A9%B1%E5%8A%A8"><span class="nav-number">2.</span> <span class="nav-text">安装 CH340 驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Thonny-%E7%83%A7%E5%BD%95%E5%9B%BA%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">使用 Thonny 烧录固件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -677,6 +858,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
 
   
 
