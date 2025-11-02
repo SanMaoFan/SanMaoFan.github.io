@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="参考文章：  使用VS Code开发uni-app保姆级教程，添加插件并解决所遇问题 uniapp在app下使用mqtt协议！！！支持vue3 uniapp中使用mqtt.js的踩坑记录 npm 中的 MQTT 介绍文档 使用 ESP32 + MicroPython 连接 【MQTT】在ESP32平台上用microPython实现MQTT通信 ESP32连接MQTT  项目介绍本文章将使用 uni">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用MQTT通信微信小程序与ESP32">
+<meta property="og:url" content="https://sanmaofan.github.io/2025/11/02/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/index.html">
+<meta property="og:site_name" content="SanMaoFan&#39;s Blog">
+<meta property="og:description" content="参考文章：  使用VS Code开发uni-app保姆级教程，添加插件并解决所遇问题 uniapp在app下使用mqtt协议！！！支持vue3 uniapp中使用mqtt.js的踩坑记录 npm 中的 MQTT 介绍文档 使用 ESP32 + MicroPython 连接 【MQTT】在ESP32平台上用microPython实现MQTT通信 ESP32连接MQTT  项目介绍本文章将使用 uni">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/001.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/002.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/003.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/004.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/005.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/006.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/007.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/008.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/009.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/010.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/011.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/012.jpg">
+<meta property="article:published_time" content="2025-11-02T02:14:23.000Z">
+<meta property="article:modified_time" content="2025-11-02T13:44:51.196Z">
+<meta property="article:author" content="SanMaoFan">
+<meta property="article:tag" content="MQTT">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="MicroPython">
+<meta property="article:tag" content="uni-app">
+<meta property="article:tag" content="微信小程序">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sanmaofan.github.io/images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/001.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://sanmaofan.github.io/2025/11/02/使用MQTT通信微信小程序与ESP32/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>使用MQTT通信微信小程序与ESP32 | SanMaoFan's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SanMaoFan's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sanmaofan.github.io/2025/11/02/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanMaoFan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/huaji.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SanMaoFan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用MQTT通信微信小程序与ESP32
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2025-11-02 10:14:23 / 修改时间：21:44:51" itemprop="dateCreated datePublished" datetime="2025-11-02T10:14:23+08:00">2025-11-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/IoT/" itemprop="url" rel="index"><span itemprop="name">IoT</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/IoT/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_67382638/article/details/149907336">使用VS Code开发uni-app保姆级教程，添加插件并解决所遇问题</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011096919/article/details/145837439">uniapp在app下使用mqtt协议！！！支持vue3</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bokemoqi/p/18207721">uniapp中使用mqtt.js的踩坑记录</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/mqtt#connect">npm 中的 MQTT 介绍文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.emqx.com/zh/cloud/latest/connect_to_deployments/esp32_with_micropython.html">使用 ESP32 + MicroPython 连接</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/slimmm/article/details/109048247">【MQTT】在ESP32平台上用microPython实现MQTT通信</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/smqh-bokeyuan/p/17529582.html">ESP32连接MQTT</a></li>
+</ul>
+<h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>本文章将使用 uni-app(vue3版本) 开发微信小程序，并通过 MQTT 技术与烧录了 MicroPython 环境的 ESP32 开发板进行通信，目的是实现微信小程序发布信息控制 ESP32 点亮开发板上的 LED，其中，MQTT 的代理服务由 EMQX Edge 工具提供，此次的项目将在局域网内进行。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>关于 EMQX Edge 工具的简单使用以及 ESP32 烧录固件 ，需要参照之前写的文章，<a href="/2025/10/29/MQTT%E5%85%A5%E9%97%A8/" title="MQTT 入门">MQTT 入门</a>、<a href="/2025/11/01/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7MicroPython%E7%8E%AF%E5%A2%83/" title="使用Thonny给ESP32刷MicroPython环境">使用Thonny给ESP32刷MicroPython环境</a></p>
+<p>这里介绍使用 vsCode 开发 uni-app 的步骤，这里使用的 uni-app 项目是 vue3 + ts 的模版，如果不想要此模版，也可前往 <a target="_blank" rel="noopener" href="https://uniapp.dcloud.net.cn/quickstart-cli.html#%E5%88%9B%E5%BB%BAuni-app">uni-app 官网</a> 查看其他模版创建方式，关于初始化 vue3 + ts 模版的 uni-app 项目，有以下几种创建方式供选择。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方式一：使用 npx</span></span><br><span class="line"></span><br><span class="line">npx degit dcloudio/uni-preset-vue<span class="meta">#vite-ts 项目名称</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式二：通过 git 克隆</span></span><br><span class="line"></span><br><span class="line">git clone -b vite-ts https:<span class="comment">//gitee.com/dcloud/uni-preset-vue.git</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 方式三：前往 gitee 网站上下载压缩包</span></span><br><span class="line"></span><br><span class="line">https:<span class="comment">//gitee.com/dcloud/uni-preset-vue/repository/archive/vite-ts.zip</span></span><br></pre></td></tr></table></figure>
+
+<p>创建好项目后，用 vsCode 打开该项目，接着在 vsCode 控制台进行安装依赖包，例如使用 <code>pnpm install</code>，安装完依赖后，进入该项目的 src 目录，找到 manifest.json 文件，将这个文件中的 <code>appid</code> 设置为微信小程序的 <code>AppID(小程序ID)</code>，接着在 vsCode 控制台中输入启动微信小程序项目的命令，具体以项目中的 package.json 文件中的启动命令为准，例如我创建的项目启动微信小程序的命令为 <code>pnpm dev:mp-weixin</code>。接着便会在项目根目录中生成一个 dist 文件夹，这个文件夹中的 dev&gt;mp-weixin 路径便是开发环境测试用的微信小程序项目，需要使用微信开发者工具去打开，如果没有微信小程序开发者工具，需前往 <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html">微信官网文档</a> 进行下载。微信开发者工具导入开发环境生成的项目后便可以查看到项目内容，其项目结构与原生小程序项目结构很像，在 vsCode 工具中修改内容时，微信开发者工具会进行热更新，但如果其代码逻辑没有生效，则需要点击微信开发者工具的编译按钮进行刷新。因为此次项目是使用局域网进行测试的，所以需要更改微信开发者工具中关于请求域名的配置，点击工具右上角的<code>详情</code>按钮，进入<code>本地设置</code>选项卡，勾选下面的<code>不校验合法域名、web-view(业务域名)、TLS版本以及 HTTPS 证书</code>。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/001.png" alt="修改微信开发者工具的配置"></p>
+<h2 id="uni-app-接入-MQTT-技术"><a href="#uni-app-接入-MQTT-技术" class="headerlink" title="uni-app 接入 MQTT 技术"></a>uni-app 接入 MQTT 技术</h2><p>首先需要使用 EMQX Edge 工具开启 MQTT 代理，在之前的 <a href="/2025/10/29/MQTT%E5%85%A5%E9%97%A8/" title="MQTT 入门">MQTT 入门</a> 文章介绍过该工具的启动以及在浏览器中开启连接服务，并订阅相关主题的步骤，这里使用启动代理时默认的配置、浏览器中连接服务时的相关配置作为参考，启动代理服务时默认配置如下：</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/002.png" alt="启动 MQTT 代理服务时的默认配置"></p>
+<p>浏览器连接代理服务默认配置如下：</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/003.png" alt="浏览器连接代理服务时的默认配置"></p>
+<p>接着在浏览器中，订阅 <code>testtopic6</code> 主题。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/004.png" alt="订阅 testtopic6 主题"></p>
+<p>在 uni-app 中需要先安装 MQTT 依赖，这里使用的是 MQTT.js 工具，这是<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/mqtt"> npm 官网关于此工具的介绍</a>，这里需要注意的是，在此工具的文档尾部有关于 MQTT.js 在微信小程序中使用的推荐语法，也就是：</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/005.png" alt="MQTT.js 在微信小程序中使用的介绍"></p>
+<p>可是在当前 2025 年下载的版本(v5.14.1)中，使用了此推荐，会在微信开发者工具中提示 <code>Cannot read property &#39;language&#39; of undefined</code>，根据这条提示前往 <a target="_blank" rel="noopener" href="https://github.com/mqttjs/MQTT.js">MQTT.js 的 github 页面</a>，进行 Issues 搜索，会出现一条相关的检索条目。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/006.png" alt="Issues 中搜索 Cannot read property &#39;language&#39; of undefined"></p>
+<p>进入此条目中，会推荐到<a target="_blank" rel="noopener" href="https://github.com/mqttjs/MQTT.js/issues/1919">另一个 Issues</a> 中，在对话中，可以找到关于 MQTT.js 替换到 v4.1.0 版本后，小程序可以正常打包和使用，于是此项目采用的是 MQTT.js v4.1.0 版本，安装好依赖后，还需要前往项目的 src&gt;main.ts 文件中加入以下代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// #ifndef MP</span></span><br><span class="line"><span class="comment">// 处理 wx.connectSocket promisify 兼容问题，强制返回 SocketTask</span></span><br><span class="line">uni.<span class="property">connectSocket</span> = (<span class="keyword">function</span>(<span class="params">connectSocket</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">function</span>(<span class="params">options</span>) &#123;</span><br><span class="line">		<span class="variable language_">console</span>.<span class="title function_">log</span>(options)</span><br><span class="line">		options.<span class="property">success</span> = options.<span class="property">success</span> || <span class="keyword">function</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line">		<span class="keyword">return</span> connectSocket.<span class="title function_">call</span>(<span class="variable language_">this</span>, options)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)(uni.<span class="property">connectSocket</span>)</span><br><span class="line"><span class="comment">// #endif</span></span><br></pre></td></tr></table></figure>
+
+<p>先前创建 uni-app 项目时，项目中的 pages.json 默认采用 pages&#x2F;index&#x2F;index 文件作为首页，所以将以下代码覆写在此文件中。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">size</span>=<span class="string">&quot;default&quot;</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;handlePublish&quot;</span>&gt;</span>发送信息<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span> <span class="attr">lang</span>=<span class="string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">import</span> &#123; reactive &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">import</span> mqtt <span class="keyword">from</span> <span class="string">&#x27;mqtt/dist/mqtt&#x27;</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="comment">// 要订阅的主题</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> topicList = <span class="title function_">reactive</span>([<span class="string">&#x27;testtopic&#x27;</span>])</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="comment">// 连接 mqtt</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">const</span> client = <span class="keyword">new</span> mqtt.<span class="title function_">connect</span>(<span class="string">&#x27;wx://192.168.31.63&#x27;</span>,&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">clientId</span>: <span class="string">&#x27;uniapp-client&#x27;</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">path</span>: <span class="string">&#x27;/mqtt&#x27;</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">keepalive</span>: <span class="number">60</span>,</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="attr">port</span>: <span class="number">8083</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="comment">// 监听事件</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">client.<span class="title function_">on</span>(<span class="string">&#x27;connect&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;连接成功&#x27;</span>)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="comment">// 订阅主题，可以订阅多个主题</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  client.<span class="title function_">subscribe</span>(topicList, <span class="function">() =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`订阅了主题: <span class="subst">$&#123;topicList.join(<span class="string">&#x27;,&#x27;</span>)&#125;</span>`</span>)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="comment">// 监听消息</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">client.<span class="title function_">on</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">topic, payload</span>) =&gt;</span> &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="comment">// 进行数据转义</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">const</span> decoder = <span class="keyword">new</span> <span class="title class_">TextDecoder</span>(<span class="string">&#x27;utf-8&#x27;</span>)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">const</span> str = decoder.<span class="title function_">decode</span>(payload)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="keyword">try</span>&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="keyword">const</span> jsonObj = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(str)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;<span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleString(<span class="string">&quot;zh&quot;</span>)&#125;</span>有一条新的消息，来自<span class="subst">$&#123;topic&#125;</span>主题 ;内容为：&#125;`</span>, jsonObj)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;<span class="keyword">catch</span>(e)&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;转换失败的数据：&quot;</span>, str)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;转换数据报错：&#x27;</span>, e)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="comment">// 发送信息</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="keyword">function</span> <span class="title function_">handlePublish</span>(<span class="params"></span>)&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  <span class="comment">// 往特定的主题发布信息</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">  client.<span class="title function_">publish</span>(<span class="string">&#x27;testtopic6&#x27;</span>, <span class="string">&#x27;&#123;&quot;operation&quot;: 1 &#125;&#x27;</span>, &#123;<span class="attr">qos</span>: <span class="number">0</span>, <span class="attr">retain</span>: <span class="literal">false</span>&#125;)</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>然后在微信开发者工具中点击“发送信息”按钮，其 EMQX Edge 的浏览器服务便会接收到该主题的信息。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/007.png" alt="EMQX Edge 浏览器服务收到信息"></p>
+<h2 id="ESP32-接入-MQTT-技术"><a href="#ESP32-接入-MQTT-技术" class="headerlink" title="ESP32 接入 MQTT 技术"></a>ESP32 接入 MQTT 技术</h2><p>首先使用数据线连接 ESP32 开发板与电脑，并打开 Thonny 工具切换到 ESP32 开发板的串口。本次开发的 MicroPython 代码所要实现的功能是：ESP32 连接 WIFI 后再进行 MQTT 服务的连接，连接 MQTT 服务后订阅信息，并且根据订阅信息控制 ESP32 开发板上的 LED 灯亮灭。</p>
+<p>关于本人手上的 ESP32 开发板中有一颗 LED 灯，其引脚为 D2，所以可以使用 Pin(2, Pin.OUT) 代码来定义该引脚，接着再控制此引脚的高低电平。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/008.png" alt="D2 引脚的 LED 灯"></p>
+<p>以下是实现功能的具体代码，其中关于 machine、network、umqtt.simple、json、time 模块都是 MicroPython 环境中自带的模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 引入引脚模块</span></span><br><span class="line"><span class="keyword">from</span> machine <span class="keyword">import</span> Pin</span><br><span class="line"><span class="comment"># 导入网络模块</span></span><br><span class="line"><span class="keyword">import</span> network</span><br><span class="line"><span class="comment"># 引入 mqtt 模块</span></span><br><span class="line"><span class="keyword">from</span> umqtt.simple <span class="keyword">import</span> MQTTClient</span><br><span class="line"><span class="comment"># 引入 json 模块，为了转接收信息的格式</span></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="comment"># 引入时间模块，为了设置定时</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># WIFI 账号密码</span></span><br><span class="line">ssid = <span class="string">&quot;这是假的WIFI&quot;</span></span><br><span class="line">pwd = <span class="string">&quot;609609hhh*&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># MQTT 连接信息</span></span><br><span class="line">SERVER = <span class="string">&quot;192.168.31.63&quot;</span></span><br><span class="line">PORT = <span class="string">&quot;1883&quot;</span></span><br><span class="line">CLIENT_ID = <span class="string">&quot;microPython_client_123&quot;</span></span><br><span class="line">TOPIC = <span class="string">&quot;testtopic&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化引脚</span></span><br><span class="line">d2 = Pin(<span class="number">2</span>, Pin.OUT)</span><br><span class="line">d2.value(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">wifi_connect_common</span>(<span class="params">ssid, pwd</span>):</span><br><span class="line">    <span class="comment"># 创建 WIFI 连接对象</span></span><br><span class="line">    wlan = network.WLAN(network.STA_IF)</span><br><span class="line">    <span class="comment"># 激活 wlan 接口，True 为激活，False 为关闭</span></span><br><span class="line">    wlan.active(<span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># 先断开连接，避免报错</span></span><br><span class="line">    wlan.disconnect()</span><br><span class="line">    <span class="comment"># 扫描允许访问的 SSID</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;扫描周围WIFI&quot;</span>, wlan.scan())</span><br><span class="line">    <span class="comment"># 连接 WIFI</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;正在连接 WIFI&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">    wlan.connect(ssid, pwd)</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> wlan.isconnected():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;.&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        time.sleep(<span class="number">0.2</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n连接 WIFI 成功！&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> wlan</span><br><span class="line"></span><br><span class="line"><span class="comment"># MQTT 连接服务</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">connect</span>():</span><br><span class="line">    client = MQTTClient(CLIENT_ID, SERVER, PORT)</span><br><span class="line">    client.connect()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;连接 MQTT 代理服务成功！&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> client</span><br><span class="line"></span><br><span class="line"><span class="comment"># MQTT 接收消息的回调</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">on_message</span>(<span class="params">topic, msg</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;当前收到的消息 <span class="subst">&#123;msg.decode()&#125;</span>，是来自 <span class="subst">&#123;topic.decode()&#125;</span> 主题&quot;</span>)</span><br><span class="line">        data = json.loads(msg.decode())</span><br><span class="line">        <span class="comment"># 判断接收消息中的数据</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="string">&quot;operation&quot;</span> <span class="keyword">in</span> data):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;operation 为 <span class="subst">&#123;data[<span class="string">&quot;operation&quot;</span>]&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span>(<span class="number">1</span> == data[<span class="string">&quot;operation&quot;</span>]):</span><br><span class="line">                <span class="comment"># 将引脚设置高电平，点亮 LED</span></span><br><span class="line">                d2.value(<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">elif</span>(<span class="number">0</span> == data[<span class="string">&quot;operation&quot;</span>]):</span><br><span class="line">                <span class="comment"># 将引脚设置低电平，熄灭 LED</span></span><br><span class="line">                d2.value(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;接收信息函数报错信息：<span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># MQTT 设置接收信息回调并订阅主题</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">subscribe</span>(<span class="params">client</span>):</span><br><span class="line">    client.set_callback(on_message)</span><br><span class="line">    client.subscribe(<span class="string">&quot;testtopic6&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># MQTT 发布信息</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">publish_msg</span>(<span class="params">client</span>):</span><br><span class="line">    client.publish(TOPIC, json.dumps(&#123;<span class="string">&quot;msg&quot;</span>: <span class="string">&quot;come from ESP32&quot;</span>&#125;).encode(<span class="string">&#x27;latin-1&#x27;</span>).decode(<span class="string">&#x27;unicode_escape&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定期检测 WIFI ，mqtt 重连操作</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">checkConnect</span>(<span class="params">wlan, client</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 判断 WIFI 是否断连</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> wlan.isconnected():</span><br><span class="line">            client.disconnect()</span><br><span class="line">            run()</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 等待 MQTT 信息</span></span><br><span class="line">            client.wait_msg()</span><br><span class="line">        <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;MQTT 错误：<span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="comment"># 断开 MQTT 连接</span></span><br><span class="line">            client.disconnect()</span><br><span class="line">            <span class="comment"># MQTT 重连</span></span><br><span class="line">            newClient = mqtt_connect()</span><br><span class="line">            checkConnect(wlan, newClient)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接 WIFI</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">wifi_connect</span>():</span><br><span class="line">    wlan = wifi_connect_common(ssid = ssid, pwd = pwd)</span><br><span class="line">    <span class="keyword">return</span> wlan</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接 MQTT</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mqtt_connect</span>():</span><br><span class="line">    client = connect()</span><br><span class="line">    subscribe(client)</span><br><span class="line">    <span class="comment"># 连接 MQTT 服务后先发布一条信息</span></span><br><span class="line">    publish_msg(client)</span><br><span class="line">    <span class="keyword">return</span> client</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行代码</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>():</span><br><span class="line">    wlan = wifi_connect()</span><br><span class="line">    client = mqtt_connect()</span><br><span class="line">    checkConnect(wlan, client)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行代码</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    run()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>写好代码后，便是将代码烧录到 ESP32 开发板，在 Thonny 工具中点击 <code>F5</code> 按键或者是点击 <code>Run current script(F5)</code> 按钮将程序烧录到开发板。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/009.png" alt="程序烧录"></p>
+<p>当烧录的程序初始化启动时，会发布一条信息到主题 <code>testtopic</code>，接着回到微信小程序，因为小程序端已经订阅了 <code>testtopic</code> 主题，所以刚刚 ESP32 所发送的信息会抵达小程序端。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/010.png" alt="小程序端收到 ESP32 信息"></p>
+<p>接着点击小程序端的“发送信息”的按钮，会 Thonny 控制台中看到接接收到的消息。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/011.png" alt="ESP32 接收到的消息"></p>
+<p>并且观察到 ESP32 开发板的 LED 被点亮(蓝色灯即为 MQTT 控制的 LED)。</p>
+<p><img src="/./images/%E4%BD%BF%E7%94%A8MQTT%E9%80%9A%E4%BF%A1%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EESP32/012.jpg" alt="ESP32 的 LED 灯被点亮"></p>
+<p>如果想要控制 LED 灯熄灭，只需要在小程序往 <code>testtopic6</code> 主题发送 <code>&#39;&#123;&quot;operation&quot;: 0 &#125;&#39;</code> 命令即可。</p>
+<p>至此，以上便是 微信小程序 使用 MQTT 控制 ESP32 开发板的例子。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MQTT/" rel="tag"># MQTT</a>
+          
+            <a href="/tags/ESP32/" rel="tag"># ESP32</a>
+          
+            <a href="/tags/MicroPython/" rel="tag"># MicroPython</a>
+          
+            <a href="/tags/uni-app/" rel="tag"># uni-app</a>
+          
+            <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag"># 微信小程序</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2025/11/01/%E4%BD%BF%E7%94%A8Thonny%E7%BB%99ESP32%E5%88%B7MicroPython%E7%8E%AF%E5%A2%83/" rel="next" title="使用Thonny给ESP32刷MicroPython环境">
+                <i class="fa fa-chevron-left"></i> 使用Thonny给ESP32刷MicroPython环境
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/img/huaji.gif"
+                alt="SanMaoFan" />
+            
+              <p class="site-author-name" itemprop="name">SanMaoFan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">71</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">38</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">项目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uni-app-%E6%8E%A5%E5%85%A5-MQTT-%E6%8A%80%E6%9C%AF"><span class="nav-number">3.</span> <span class="nav-text">uni-app 接入 MQTT 技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESP32-%E6%8E%A5%E5%85%A5-MQTT-%E6%8A%80%E6%9C%AF"><span class="nav-number">4.</span> <span class="nav-text">ESP32 接入 MQTT 技术</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2025</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanMaoFan</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
