@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Agent 架构Agent(智能体)是指能够自主感知环境、推理并采取行动以完成目标的 AI 系统。与传统的“一问一答”式大模型调用不同，Agent 可以连续地按编排步骤执行，既可以调用工具，也可以协调其他 Agent 一起完成复杂的任务。Agent 架构是指 Agent 系统中各个组件的组织形式，这决定了 Agent 的能力边界、可靠性、灵活性和适用场景。  Agent 的工作方式本质是一个循环(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI Agent 的架构">
+<meta property="og:url" content="https://sanmaofan.github.io/2026/08/30/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/index.html">
+<meta property="og:site_name" content="SanMaoFan&#39;s Blog">
+<meta property="og:description" content="Agent 架构Agent(智能体)是指能够自主感知环境、推理并采取行动以完成目标的 AI 系统。与传统的“一问一答”式大模型调用不同，Agent 可以连续地按编排步骤执行，既可以调用工具，也可以协调其他 Agent 一起完成复杂的任务。Agent 架构是指 Agent 系统中各个组件的组织形式，这决定了 Agent 的能力边界、可靠性、灵活性和适用场景。  Agent 的工作方式本质是一个循环(">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/001.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/002.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/003.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/004.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/005.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/006.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/007.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/008.png">
+<meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/009.png">
+<meta property="article:published_time" content="2026-08-30T05:00:21.000Z">
+<meta property="article:modified_time" content="2026-09-06T14:11:44.563Z">
+<meta property="article:author" content="SanMaoFan">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/001.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://sanmaofan.github.io/2026/08/30/AI-AGENT的架构/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>AI Agent 的架构 | SanMaoFan's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SanMaoFan's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sanmaofan.github.io/2026/08/30/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanMaoFan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/huaji.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SanMaoFan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AI Agent 的架构
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2026-08-30 13:00:21" itemprop="dateCreated datePublished" datetime="2026-08-30T13:00:21+08:00">2026-08-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2026-09-06 22:11:44" itemprop="dateModified" datetime="2026-09-06T22:11:44+08:00">2026-09-06</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Agent-架构"><a href="#Agent-架构" class="headerlink" title="Agent 架构"></a>Agent 架构</h2><p>Agent(智能体)是指能够<code>自主感知环境、推理并采取行动以完成目标的 AI 系统</code>。与传统的“一问一答”式大模型调用不同，Agent 可以连续地按编排步骤执行，既可以调用工具，也可以协调其他 Agent 一起完成复杂的任务。Agent 架构是指 Agent 系统中各个组件的组织形式，这决定了 Agent 的能力边界、可靠性、灵活性和适用场景。</p>
+<p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/001.png" alt="Agent 的本质"></p>
+<p>Agent 的工作方式本质是一个循环(Loop): 感知当前状态，推理下一步，执行行动，再次感知…直到任务完成。不同架构的差异，就在于如何组织和扩展这个基本循环。</p>
+<p>AI Agent 架构中，最主要的核心是 LLM 大模型，这是 AI Agent 的“大脑”，负责理解自然语言、进行推理和生成响应。</p>
+<p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/002.png" alt="AI Agent 的大脑"></p>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>语言理解</td>
+<td>理解用户输入的意图和上下文</td>
+</tr>
+<tr>
+<td>推理能力</td>
+<td>进行逻辑推理、数学计算、因果分析</td>
+</tr>
+<tr>
+<td>知识生成</td>
+<td>基于训练数据生成连贯的文本响应</td>
+</tr>
+<tr>
+<td>代码能力</td>
+<td>理解和生成编程代码</td>
+</tr>
+<tr>
+<td>多轮对话</td>
+<td>维持对话上下文，进行连续交互</td>
+</tr>
+</tbody></table>
+<h2 id="架构一：单-Agent-循环（Single-Agent-Loop）"><a href="#架构一：单-Agent-循环（Single-Agent-Loop）" class="headerlink" title="架构一：单 Agent 循环（Single Agent Loop）"></a>架构一：单 Agent 循环（Single Agent Loop）</h2><p>这是入门首选以及实现简单的架构，是最基础也最直观的架构，这个架构指的是一个 Agent 从头到尾独立完成所有任务。单 Agent 循环直接体现了 <code>ReAct 模式</code>(Reasoning + Action): 每一步都是“先想后做”。其中 LLM 充当大脑，而工具调用充当双手。</p>
+<p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/003.png" alt="Agent 单循环架构"></p>
+<p><code>ReAct</code> 是一种将推理（Reasoning）和行动（Action）结合的框架，边推理边行动，使 LLM 能够生成推理轨迹并执行任务，适合动态场景。</p>
+<p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/004.png" alt="ReAct 框架"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">执行轨迹</span></span><br><span class="line">用户：特斯拉的 CEO 是谁？他之前创办过什么公司？</span><br><span class="line"></span><br><span class="line">Thought: 我需要先确认特斯拉的现任 CEO</span><br><span class="line">Action: search(&quot;特斯拉 CEO 2024&quot;)</span><br><span class="line">Observation: 特斯拉的 CEO 是埃隆·马斯克</span><br><span class="line"></span><br><span class="line">Thought: 现在我需要查找埃隆·马斯克创办过的公司</span><br><span class="line">Action: search(&quot;Elon Musk founded companies&quot;)</span><br><span class="line">Observation: 埃隆·马斯克创办了 Zip2、X.com(PayPal)、SpaceX、Tesla 等</span><br><span class="line"></span><br><span class="line">Thought: 我有了足够的信息来回答用户的问题</span><br><span class="line">Answer: 特斯拉的 CEO 是埃隆·马斯克。他之前创办过的公司包括...</span><br></pre></td></tr></table></figure>
+
+<p>单 Agent 循环架构主要由三方面实现：感知、推理、行动。</p>
+<ul>
+<li>感知：读取当前状态——通过各种传感器、API等方法来获取文件内容、环境变量、之前步骤的输出结果，然后整合成当前的上下文，支持多模态输入意味着 AI 能够处理和理解文本、语音、图像等多种类型的数据，增强了与现实世界的交互能力。</li>
+<li>推理：LLM 根据上下文决定下一步动作——调用哪个工具、传入什么参数，或者判断任务是否已完成。</li>
+<li>行动：执行工具的调用，如读写文件、操控设备、搜索网络等，工具的执行结果会被追加到上下文中，进入下一轮循环，在这一过程中，权限管理与安全机制至关重要，确保 AI Agent 在执行任务时的合法性和安全性。</li>
+</ul>
+<blockquote>
+<p>每次工具调用的结果都会追加到上下文(Context Window)，因此随着任务推进，上下文会不断增长，直到达到 LLM 的上下文窗口 token 限制，</p>
+</blockquote>
+<p><strong>优点</strong></p>
+<ul>
+<li>实现最简单且易于调试</li>
+<li>适合任务边界清晰的场景</li>
+<li>几乎所有 Agent 框架都支持</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>上下文窗口容易撑满</li>
+<li>复杂任务中容易“偏航”，或者说可能造成 AI 幻觉</li>
+<li>无法并行处理多个子任务</li>
+</ul>
+<p>单 Agent 架构最适合修复一个 Bug、编写一个函数、回答一个具体的问题。主要是任务明确，复杂度适中，不需要并行或多角色协作的话，这种架构是非常适合的，但需要注意的是，如果要执行的任务预计需要超过 15 轮工具调用，那么单 Agent 循环可能不是最佳选择，考虑使用多 Agent 协作或规划执行架构来分解复杂度会更适合。</p>
+<h2 id="架构二：规划-执行-Plan-Execute"><a href="#架构二：规划-执行-Plan-Execute" class="headerlink" title="架构二：规划 + 执行(Plan &amp; Execute)"></a>架构二：规划 + 执行(Plan &amp; Execute)</h2><p>该架构直觉友好，并且可审查，将“想清楚要做什么”和“实际去做什么”分离成两个独立阶段，这提升了任务的可预测性和可审计性。该架构将 Agent 的工作拆分为两个明确阶段：先<code>规划(Plan)</code>,再<code>执行(Execute)</code>。</p>
+<p>在规划时，模型不执行任何操作，只生成一份详细的执行步骤列表，在执行阶段，系统依次完成每个步骤，这种分离让用户可以在执行前审查计划，就像 Claude Code 的 Plan Mode 一样。</p>
+<p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/005.png" alt="规划 + 执行架构"></p>
+<p>该架构涉及两种变体——规划是静态还是动态：</p>
+<table>
+<thead>
+<tr>
+<th>变体</th>
+<th>行为</th>
+<th>典型场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>静态规划</td>
+<td>计划一次性生成，按顺序线性执行，不中途调整</td>
+<td>流程固定、步骤明确的任务，如数据迁移脚本</td>
+</tr>
+<tr>
+<td>动态规划</td>
+<td>每执行一步后重新评估，根据结果调整后续计划</td>
+<td>结果不确定的任务，如调试、探索性数据分析</td>
+</tr>
+</tbody></table>
+<p>其中动态规划是更健壮的，但是实现的复杂度更高，且每次重新规划会消耗额外的 token。</p>
+<blockquote>
+<p>Claude Code 的 Plan Mode 就是这个架构的体现——点击”计划”后，AI 先输出一份详细计划供审查，确认后才开始执行。这大幅提升了用户的掌控感。</p>
+</blockquote>
+<p><strong>优点</strong></p>
+<ul>
+<li>执行前可供人工审查计划</li>
+<li>推理和执行职责分离，让步骤更清晰</li>
+<li>对长任务友好</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>初始计划可能不够准确</li>
+<li>拆分成两个阶段会增加延迟，用户得到结果的时间更长</li>
+<li>静态版本难以应对意外情况，不如动态版本更有主动调解的能力</li>
+</ul>
+<blockquote>
+<p>Plan &amp; Execute 的代价是增加了推理轮次，对于简单任务反而是一种浪费。如果一个任务可以在 3 步内完成，直接用单 Agent 循环更高效。</p>
+</blockquote>
+<h2 id="多-Agent-协作（Multi-Agent）"><a href="#多-Agent-协作（Multi-Agent）" class="headerlink" title="多 Agent 协作（Multi-Agent）"></a>多 Agent 协作（Multi-Agent）</h2><p>推荐在生产环境使用改架构，适合处理复杂任务。该架构总拥有一个协调者(Orchestrator)负责任务的拆解和调度多个子代理(Subagent)，每个子代理就是一个子 Agent，子代理之间各司其职，并行或串行地完成子任务，最后将结果汇聚到协调者中进行综合。</p>
+<p>多 Agent 协作架构解决了单个 Agent 面临上下文窗口不足或任务过于负责的问题，可以让多个专门化的子 Agent 并行工作，且由一个协调者统筹全局。</p>
+<p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/006.png" alt="多 Agent 协作架构"></p>
+<p>多 Agent 协作中，独立的上下文是核心优势，因为其子 Agent 拥有独立的上下文窗口，代码审查 Agent 不会影响性能分析 Agent 的判断；安全检测 Agent 产生的大量中间输出不会挤占其他 Agent 的空间。</p>
+<blockquote>
+<p>子 Agent（Subagent）是短暂的、隔离的——完成一个任务后即销毁。Agent 团队（Agent Teams）则是多个独立 Agent 实例长时间协作、互相发消息，更像一个真实的团队。</p>
+</blockquote>
+<p><strong>优点</strong></p>
+<ul>
+<li>支持并行，速度快。</li>
+<li>每个子 Agent 各自独立，每个上下文互不干扰。</li>
+<li>可以为每个子 Agent 指定角色。</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>子 Agent 协调逻辑复杂，调试困难。</li>
+<li>多个 Agent 并行时，所消耗的 token 成本高。</li>
+<li>协调者本身可能成为瓶颈。</li>
+</ul>
+<blockquote>
+<p>多 Agent 协作的主要成本是编排开销。如果子任务简单（每个只需1-2步），编排开销可能超过实际工作的开销，这时使用单 Agent 更合适。</p>
+</blockquote>
+<h2 id="反思与自我修正（Reflection）"><a href="#反思与自我修正（Reflection）" class="headerlink" title="反思与自我修正（Reflection）"></a>反思与自我修正（Reflection）</h2><p>该架构易于集成，并且拥有高质量输出。在 Agent 的输出环节加入质量评估，每次生成输出后，都有一个评判者来评估质量，不满意不达标就重新生成或修正，形成内部迭代循环，直到输出满足标准。</p>
+<p>这就像开发者写完代码自己做一遍测试，这保证了生成内容的质量。</p>
+<p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/007.png" alt="反思架构"></p>
+<p>反思架构有两种实现方式：</p>
+<table>
+<thead>
+<tr>
+<th align="center">方式</th>
+<th align="center">机制</th>
+<th align="center">优点</th>
+<th align="center">缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">自我反思</td>
+<td align="center">同一个模型先执行再评估自己的输出</td>
+<td align="center">实现简单，无额外模型成本</td>
+<td align="center">模型可能对自己的错误”视而不见”</td>
+</tr>
+<tr>
+<td align="center">Critic 模型</td>
+<td align="center">用独立的评判模型评估执行模型的输出</td>
+<td align="center">更客观，能发现执行模型盲区</td>
+<td align="center">增加模型调用成本和延迟</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>“写单元测试 → 运行测试 → 观察失败 → 修复代码 → 再次运行”——这就是反思架构的经典应用。测试结果本身就是 Critic 的反馈信号。</p>
+</blockquote>
+<p><strong>优点</strong></p>
+<ul>
+<li>提升输出质量。</li>
+<li>可设置明确的质量标准。</li>
+<li>适合有客观评判标准的任务。</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>多次迭代会增加延迟和成本。</li>
+<li>需要设置最大迭代数防止死循环。</li>
+<li>评判标准难以形式化时效果有限。</li>
+</ul>
+<blockquote>
+<p>反思循环每次迭代都是一次额外的 LLM 调用，会明显增加延迟和成本。并且一定要设置反思次数上限，否则模型可能陷入”永远不满意”的死循环。</p>
+</blockquote>
+<h2 id="RAG-Agent（检索增强型智能体）"><a href="#RAG-Agent（检索增强型智能体）" class="headerlink" title="RAG + Agent（检索增强型智能体）"></a>RAG + Agent（检索增强型智能体）</h2><p>如果想让 Agent 在任务过程中参考指定的知识库，使用该架构是不错的选择，此架构适合知识密集任务和大型知识库，在 Agent 的工具集里加入向量检索能力，从知识库中检索相关文档，再把检索到的内容作为上下文喂给 LLM，克服上下文窗口的限制，让它基于这些”证据”来生成回答；这使得 Agent 变得更加强大：Agent 可以<code>主动决定何时检索、检索什么</code>，而不是每次都被动地检索一次。</p>
+<p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/008.png" alt="RAG + Agent架构"></p>
+<p>普通的 RAG 是“被动且一次性”的，用户提问时固定检索一次，将结果塞入 Prompt，但 RAG + Agent 则不同，Agent 可以自主判断在推理的哪个环节需要补充知识和需要检索什么，并可以多次查询知识库，让有足够的信息来支撑任务的完成。</p>
+<blockquote>
+<p>代码库问答 Agent 被问到”为什么这里用单例模式？”时，它会主动检索项目文档、设计决策记录、相关代码文件，而不是只凭 LLM 的训练记忆来猜测。</p>
+</blockquote>
+<p><strong>优点</strong></p>
+<ul>
+<li>突破上下文窗口限制。</li>
+<li>基于真实文档生成，输出有据可查，减少 AI 幻觉。</li>
+<li>无需要重新训练，知识库可独立更新。</li>
+<li>可追溯性，标准信息的来源。</li>
+<li>领域专精，快速适应特定的领域。</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>检索的质量影响整体效果。</li>
+<li>向量数据库的维护成本高。</li>
+<li>检索延迟导致延长了响应时间。</li>
+</ul>
+<h2 id="工作流编排（Workflow-DAG）"><a href="#工作流编排（Workflow-DAG）" class="headerlink" title="工作流编排（Workflow &#x2F; DAG）"></a>工作流编排（Workflow &#x2F; DAG）</h2><p>工作流是一个由一系列操作组成的任务，工作流可以被看作是一个有向无环图（DAG），DAG 指定了步骤之间的依赖关系和执行顺序，其中每个步骤是最小的可恢复计算单元，描述了一个动作，例如获取数据或触发一个服务。每个步骤要么成功完成，要么完全失败。</p>
+<p>工作流编排的目标是自动化执行工作流中定义的任务。在实践中，工作流编排的概念通常扩展到整个工作流管理领域，包括以自动化的方式创建、调度、执行和监控多个工作流。</p>
+<p>把 Agent 行为固化为一张有向无环图(DAG)，每个节点是一个 LLM 调用或工具调用，连接的边表示数据依赖关系，由驱动框架执行。该架构为生产首选且拥有高可靠性，这是最接近传统软件工程的一种 Agent 架构，与前面几种架构最大的区别在于 <code>Agent 的自主决策空间被限制在单个节点内部</code>，节点之间的流转是预先定义好的，不可更改。</p>
+<p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/009.png" alt="Workflow / DAG 架构"></p>
+<p>纯 Agent vs DAG 工作流：</p>
+<table>
+<thead>
+<tr>
+<th align="center">特性</th>
+<th align="center">纯 Agent</th>
+<th align="center">DAG 工作流</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">流程控制</td>
+<td align="center">模型自主决定下一步</td>
+<td align="center">预定义的 DAG 图决定</td>
+</tr>
+<tr>
+<td align="center">可预测性</td>
+<td align="center">低，每次运行路径可能不同</td>
+<td align="center">高，运行路径确定</td>
+</tr>
+<tr>
+<td align="center">可调试性</td>
+<td align="center">难，依赖日志追踪</td>
+<td align="center">易，每个节点输入输出明确</td>
+</tr>
+<tr>
+<td align="center">容错性</td>
+<td align="center">依赖模型自行恢复</td>
+<td align="center">框架提供重试、断点续跑</td>
+</tr>
+<tr>
+<td align="center">灵活性</td>
+<td align="center">高，可应对意外情况</td>
+<td align="center">低，只能走预定义路径</td>
+</tr>
+</tbody></table>
+<p>DAG 的 “无环”（Acyclic）特性意味着工作流是<code>确定性</code>的——没有无限循环，执行路径可以完全预测，失败的节点可以单独重试。</p>
+<blockquote>
+<p>DAG 是”低自主性、高可预测性”的极端。需要预先设计好整个流程。这不是缺点，而是刻意的设计取舍——生产环境中有时候确定性比灵活性更重要。</p>
+</blockquote>
+<p>*<em>优点</em></p>
+<ul>
+<li>可预测、可审计、可重试。</li>
+<li>支持并行加速。</li>
+<li>工程化程度高，运维友好。</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>流程需要预先设计，灵活性低。</li>
+<li>难以应对未预期的情况。</li>
+<li>需要学习编排框架。</li>
+</ul>
+<h2 id="多个维度对比六种架构"><a href="#多个维度对比六种架构" class="headerlink" title="多个维度对比六种架构"></a>多个维度对比六种架构</h2><table>
+<thead>
+<tr>
+<th align="center">架构</th>
+<th align="center">自主性</th>
+<th align="center">可预测性</th>
+<th align="center">并行能力</th>
+<th align="center">适合任务复杂度</th>
+<th align="center">典型实现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">单 Agent 循环</td>
+<td align="center">高</td>
+<td align="center">低</td>
+<td align="center">无</td>
+<td align="center">中低</td>
+<td align="center">Claude Code 默认模式</td>
+</tr>
+<tr>
+<td align="center">规划 + 执行</td>
+<td align="center">中</td>
+<td align="center">中</td>
+<td align="center">部分</td>
+<td align="center">中高</td>
+<td align="center">Claude Code Plan Mode</td>
+</tr>
+<tr>
+<td align="center">多 Agent 协作</td>
+<td align="center">高</td>
+<td align="center">低</td>
+<td align="center">强</td>
+<td align="center">高</td>
+<td align="center">AutoGen, CrewAI</td>
+</tr>
+<tr>
+<td align="center">反思 &#x2F; 自我修正</td>
+<td align="center">中</td>
+<td align="center">中</td>
+<td align="center">无</td>
+<td align="center">中</td>
+<td align="center">Reflexion, Self-Refine</td>
+</tr>
+<tr>
+<td align="center">RAG + Agent</td>
+<td align="center">高</td>
+<td align="center">中</td>
+<td align="center">无</td>
+<td align="center">中高</td>
+<td align="center">LangChain RAG Agent</td>
+</tr>
+<tr>
+<td align="center">工作流编排</td>
+<td align="center">低</td>
+<td align="center">高</td>
+<td align="center">强</td>
+<td align="center">高（固定流程）</td>
+<td align="center">LangGraph, Prefect</td>
+</tr>
+</tbody></table>
+<h2 id="常见组合模式"><a href="#常见组合模式" class="headerlink" title="常见组合模式"></a>常见组合模式</h2><p>实际生产系统通常会组合使用多种架构，以下是几种成熟的组合模式：</p>
+<ul>
+<li><p><code>工作流编排 + 多 Agent</code>：用 DAG 定义主流程，每个节点内部是一个独立的 Agent。例如 CI&#x2F;CD 流水线中，代码检查节点是 Code Review Agent，安全扫描节点是 Security Agent。</p>
+</li>
+<li><p><code>多 Agent + RAG</code>：多个 Subagent 共享同一个向量知识库，各自根据子任务按需检索。例如客服系统中，订单查询 Agent 和退款处理 Agent 都查询同一个知识库但检索不同的内容。</p>
+</li>
+<li><p><code>规划执行 + 反思</code>：先规划再执行，但每个步骤执行后加入反思环节确保质量。适合对质量要求极高的任务。</p>
+</li>
+</ul>
+<blockquote>
+<p>如果不确定从哪里开始，从单 Agent 循环开始。它最容易实现和调试。当发现上下文窗口不够用时，考虑多 Agent；当需要质量保证时，加入反思层；当流程趋于稳定时，重构为 DAG 以提升可靠性。</p>
+</blockquote>
+<h2 id="常见误区"><a href="#常见误区" class="headerlink" title="常见误区"></a>常见误区</h2><p><strong>误区一：架构越复杂越好</strong></p>
+<p>多 Agent 协作看起来很强大，但如果的任务用单 Agent 循环在 5 步内就能完成，引入编排开销反而降低效率。原则：用能满足需求的最简架构。</p>
+<p><strong>误区二：反思一定能提升质量</strong></p>
+<p>自我反思的有效性取决于模型的自我评估能力。如果质量要求极其严格，考虑使用 Critic 模型或引入外部验证（如代码自动测试）。</p>
+<p><strong>误区三：DAG 工作流不需要 Agent</strong></p>
+<p>DAG 定义了流程骨架，但每个节点内部仍然可以是 Agent 调用。工作流编排和 Agent 能力不是互斥的，而是互补的——DAG 提供可靠性，Agent 提供灵活性。</p>
+<p><strong>误区四：上下文窗口大了就不需要 RAG</strong></p>
+<p>即使模型支持 1M token 的上下文窗口，把所有文档塞进去仍然不是最优方案。RAG 的价值不仅在于”装得下”，更在于精准检索——减少噪音、降低推理成本、提高答案准确性。</p>
+<p>需要说明的是，选择架构时，核心考量只有两个：<code>需要多大的灵活性来应对意外情况，以及需要多大的确定性来保证结果可靠</code>。</p>
+<p>从简单开始，在确实需要时才增加复杂度，这是 Agent 架构选型的第一原则。</p>
+<p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/ai-agent/agent-architecture.html">Agent 架构</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7481219942479298570?searchId=2026083011030227BD617A7BBBC9FF22C1">AI Agent的架构设计</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7615229750573154313?searchId=2026083011030227BD617A7BBBC9FF22C1">AI Agent 智能体架构详解：从概念到实战</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7253115535482355769?searchId=20260906214922C89C7CEF1DAF493EA4A4">《设计深度学习系统》第九章：工作流编排</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AI/" rel="tag"># AI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2026/05/10/window%E9%83%A8%E7%BD%B2llama.cpp/" rel="next" title="window部署llama.cpp">
+                <i class="fa fa-chevron-left"></i> window部署llama.cpp
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/img/huaji.gif"
+                alt="SanMaoFan" />
+            
+              <p class="site-author-name" itemprop="name">SanMaoFan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">74</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Agent-%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Agent 架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E4%B8%80%EF%BC%9A%E5%8D%95-Agent-%E5%BE%AA%E7%8E%AF%EF%BC%88Single-Agent-Loop%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">架构一：单 Agent 循环（Single Agent Loop）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E4%BA%8C%EF%BC%9A%E8%A7%84%E5%88%92-%E6%89%A7%E8%A1%8C-Plan-Execute"><span class="nav-number">3.</span> <span class="nav-text">架构二：规划 + 执行(Plan &amp; Execute)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A-Agent-%E5%8D%8F%E4%BD%9C%EF%BC%88Multi-Agent%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">多 Agent 协作（Multi-Agent）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E6%80%9D%E4%B8%8E%E8%87%AA%E6%88%91%E4%BF%AE%E6%AD%A3%EF%BC%88Reflection%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">反思与自我修正（Reflection）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RAG-Agent%EF%BC%88%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E5%9E%8B%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">RAG + Agent（检索增强型智能体）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%BC%96%E6%8E%92%EF%BC%88Workflow-DAG%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">工作流编排（Workflow &#x2F; DAG）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E7%BB%B4%E5%BA%A6%E5%AF%B9%E6%AF%94%E5%85%AD%E7%A7%8D%E6%9E%B6%E6%9E%84"><span class="nav-number">8.</span> <span class="nav-text">多个维度对比六种架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F"><span class="nav-number">9.</span> <span class="nav-text">常见组合模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA"><span class="nav-number">10.</span> <span class="nav-text">常见误区</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2026</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanMaoFan</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
