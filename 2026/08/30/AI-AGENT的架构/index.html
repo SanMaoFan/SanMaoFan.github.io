@@ -132,7 +132,7 @@
 <meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/008.png">
 <meta property="og:image" content="https://sanmaofan.github.io/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/009.png">
 <meta property="article:published_time" content="2026-08-30T05:00:21.000Z">
-<meta property="article:modified_time" content="2026-09-06T14:11:44.563Z">
+<meta property="article:modified_time" content="2026-09-06T14:33:07.317Z">
 <meta property="article:author" content="SanMaoFan">
 <meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary">
@@ -398,7 +398,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2026-09-06 22:11:44" itemprop="dateModified" datetime="2026-09-06T22:11:44+08:00">2026-09-06</time>
+                <time title="修改时间：2026-09-06 22:33:07" itemprop="dateModified" datetime="2026-09-06T22:33:07+08:00">2026-09-06</time>
               
             
           </span>
@@ -552,7 +552,7 @@
 <blockquote>
 <p>Plan &amp; Execute 的代价是增加了推理轮次，对于简单任务反而是一种浪费。如果一个任务可以在 3 步内完成，直接用单 Agent 循环更高效。</p>
 </blockquote>
-<h2 id="多-Agent-协作（Multi-Agent）"><a href="#多-Agent-协作（Multi-Agent）" class="headerlink" title="多 Agent 协作（Multi-Agent）"></a>多 Agent 协作（Multi-Agent）</h2><p>推荐在生产环境使用改架构，适合处理复杂任务。该架构总拥有一个协调者(Orchestrator)负责任务的拆解和调度多个子代理(Subagent)，每个子代理就是一个子 Agent，子代理之间各司其职，并行或串行地完成子任务，最后将结果汇聚到协调者中进行综合。</p>
+<h2 id="架构三：多-Agent-协作（Multi-Agent）"><a href="#架构三：多-Agent-协作（Multi-Agent）" class="headerlink" title="架构三：多 Agent 协作（Multi-Agent）"></a>架构三：多 Agent 协作（Multi-Agent）</h2><p>推荐在生产环境使用改架构，适合处理复杂任务。该架构总拥有一个协调者(Orchestrator)负责任务的拆解和调度多个子代理(Subagent)，每个子代理就是一个子 Agent，子代理之间各司其职，并行或串行地完成子任务，最后将结果汇聚到协调者中进行综合。</p>
 <p>多 Agent 协作架构解决了单个 Agent 面临上下文窗口不足或任务过于负责的问题，可以让多个专门化的子 Agent 并行工作，且由一个协调者统筹全局。</p>
 <p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/006.png" alt="多 Agent 协作架构"></p>
 <p>多 Agent 协作中，独立的上下文是核心优势，因为其子 Agent 拥有独立的上下文窗口，代码审查 Agent 不会影响性能分析 Agent 的判断；安全检测 Agent 产生的大量中间输出不会挤占其他 Agent 的空间。</p>
@@ -574,7 +574,7 @@
 <blockquote>
 <p>多 Agent 协作的主要成本是编排开销。如果子任务简单（每个只需1-2步），编排开销可能超过实际工作的开销，这时使用单 Agent 更合适。</p>
 </blockquote>
-<h2 id="反思与自我修正（Reflection）"><a href="#反思与自我修正（Reflection）" class="headerlink" title="反思与自我修正（Reflection）"></a>反思与自我修正（Reflection）</h2><p>该架构易于集成，并且拥有高质量输出。在 Agent 的输出环节加入质量评估，每次生成输出后，都有一个评判者来评估质量，不满意不达标就重新生成或修正，形成内部迭代循环，直到输出满足标准。</p>
+<h2 id="架构四：反思与自我修正（Reflection）"><a href="#架构四：反思与自我修正（Reflection）" class="headerlink" title="架构四：反思与自我修正（Reflection）"></a>架构四：反思与自我修正（Reflection）</h2><p>该架构易于集成，并且拥有高质量输出。在 Agent 的输出环节加入质量评估，每次生成输出后，都有一个评判者来评估质量，不满意不达标就重新生成或修正，形成内部迭代循环，直到输出满足标准。</p>
 <p>这就像开发者写完代码自己做一遍测试，这保证了生成内容的质量。</p>
 <p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/007.png" alt="反思架构"></p>
 <p>反思架构有两种实现方式：</p>
@@ -618,7 +618,7 @@
 <blockquote>
 <p>反思循环每次迭代都是一次额外的 LLM 调用，会明显增加延迟和成本。并且一定要设置反思次数上限，否则模型可能陷入”永远不满意”的死循环。</p>
 </blockquote>
-<h2 id="RAG-Agent（检索增强型智能体）"><a href="#RAG-Agent（检索增强型智能体）" class="headerlink" title="RAG + Agent（检索增强型智能体）"></a>RAG + Agent（检索增强型智能体）</h2><p>如果想让 Agent 在任务过程中参考指定的知识库，使用该架构是不错的选择，此架构适合知识密集任务和大型知识库，在 Agent 的工具集里加入向量检索能力，从知识库中检索相关文档，再把检索到的内容作为上下文喂给 LLM，克服上下文窗口的限制，让它基于这些”证据”来生成回答；这使得 Agent 变得更加强大：Agent 可以<code>主动决定何时检索、检索什么</code>，而不是每次都被动地检索一次。</p>
+<h2 id="架构五：RAG-Agent（检索增强型智能体）"><a href="#架构五：RAG-Agent（检索增强型智能体）" class="headerlink" title="架构五：RAG + Agent（检索增强型智能体）"></a>架构五：RAG + Agent（检索增强型智能体）</h2><p>如果想让 Agent 在任务过程中参考指定的知识库，使用该架构是不错的选择，此架构适合知识密集任务和大型知识库，在 Agent 的工具集里加入向量检索能力，从知识库中检索相关文档，再把检索到的内容作为上下文喂给 LLM，克服上下文窗口的限制，让它基于这些”证据”来生成回答；这使得 Agent 变得更加强大：Agent 可以<code>主动决定何时检索、检索什么</code>，而不是每次都被动地检索一次。</p>
 <p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/008.png" alt="RAG + Agent架构"></p>
 <p>普通的 RAG 是“被动且一次性”的，用户提问时固定检索一次，将结果塞入 Prompt，但 RAG + Agent 则不同，Agent 可以自主判断在推理的哪个环节需要补充知识和需要检索什么，并可以多次查询知识库，让有足够的信息来支撑任务的完成。</p>
 <blockquote>
@@ -638,7 +638,7 @@
 <li>向量数据库的维护成本高。</li>
 <li>检索延迟导致延长了响应时间。</li>
 </ul>
-<h2 id="工作流编排（Workflow-DAG）"><a href="#工作流编排（Workflow-DAG）" class="headerlink" title="工作流编排（Workflow &#x2F; DAG）"></a>工作流编排（Workflow &#x2F; DAG）</h2><p>工作流是一个由一系列操作组成的任务，工作流可以被看作是一个有向无环图（DAG），DAG 指定了步骤之间的依赖关系和执行顺序，其中每个步骤是最小的可恢复计算单元，描述了一个动作，例如获取数据或触发一个服务。每个步骤要么成功完成，要么完全失败。</p>
+<h2 id="架构六：工作流编排（Workflow-DAG）"><a href="#架构六：工作流编排（Workflow-DAG）" class="headerlink" title="架构六：工作流编排（Workflow &#x2F; DAG）"></a>架构六：工作流编排（Workflow &#x2F; DAG）</h2><p>工作流是一个由一系列操作组成的任务，工作流可以被看作是一个有向无环图（DAG），DAG 指定了步骤之间的依赖关系和执行顺序，其中每个步骤是最小的可恢复计算单元，描述了一个动作，例如获取数据或触发一个服务。每个步骤要么成功完成，要么完全失败。</p>
 <p>工作流编排的目标是自动化执行工作流中定义的任务。在实践中，工作流编排的概念通常扩展到整个工作流管理领域，包括以自动化的方式创建、调度、执行和监控多个工作流。</p>
 <p>把 Agent 行为固化为一张有向无环图(DAG)，每个节点是一个 LLM 调用或工具调用，连接的边表示数据依赖关系，由驱动框架执行。该架构为生产首选且拥有高可靠性，这是最接近传统软件工程的一种 Agent 架构，与前面几种架构最大的区别在于 <code>Agent 的自主决策空间被限制在单个节点内部</code>，节点之间的流转是预先定义好的，不可更改。</p>
 <p><img src="/images/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/009.png" alt="Workflow / DAG 架构"></p>
@@ -1047,7 +1047,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Agent-%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Agent 架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E4%B8%80%EF%BC%9A%E5%8D%95-Agent-%E5%BE%AA%E7%8E%AF%EF%BC%88Single-Agent-Loop%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">架构一：单 Agent 循环（Single Agent Loop）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E4%BA%8C%EF%BC%9A%E8%A7%84%E5%88%92-%E6%89%A7%E8%A1%8C-Plan-Execute"><span class="nav-number">3.</span> <span class="nav-text">架构二：规划 + 执行(Plan &amp; Execute)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A-Agent-%E5%8D%8F%E4%BD%9C%EF%BC%88Multi-Agent%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">多 Agent 协作（Multi-Agent）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E6%80%9D%E4%B8%8E%E8%87%AA%E6%88%91%E4%BF%AE%E6%AD%A3%EF%BC%88Reflection%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">反思与自我修正（Reflection）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RAG-Agent%EF%BC%88%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E5%9E%8B%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">RAG + Agent（检索增强型智能体）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%BC%96%E6%8E%92%EF%BC%88Workflow-DAG%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">工作流编排（Workflow &#x2F; DAG）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E7%BB%B4%E5%BA%A6%E5%AF%B9%E6%AF%94%E5%85%AD%E7%A7%8D%E6%9E%B6%E6%9E%84"><span class="nav-number">8.</span> <span class="nav-text">多个维度对比六种架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F"><span class="nav-number">9.</span> <span class="nav-text">常见组合模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA"><span class="nav-number">10.</span> <span class="nav-text">常见误区</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Agent-%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Agent 架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E4%B8%80%EF%BC%9A%E5%8D%95-Agent-%E5%BE%AA%E7%8E%AF%EF%BC%88Single-Agent-Loop%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">架构一：单 Agent 循环（Single Agent Loop）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E4%BA%8C%EF%BC%9A%E8%A7%84%E5%88%92-%E6%89%A7%E8%A1%8C-Plan-Execute"><span class="nav-number">3.</span> <span class="nav-text">架构二：规划 + 执行(Plan &amp; Execute)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E4%B8%89%EF%BC%9A%E5%A4%9A-Agent-%E5%8D%8F%E4%BD%9C%EF%BC%88Multi-Agent%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">架构三：多 Agent 协作（Multi-Agent）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E5%9B%9B%EF%BC%9A%E5%8F%8D%E6%80%9D%E4%B8%8E%E8%87%AA%E6%88%91%E4%BF%AE%E6%AD%A3%EF%BC%88Reflection%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">架构四：反思与自我修正（Reflection）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E4%BA%94%EF%BC%9ARAG-Agent%EF%BC%88%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E5%9E%8B%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">架构五：RAG + Agent（检索增强型智能体）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E5%85%AD%EF%BC%9A%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%BC%96%E6%8E%92%EF%BC%88Workflow-DAG%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">架构六：工作流编排（Workflow &#x2F; DAG）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E7%BB%B4%E5%BA%A6%E5%AF%B9%E6%AF%94%E5%85%AD%E7%A7%8D%E6%9E%B6%E6%9E%84"><span class="nav-number">8.</span> <span class="nav-text">多个维度对比六种架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F"><span class="nav-number">9.</span> <span class="nav-text">常见组合模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA"><span class="nav-number">10.</span> <span class="nav-text">常见误区</span></a></li></ol></div>
             
 
           </div>
