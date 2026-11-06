@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="参考文章：  不用框架的页面转场动画｜View Transition API 从零开始｜JavaScript + CSS 教程 视图过渡 API ViewTransition  简介视图过渡 API（View Transition API）提供了一种轻松地创建不同网站视图之间的动画过渡的机制。这包括在单页应用（SPA）中的 DOM 状态之间设置动画，以及在多页应用（MPA）中的文档之间的导航设置动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端 View Transitions API 的基本使用">
+<meta property="og:url" content="https://sanmaofan.github.io/2026/11/06/%E5%89%8D%E7%AB%AFView-Transitions-API%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="SanMaoFan&#39;s Blog">
+<meta property="og:description" content="参考文章：  不用框架的页面转场动画｜View Transition API 从零开始｜JavaScript + CSS 教程 视图过渡 API ViewTransition  简介视图过渡 API（View Transition API）提供了一种轻松地创建不同网站视图之间的动画过渡的机制。这包括在单页应用（SPA）中的 DOM 状态之间设置动画，以及在多页应用（MPA）中的文档之间的导航设置动">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-11-06T12:48:10.000Z">
+<meta property="article:modified_time" content="2026-11-06T15:33:47.435Z">
+<meta property="article:author" content="SanMaoFan">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="css">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="https://sanmaofan.github.io/2026/11/06/前端View-Transitions-API的基本使用/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>前端 View Transitions API 的基本使用 | SanMaoFan's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SanMaoFan's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://sanmaofan.github.io/2026/11/06/%E5%89%8D%E7%AB%AFView-Transitions-API%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SanMaoFan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/huaji.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SanMaoFan's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前端 View Transitions API 的基本使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2026-11-06 20:48:10 / 修改时间：23:33:47" itemprop="dateCreated datePublished" datetime="2026-11-06T20:48:10+08:00">2026-11-06</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1te4G6QETz/?spm_id_from=333.1391.0.0&vd_source=a4fd270dc286fce4c6b62f03ed3a035d">不用框架的页面转场动画｜View Transition API 从零开始｜JavaScript + CSS 教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/View_Transition_API">视图过渡 API</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/ViewTransition">ViewTransition</a></li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>视图过渡 API（View Transition API）提供了一种轻松地创建不同网站视图之间的动画过渡的机制。这包括在单页应用（SPA）中的 DOM 状态之间设置动画，以及在多页应用（MPA）中的文档之间的导航设置动画。MDN 中将其概念介绍为：视图过渡是一种流行的设计选择，可以减少用户认知负荷，帮助他们保持上下文，并减少他们在应用程序的状态或视图之间移动时感知的加载延迟。以小红书的功能来举例，在以下视频中，在进入一篇博文时，点击博文中的图片，其图片会从原本的屏幕顶部，移动到屏幕中部，并且背景逐渐变黑。</p>
+<p><video src='/images/前端View-Transitions-API的基本使用/001.mp4' controls width="300" height="500"></video></p>
+<p>此 API 工作原理为：先给最开始的页面(旧页面)拍快照，当视图变动后(既可以是当前页面 SPA 过渡，也可以是跨页面 MPA 过渡)，API 将新视图中的快照捕获为实时表示的形式，接着在两张页面快照之间做动画，旧页面快照以“淡出”动画形式显示，而新视图快照以“淡入”形式呈现动画效果。具体请参考官方文档:<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/View_Transition_API/Using#%E8%A7%86%E5%9B%BE%E8%BF%87%E6%B8%A1%E8%BF%87%E7%A8%8B">MDN 视图过渡过程</a></p>
+<h2 id="具体案例"><a href="#具体案例" class="headerlink" title="具体案例"></a>具体案例</h2><p>先搭建案例的基本架构，先从没有加入 View Transition API 的情况开始：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>View Transition 图片放大效果<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-tag">body</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">font-family</span>: sans-serif;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">justify-content</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">align-items</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">min-height</span>: <span class="number">100vh</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#f0f0f0</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 缩略图容器 */</span></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.thumbnail-container</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">display</span>: grid;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">grid-template-columns</span>: <span class="built_in">repeat</span>(<span class="number">3</span>, <span class="number">1</span>fr);</span></span><br><span class="line"><span class="language-css">        <span class="attribute">gap</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">padding</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.thumbnail</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">object-fit</span>: cover;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">border-radius</span>: <span class="number">8px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">cursor</span>: pointer;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">transition</span>: transform <span class="number">0.2s</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.thumbnail</span><span class="selector-pseudo">:hover</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1.05</span>);</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 全屏遮罩层 */</span></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.overlay</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">position</span>: fixed;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">top</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">left</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.8</span>);</span></span><br><span class="line"><span class="language-css">        <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">justify-content</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">align-items</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">visibility</span>: hidden;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">opacity</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 让遮罩层不阻断点击，但内部的图片可以 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">pointer-events</span>: none;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">z-index</span>: <span class="number">1000</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.overlay</span><span class="selector-class">.active</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">visibility</span>: visible;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">opacity</span>: <span class="number">1</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">pointer-events</span>: auto;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 放大后的图片 */</span></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.large-image</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">display</span>: none;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">max-width</span>: <span class="number">90vw</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">max-height</span>: <span class="number">90vh</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">object-fit</span>: contain;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">border-radius</span>: <span class="number">4px</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;thumbnail-container&quot;</span> <span class="attr">id</span>=<span class="string">&quot;gallery&quot;</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 图片需要自己查找，这里使用占位图服务 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;thumbnail&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://picsum.photos/id/1015/800/600&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;风景1&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;thumbnail&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://picsum.photos/id/1025/800/600&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;风景2&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;thumbnail&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://picsum.photos/id/1035/800/600&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;风景3&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;overlay&quot;</span> <span class="attr">id</span>=<span class="string">&quot;overlay&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;large-image&quot;</span> <span class="attr">id</span>=<span class="string">&quot;largeImage&quot;</span> <span class="attr">src</span>=<span class="string">&quot;&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;大图&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> gallery = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;gallery&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> overlay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;overlay&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> largeImage = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;largeImage&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">let</span> currentThumbnail = <span class="literal">null</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 1. 点击缩略图，打开大图</span></span></span><br><span class="line"><span class="language-javascript">      gallery.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (e.<span class="property">target</span>.<span class="property">tagName</span> !== <span class="string">&#x27;IMG&#x27;</span>) <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> thumbnail = e.<span class="property">target</span></span></span><br><span class="line"><span class="language-javascript">        currentThumbnail = thumbnail</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> fullSrc = thumbnail.<span class="property">src</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 替换图片地址</span></span></span><br><span class="line"><span class="language-javascript">        largeImage.<span class="property">src</span> = fullSrc</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 显示图片</span></span></span><br><span class="line"><span class="language-javascript">        largeImage.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;block&#x27;</span></span></span><br><span class="line"><span class="language-javascript">        overlay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;active&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 2. 点击遮罩层，关闭大图</span></span></span><br><span class="line"><span class="language-javascript">      overlay.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 只有点击遮罩层背景（而非图片本身）时才关闭</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (e.<span class="property">target</span> !== overlay) <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (!currentThumbnail) <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        overlay.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;active&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      &#125;)</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上代码中，点击图片会将图片放大居中屏幕显示，但是打开的效果很生硬，是突然出现的效果，没有刚刚所说小红书的平滑过渡效果。接下来加入 API 效果看看会如何。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ... 省略代码</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 将弹窗展示图片的代码加入 startViewTransition 函数中，其他代码不变</span></span><br><span class="line"><span class="comment">// 启动视图过渡</span></span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">startViewTransition</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 替换图片地址</span></span><br><span class="line">  largeImage.<span class="property">src</span> = fullSrc</span><br><span class="line">  <span class="comment">// 显示图片</span></span><br><span class="line">  largeImage.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;block&#x27;</span></span><br><span class="line">  overlay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;active&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// ... 省略代码</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//  将关闭弹窗也加入 API 函数中</span></span><br><span class="line"><span class="comment">// 启动视图过渡</span></span><br><span class="line"><span class="keyword">const</span> transition = <span class="variable language_">document</span>.<span class="title function_">startViewTransition</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  overlay.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;active&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// ... 省略代码</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以上代码替换后，其 API 便会进行新旧页面的快照获取，并进行快照之间平滑过渡，再次运行代码并点击图片和关闭弹窗，会发现其图片打开时和关闭弹窗时，会比没有加入 API 之前平滑。</p>
+<p>但以上效果仅仅是将图片变大后直接弹窗淡出展示，如果想要从缩略图大小平滑变大成弹窗图片大小并展示，这该怎么做呢？</p>
+<p>这里需要引入 view-transition-name 属性，它是为 CSS 属性选中的元素提供了一个独特的标识名称，并使其参与与根视图过渡分开的视图过渡，如果指定了 none 值，则不参与任何视图过渡。也就是告诉浏览器，旧页面的缩略图和新页面的弹窗大图是同一个东西，而将这两个元素使用 view-transition-name 设置同一个名字，也就让浏览器将它们联系了起来。有名字的缩略图，浏览器会将其分离出来并单独给缩略图拍一张快照，然后从缩略图位置大小慢慢变成大图的位置和大小。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* css 部分 */</span></span><br><span class="line"><span class="comment">/* ... 省略代码 */</span></span><br><span class="line"><span class="comment">/* 追加 css */</span></span><br><span class="line"><span class="comment">/* 关键：为参与过渡的元素设置相同的名字 */</span></span><br><span class="line"><span class="comment">/* 默认情况下，我们给大图设置一个名字 */</span></span><br><span class="line"><span class="selector-class">.large-image</span> &#123;</span><br><span class="line">  view-<span class="attribute">transition</span>-name: none; <span class="comment">/* 初始不激活 */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 当遮罩层打开时，给大图一个固定的过渡名称 */</span></span><br><span class="line"><span class="selector-class">.overlay</span><span class="selector-class">.active</span> <span class="selector-class">.large-image</span> &#123;</span><br><span class="line">  view-<span class="attribute">transition</span>-name: active-image;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// js 部分</span></span><br><span class="line"><span class="comment">// ... 省略代码</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 关键步骤：在过渡开始前，给缩略图一个过渡名称</span></span><br><span class="line">thumbnail.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;active-image&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动视图过渡</span></span><br><span class="line"><span class="keyword">const</span> transition = <span class="variable language_">document</span>.<span class="title function_">startViewTransition</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 在回调中，更新 DOM 状态</span></span><br><span class="line">  largeImage.<span class="property">src</span> = fullSrc</span><br><span class="line">  <span class="comment">// 显示图片</span></span><br><span class="line">  largeImage.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;block&#x27;</span></span><br><span class="line">  overlay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;active&#x27;</span>)</span><br><span class="line">  <span class="comment">// 移除缩略图的过渡名称，否则会和“大图”的过渡名称冲突，导致动画失效</span></span><br><span class="line">  thumbnail.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;&#x27;</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// ... 省略代码</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>接下来便可以看到缩略图平滑变大并达到弹窗图片的位置，这里需要额外注意的是，<code>thumbnail.style.viewTransitionName = &#39;active-image&#39;</code> 代码是当缩略图被点击时，才给名称，而不能一开始就给所有缩略图加上同一个名称，否则动画会失效，这是因为全部缩略图都是同一个名称，导致浏览器不知道是哪一张需要被快照，从而导致整个 transition 被跳过，直接修改 DOM；还有导致动画失效的另一个问题，是当弹窗大图淡出时，其缩略图的 <code>viewTransitionName</code> 名称没有移除而导致的，这是因为同一时间，一个名字只能给一个元素使用，所以需要在启动视图过渡时，其函数内部需要设置 <code>thumbnail.style.viewTransitionName = &#39;&#39;</code> 来让缩略图的名称移除。</p>
+<p>至此，类小红书图片的过渡效果便完成，但如果需要在弹窗被关闭时，也将大图回到一开始的缩略图位置，需要怎么做呢？</p>
+<p>实际上思路和刚刚缩略图以及弹窗大图转换 <code>viewTransitionName</code> 的思路一样，在关闭弹窗时，将弹窗的 <code>viewTransitionName</code> 设置为空，而对应缩略图设置为刚刚弹窗大图的 <code>viewTransitionName</code> 名称即可。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">const</span> gallery = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;gallery&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">const</span> overlay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;overlay&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">const</span> largeImage = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;largeImage&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> currentThumbnail = <span class="literal">null</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 1. 点击缩略图，打开大图</span></span></span><br><span class="line"><span class="language-javascript">  gallery.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">if</span> (e.<span class="property">target</span>.<span class="property">tagName</span> !== <span class="string">&#x27;IMG&#x27;</span>) <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> thumbnail = e.<span class="property">target</span></span></span><br><span class="line"><span class="language-javascript">    currentThumbnail = thumbnail</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> fullSrc = thumbnail.<span class="property">src</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 关键步骤：在过渡开始前，给缩略图一个过渡名称</span></span></span><br><span class="line"><span class="language-javascript">    thumbnail.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;active-image&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 启动视图过渡</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> transition = <span class="variable language_">document</span>.<span class="title function_">startViewTransition</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 在回调中，更新 DOM 状态</span></span></span><br><span class="line"><span class="language-javascript">      largeImage.<span class="property">src</span> = fullSrc</span></span><br><span class="line"><span class="language-javascript">      largeImage.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;block&#x27;</span></span></span><br><span class="line"><span class="language-javascript">      overlay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;active&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 移除缩略图的过渡名称，否则会和“大图”的过渡名称冲突，导致动画失效</span></span></span><br><span class="line"><span class="language-javascript">      thumbnail.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript">  &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 2. 点击遮罩层，关闭大图</span></span></span><br><span class="line"><span class="language-javascript">  overlay.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 只有点击遮罩层背景（而非图片本身）时才关闭</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">if</span> (e.<span class="property">target</span> !== overlay) <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">if</span> (!currentThumbnail) <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 将缩略图的名称置空</span></span></span><br><span class="line"><span class="language-javascript">    largeImage.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> transition = <span class="variable language_">document</span>.<span class="title function_">startViewTransition</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 在回调中，恢复 DOM 状态</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 大图的过渡名称由 CSS 的 .overlay.active .large-image 规则控制，移除 active 类后名字会自动失效</span></span></span><br><span class="line"><span class="language-javascript">      overlay.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;active&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 关键步骤：在过渡开始前，给缩略图重新设置过渡名称</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 这样浏览器才知道“大图”要变回“缩略图”</span></span></span><br><span class="line"><span class="language-javascript">      currentThumbnail.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;active-image&#x27;</span></span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript">  &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样便可以在弹窗关闭时，其大图重新回到缩略图位置，但是第一张图打开是正常的，而打开第二张图时，动画效果又消失了，这是因为其缩略图的名称未置空造成了，如果想在动画完成后，将所有变量初始化，这里推荐使用 API 中的  <code>finished</code> 属性 ，这是一个 Promise 方法，所以可以使用 async await 或者调用 finally 函数来完成接下来的任务，在上面代码中，已经使用 transition 变量来存储 API 内容了，所以使用 <code>finished</code> 属性只需要这样调用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 过渡完成后的任务</span></span><br><span class="line">transition.<span class="property">finished</span>.<span class="title function_">finally</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// xxxxxx</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>而如果觉得图片淡入淡出时间过短，可通过 css 伪元素来控制。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">::<span class="built_in">view-transition-group</span>(active-image) &#123;</span><br><span class="line"> <span class="attribute">animation-duration</span>: <span class="number">1s</span>;</span><br><span class="line"> <span class="comment">/* 缓动函数 */</span></span><br><span class="line"> <span class="attribute">animation-timing-function</span>: <span class="built_in">cubic-bezier</span>(<span class="number">0.2</span>, <span class="number">0.8</span>, <span class="number">0.2</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">::<span class="built_in">view-transition-old</span>(active-image),</span><br><span class="line">::<span class="built_in">view-transition-new</span>(active-image) &#123;</span><br><span class="line"> <span class="attribute">animation-duration</span>: <span class="number">0.8s</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后给出该案例改进后的的所有代码:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>View Transition 图片放大效果<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-tag">body</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">font-family</span>: sans-serif;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">justify-content</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">align-items</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">min-height</span>: <span class="number">100vh</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#f0f0f0</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 缩略图容器 */</span></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.thumbnail-container</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">display</span>: grid;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">grid-template-columns</span>: <span class="built_in">repeat</span>(<span class="number">3</span>, <span class="number">1</span>fr);</span></span><br><span class="line"><span class="language-css">        <span class="attribute">gap</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">padding</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.thumbnail</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">object-fit</span>: cover;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">border-radius</span>: <span class="number">8px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">cursor</span>: pointer;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">transition</span>: transform <span class="number">0.2s</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.thumbnail</span><span class="selector-pseudo">:hover</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1.05</span>);</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 全屏遮罩层 */</span></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.overlay</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">position</span>: fixed;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">top</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">left</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.8</span>);</span></span><br><span class="line"><span class="language-css">        <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">justify-content</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">align-items</span>: center;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">visibility</span>: hidden;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">opacity</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 让遮罩层不阻断点击，但内部的图片可以 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">pointer-events</span>: none;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">z-index</span>: <span class="number">1000</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.overlay</span><span class="selector-class">.active</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">visibility</span>: visible;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">opacity</span>: <span class="number">1</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">pointer-events</span>: auto;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 放大后的图片 */</span></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.large-image</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">max-width</span>: <span class="number">90vw</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">max-height</span>: <span class="number">90vh</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">object-fit</span>: contain;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">border-radius</span>: <span class="number">4px</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 关键：为参与过渡的元素设置相同的名字 */</span></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 默认情况下，我们给大图设置一个名字 */</span></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.large-image</span> &#123;</span></span><br><span class="line"><span class="language-css">        view-<span class="attribute">transition</span>-name: none; <span class="comment">/* 初始不激活 */</span></span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 当遮罩层打开时，给大图一个固定的过渡名称 */</span></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.overlay</span><span class="selector-class">.active</span> <span class="selector-class">.large-image</span> &#123;</span></span><br><span class="line"><span class="language-css">        view-<span class="attribute">transition</span>-name: active-image;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      ::<span class="built_in">view-transition-group</span>(active-image) &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-duration</span>: <span class="number">1s</span>;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 缓动函数 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-timing-function</span>: <span class="built_in">cubic-bezier</span>(<span class="number">0.2</span>, <span class="number">0.8</span>, <span class="number">0.2</span>, <span class="number">1</span>);</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">      ::<span class="built_in">view-transition-old</span>(active-image),</span></span><br><span class="line"><span class="language-css">      ::<span class="built_in">view-transition-new</span>(active-image) &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-duration</span>: <span class="number">0.8s</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;thumbnail-container&quot;</span> <span class="attr">id</span>=<span class="string">&quot;gallery&quot;</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 图片需要自己查找，这里使用占位图服务 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;thumbnail&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://picsum.photos/id/1015/800/600&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;风景1&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;thumbnail&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://picsum.photos/id/1025/800/600&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;风景2&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;thumbnail&quot;</span> <span class="attr">src</span>=<span class="string">&quot;https://picsum.photos/id/1035/800/600&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;风景3&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;overlay&quot;</span> <span class="attr">id</span>=<span class="string">&quot;overlay&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">&quot;large-image&quot;</span> <span class="attr">id</span>=<span class="string">&quot;largeImage&quot;</span> <span class="attr">src</span>=<span class="string">&quot;&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;大图&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> gallery = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;gallery&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> overlay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;overlay&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> largeImage = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;largeImage&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">let</span> currentThumbnail = <span class="literal">null</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 1. 点击缩略图，打开大图</span></span></span><br><span class="line"><span class="language-javascript">      gallery.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (e.<span class="property">target</span>.<span class="property">tagName</span> !== <span class="string">&#x27;IMG&#x27;</span>) <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> thumbnail = e.<span class="property">target</span></span></span><br><span class="line"><span class="language-javascript">        currentThumbnail = thumbnail</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> fullSrc = thumbnail.<span class="property">src</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 检查浏览器是否支持 View Transitions API</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (!<span class="variable language_">document</span>.<span class="property">startViewTransition</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 不支持时的降级处理：直接显示</span></span></span><br><span class="line"><span class="language-javascript">          largeImage.<span class="property">src</span> = fullSrc</span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 显示图片</span></span></span><br><span class="line"><span class="language-javascript">          overlay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;active&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 关键步骤：在过渡开始前，给缩略图一个过渡名称</span></span></span><br><span class="line"><span class="language-javascript">        thumbnail.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;active-image&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 启动视图过渡</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> transition = <span class="variable language_">document</span>.<span class="title function_">startViewTransition</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 在回调中，更新 DOM 状态</span></span></span><br><span class="line"><span class="language-javascript">          largeImage.<span class="property">src</span> = fullSrc</span></span><br><span class="line"><span class="language-javascript">          overlay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;active&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 移除缩略图的过渡名称，否则会和“大图”的过渡名称冲突，导致动画失效</span></span></span><br><span class="line"><span class="language-javascript">          thumbnail.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 过渡完成后，确保缩略图的样式被清理干净</span></span></span><br><span class="line"><span class="language-javascript">        transition.<span class="property">finished</span>.<span class="title function_">finally</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          thumbnail.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">      &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 2. 点击遮罩层，关闭大图</span></span></span><br><span class="line"><span class="language-javascript">      overlay.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 只有点击遮罩层背景（而非图片本身）时才关闭</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (e.<span class="property">target</span> !== overlay) <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (!currentThumbnail) <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 检查浏览器是否支持 View Transitions API</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (!<span class="variable language_">document</span>.<span class="property">startViewTransition</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">          overlay.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;active&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">          currentThumbnail = <span class="literal">null</span></span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">return</span></span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        largeImage.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 启动视图过渡</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> transition = <span class="variable language_">document</span>.<span class="title function_">startViewTransition</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 在回调中，恢复 DOM 状态</span></span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 大图的过渡名称由 CSS 的 .overlay.active .large-image 规则控制，移除 active 类后名字会自动失效</span></span></span><br><span class="line"><span class="language-javascript">          overlay.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;active&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 关键步骤：在过渡开始前，给缩略图重新设置过渡名称</span></span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 这样浏览器才知道“大图”要变回“缩略图”</span></span></span><br><span class="line"><span class="language-javascript">          currentThumbnail.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;active-image&#x27;</span></span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        transition.<span class="property">finished</span>.<span class="title function_">finally</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 清理工作：移除缩略图的过渡名称，并重置大图</span></span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">if</span> (currentThumbnail) &#123;</span></span><br><span class="line"><span class="language-javascript">            currentThumbnail.<span class="property">style</span>.<span class="property">viewTransitionName</span> = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">          largeImage.<span class="property">src</span> = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript">          currentThumbnail = <span class="literal">null</span></span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">      &#125;)</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+            <a href="/tags/css/" rel="tag"># css</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2026/08/30/AI-AGENT%E7%9A%84%E6%9E%B6%E6%9E%84/" rel="next" title="AI Agent 的架构">
+                <i class="fa fa-chevron-left"></i> AI Agent 的架构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/img/huaji.gif"
+                alt="SanMaoFan" />
+            
+              <p class="site-author-name" itemprop="name">SanMaoFan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%A1%88%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">具体案例</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2026</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SanMaoFan</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
